@@ -14,31 +14,32 @@ struct StudentHomePageScreen: View {
                 ZStack {
                     Image(.thumbnail)
                         .resizable()
-                        .aspectRatio(contentMode: .fill)
                     
                     VStack{
                         CourseHeaderStats()
-                            .padding(.top, 30)
-                            .padding(.bottom, 10)
-                        CourseTitle()
-                        
                         Spacer()
-                        
+                        CourseTitle()
+                        Spacer()
                         ScrollView(.horizontal, showsIndicators: false) {
-                            HStack(spacing: 20) {
-                                ForEach(0..<10) {_ in
+                            HStack(spacing: 20){
                                     CourseCard()
-                                }
-                            }
-                        }
-                        .frame(width: .infinity, height: 100)
-                        .padding(10)
-                        .padding(.bottom, 30)
-                        .padding(.top, 100)
-                        
+                                    CourseCard()
+                                    CourseCard()
+                                    CourseCard()
+                                    
+                                    
+                            }.frame(maxWidth: .infinity)
+                        }.padding(.horizontal, 4)
                     }
-                }
-                Text("Hello")
+                    .frame(width: .infinity,height: 1025)
+//                    .background(.red)
+                    .padding(.vertical, 32)
+//                    .padding(.horizontal, 10)
+                }.background(.univcolor)
+                LearnMoreSection()
+                    .padding(.bottom, 40)
+                TopCatagorySection()
+                    .padding(.bottom, 40)
             }
         }
         .tabItem {
@@ -50,3 +51,5 @@ struct StudentHomePageScreen: View {
 #Preview {
     StudentHomePageScreen()
 }
+
+

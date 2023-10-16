@@ -7,6 +7,8 @@
 
 import SwiftUI
 
+// https://api.npoint.io/9d3f810992ced9049b44
+
 struct CourseCard: View {
     var body: some View {
             VStack {
@@ -18,33 +20,33 @@ struct CourseCard: View {
                     VStack{
 //                        Live Button Bar
                         HStack {
-                            HStack(spacing: 4){
+                            HStack(spacing: 8){
                                 Circle()
                                     .fill(.systemRed)
-                                    .frame(width: 5)
+                                    .frame(width: 8)
                                 Text("Live Now")
-                                    .font(.system(size: 7))
-                                    .fontWeight(/*@START_MENU_TOKEN@*/.bold/*@END_MENU_TOKEN@*/)
+                                    .font(.system(size: 16))
+                                    .fontWeight(.semibold)
                                     
                             }
-                                .padding(.horizontal, 5)
-                                .padding(.vertical, 2)
+                                .padding(.horizontal, 8)
+                                .padding(.vertical, 4)
                                 .glassBackgroundEffect()
                             Spacer()
                         }
                         
                         Spacer()
                         
-                        VStack(spacing:3){
+                        VStack(spacing:8){
                             HStack {
                                 Text("UI/UX Design With Figma")
-                                    .font(.system(size: 9))
-                                    .fontWeight(.semibold)
+                                    .font(.system(size: 16))
+                                    .fontWeight(.medium)
                                 Spacer()
                             }
                             HStack {
                                 Text("5+ Real World Project")
-                                    .font(.system(size: 15))
+                                    .font(.system(size: 24))
                                     .fontWeight(/*@START_MENU_TOKEN@*/.bold/*@END_MENU_TOKEN@*/)
                                 Spacer()
                             }
@@ -52,20 +54,23 @@ struct CourseCard: View {
                                 Image(systemName: "eye")
                                     .resizable()
                                     .aspectRatio(contentMode: .fit)
-                                    .frame(width: 10)
+                                    .frame(width: 24)
                                 Text("100k Watching")
-                                    .font(.system(size: 8))
+                                    .font(.system(size: 14))
+                                    .fontWeight(.light)
                                 Spacer()
                             }
                         }
 
                     }
-                    .padding(10)
-                    .padding(.vertical, 13)
+                    .padding(.horizontal, 24)
+//                    .padding(.vertical, 50)
+                    .padding(.top, 20)
+                    .padding(.bottom, 28)
                 }
             }
-            .frame(width: 290, height: 160)
-            .cornerRadius(15)
+            .frame(maxWidth: 562, maxHeight: 316)
+            .cornerRadius(24)
     }
 }
 

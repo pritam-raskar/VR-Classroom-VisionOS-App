@@ -7,11 +7,16 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		BA4E4BED2AD875E900D7ED8E /* LearnMoreSection.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA4E4BEC2AD875E900D7ED8E /* LearnMoreSection.swift */; };
+		BA4E4BEF2AD8763100D7ED8E /* CourseCard2.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA4E4BEE2AD8763100D7ED8E /* CourseCard2.swift */; };
 		BA6085422AD1B6EC00A2D26F /* RealityKitContent in Frameworks */ = {isa = PBXBuildFile; productRef = BA6085412AD1B6EC00A2D26F /* RealityKitContent */; };
 		BA6085442AD1B6EC00A2D26F /* visionos_frontendApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA6085432AD1B6EC00A2D26F /* visionos_frontendApp.swift */; };
 		BA6085462AD1B6EC00A2D26F /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA6085452AD1B6EC00A2D26F /* ContentView.swift */; };
 		BA6085482AD1B6EF00A2D26F /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = BA6085472AD1B6EF00A2D26F /* Assets.xcassets */; };
 		BA60854B2AD1B6EF00A2D26F /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = BA60854A2AD1B6EF00A2D26F /* Preview Assets.xcassets */; };
+		BA968D852AD8EF7E00288012 /* TopCatagorySection.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA968D842AD8EF7E00288012 /* TopCatagorySection.swift */; };
+		BA968D882AD8F0F300288012 /* Catagory.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA968D872AD8F0F300288012 /* Catagory.swift */; };
+		BACA3C7F2ADCF55D004B8B19 /* CourseCard3.swift in Sources */ = {isa = PBXBuildFile; fileRef = BACA3C7E2ADCF55D004B8B19 /* CourseCard3.swift */; };
 		BAE61CAA2AD67BC3002587E6 /* CourseHeaderStats.swift in Sources */ = {isa = PBXBuildFile; fileRef = BAE61CA92AD67BC3002587E6 /* CourseHeaderStats.swift */; };
 		BAE61CAC2AD68BDC002587E6 /* CourseTitle.swift in Sources */ = {isa = PBXBuildFile; fileRef = BAE61CAB2AD68BDC002587E6 /* CourseTitle.swift */; };
 		BAE61CAE2AD6D2FB002587E6 /* CourseCard.swift in Sources */ = {isa = PBXBuildFile; fileRef = BAE61CAD2AD6D2FB002587E6 /* CourseCard.swift */; };
@@ -19,6 +24,8 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		BA4E4BEC2AD875E900D7ED8E /* LearnMoreSection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LearnMoreSection.swift; sourceTree = "<group>"; };
+		BA4E4BEE2AD8763100D7ED8E /* CourseCard2.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CourseCard2.swift; sourceTree = "<group>"; };
 		BA60853C2AD1B6EC00A2D26F /* visionos_frontend.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = visionos_frontend.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		BA6085402AD1B6EC00A2D26F /* RealityKitContent */ = {isa = PBXFileReference; lastKnownFileType = wrapper; path = RealityKitContent; sourceTree = "<group>"; };
 		BA6085432AD1B6EC00A2D26F /* visionos_frontendApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = visionos_frontendApp.swift; sourceTree = "<group>"; };
@@ -26,6 +33,9 @@
 		BA6085472AD1B6EF00A2D26F /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		BA60854A2AD1B6EF00A2D26F /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
 		BA60854C2AD1B6EF00A2D26F /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		BA968D842AD8EF7E00288012 /* TopCatagorySection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TopCatagorySection.swift; sourceTree = "<group>"; };
+		BA968D872AD8F0F300288012 /* Catagory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Catagory.swift; sourceTree = "<group>"; };
+		BACA3C7E2ADCF55D004B8B19 /* CourseCard3.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CourseCard3.swift; sourceTree = "<group>"; };
 		BAE61CA92AD67BC3002587E6 /* CourseHeaderStats.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CourseHeaderStats.swift; sourceTree = "<group>"; };
 		BAE61CAB2AD68BDC002587E6 /* CourseTitle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CourseTitle.swift; sourceTree = "<group>"; };
 		BAE61CAD2AD6D2FB002587E6 /* CourseCard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CourseCard.swift; sourceTree = "<group>"; };
@@ -64,6 +74,7 @@
 		BA60853E2AD1B6EC00A2D26F /* visionos_frontend */ = {
 			isa = PBXGroup;
 			children = (
+				BA968D862AD8F0D000288012 /* Models */,
 				BAF351AA2AD81FF4002B66F2 /* Screens */,
 				BAE61CA82AD67BA7002587E6 /* Views */,
 				BA6085432AD1B6EC00A2D26F /* visionos_frontendApp.swift */,
@@ -91,12 +102,24 @@
 			path = "Preview Content";
 			sourceTree = "<group>";
 		};
+		BA968D862AD8F0D000288012 /* Models */ = {
+			isa = PBXGroup;
+			children = (
+				BA968D872AD8F0F300288012 /* Catagory.swift */,
+			);
+			path = Models;
+			sourceTree = "<group>";
+		};
 		BAE61CA82AD67BA7002587E6 /* Views */ = {
 			isa = PBXGroup;
 			children = (
 				BAE61CA92AD67BC3002587E6 /* CourseHeaderStats.swift */,
 				BAE61CAB2AD68BDC002587E6 /* CourseTitle.swift */,
 				BAE61CAD2AD6D2FB002587E6 /* CourseCard.swift */,
+				BA4E4BEC2AD875E900D7ED8E /* LearnMoreSection.swift */,
+				BA4E4BEE2AD8763100D7ED8E /* CourseCard2.swift */,
+				BA968D842AD8EF7E00288012 /* TopCatagorySection.swift */,
+				BACA3C7E2ADCF55D004B8B19 /* CourseCard3.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -183,11 +206,16 @@
 			buildActionMask = 2147483647;
 			files = (
 				BAE61CAA2AD67BC3002587E6 /* CourseHeaderStats.swift in Sources */,
+				BACA3C7F2ADCF55D004B8B19 /* CourseCard3.swift in Sources */,
+				BA4E4BEF2AD8763100D7ED8E /* CourseCard2.swift in Sources */,
 				BAF351AC2AD82012002B66F2 /* StudentHomePageScreen.swift in Sources */,
 				BA6085462AD1B6EC00A2D26F /* ContentView.swift in Sources */,
 				BA6085442AD1B6EC00A2D26F /* visionos_frontendApp.swift in Sources */,
 				BAE61CAC2AD68BDC002587E6 /* CourseTitle.swift in Sources */,
+				BA968D852AD8EF7E00288012 /* TopCatagorySection.swift in Sources */,
+				BA4E4BED2AD875E900D7ED8E /* LearnMoreSection.swift in Sources */,
 				BAE61CAE2AD6D2FB002587E6 /* CourseCard.swift in Sources */,
+				BA968D882AD8F0F300288012 /* Catagory.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
