@@ -14,10 +14,7 @@ struct ContentView: View {
         TabView {
             StudentHomePageScreen()
             
-            Text("Option")
-                .tabItem {
-                    Label("Home", systemImage: "play.circle")
-                }.tag(1)
+            SplitView()
             
             Text("Photo1")
                 .tabItem {

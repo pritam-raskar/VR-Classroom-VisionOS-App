@@ -20,8 +20,9 @@ struct StudentHomePageScreen: View {
                         CourseHeaderStats()
                         Spacer()
                         CourseTitle()
-                        Text("Followers Count: \(cardDetailsArray.count)")
+//                        Text("Followers Count: \(cardDetailsArray.count)")
                         
+                        Spacer()
                 
                         ScrollView(.horizontal, showsIndicators: false) {
                             HStack(spacing: 20) {
@@ -30,6 +31,7 @@ struct StudentHomePageScreen: View {
                                 }
                             }.frame(maxWidth: .infinity)
                         }.padding(.horizontal, 4)
+                            .padding(.bottom, 10)
                         
                     }
                     .frame(width: .infinity, height: 1025)

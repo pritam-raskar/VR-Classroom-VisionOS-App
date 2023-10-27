@@ -43,6 +43,7 @@ struct CourseHeaderStats: View {
             
         }
         .padding(.horizontal, 30)
+        .padding(.vertical, 10)
     }
 }
 

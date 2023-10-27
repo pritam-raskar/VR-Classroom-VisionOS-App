@@ -109,7 +109,9 @@ struct SplitView: View {
                     
                 }
             }
-        }
+        }.tabItem {
+            Label("Setting", systemImage: "gearshape")
+        }.tag(1)
         
     }
 }
