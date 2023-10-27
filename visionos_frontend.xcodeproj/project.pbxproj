@@ -7,6 +7,9 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		111E9CA32AEC071500DEDD16 /* profilePictureView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 111E9CA22AEC071500DEDD16 /* profilePictureView.swift */; };
+		111E9CA72AEC146900DEDD16 /* SettingsPageScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = 111E9CA62AEC146900DEDD16 /* SettingsPageScreen.swift */; };
+		111E9CA92AEC17B900DEDD16 /* SettingsNavigationPanelListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 111E9CA82AEC17B900DEDD16 /* SettingsNavigationPanelListView.swift */; };
 		BA4E4BED2AD875E900D7ED8E /* LearnMoreSection.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA4E4BEC2AD875E900D7ED8E /* LearnMoreSection.swift */; };
 		BA4E4BEF2AD8763100D7ED8E /* CourseCard2.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA4E4BEE2AD8763100D7ED8E /* CourseCard2.swift */; };
 		BA6085422AD1B6EC00A2D26F /* RealityKitContent in Frameworks */ = {isa = PBXBuildFile; productRef = BA6085412AD1B6EC00A2D26F /* RealityKitContent */; };
@@ -24,6 +27,9 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		111E9CA22AEC071500DEDD16 /* profilePictureView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = profilePictureView.swift; sourceTree = "<group>"; };
+		111E9CA62AEC146900DEDD16 /* SettingsPageScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsPageScreen.swift; sourceTree = "<group>"; };
+		111E9CA82AEC17B900DEDD16 /* SettingsNavigationPanelListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsNavigationPanelListView.swift; sourceTree = "<group>"; };
 		BA4E4BEC2AD875E900D7ED8E /* LearnMoreSection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LearnMoreSection.swift; sourceTree = "<group>"; };
 		BA4E4BEE2AD8763100D7ED8E /* CourseCard2.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CourseCard2.swift; sourceTree = "<group>"; };
 		BA60853C2AD1B6EC00A2D26F /* visionos_frontend.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = visionos_frontend.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -120,6 +126,8 @@
 				BA4E4BEE2AD8763100D7ED8E /* CourseCard2.swift */,
 				BA968D842AD8EF7E00288012 /* TopCatagorySection.swift */,
 				BACA3C7E2ADCF55D004B8B19 /* CourseCard3.swift */,
+				111E9CA22AEC071500DEDD16 /* profilePictureView.swift */,
+				111E9CA82AEC17B900DEDD16 /* SettingsNavigationPanelListView.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -128,6 +136,7 @@
 			isa = PBXGroup;
 			children = (
 				BAF351AB2AD82012002B66F2 /* StudentHomePageScreen.swift */,
+				111E9CA62AEC146900DEDD16 /* SettingsPageScreen.swift */,
 			);
 			path = Screens;
 			sourceTree = "<group>";
@@ -206,12 +215,15 @@
 			buildActionMask = 2147483647;
 			files = (
 				BAE61CAA2AD67BC3002587E6 /* CourseHeaderStats.swift in Sources */,
+				111E9CA72AEC146900DEDD16 /* SettingsPageScreen.swift in Sources */,
 				BACA3C7F2ADCF55D004B8B19 /* CourseCard3.swift in Sources */,
 				BA4E4BEF2AD8763100D7ED8E /* CourseCard2.swift in Sources */,
 				BAF351AC2AD82012002B66F2 /* StudentHomePageScreen.swift in Sources */,
 				BA6085462AD1B6EC00A2D26F /* ContentView.swift in Sources */,
 				BA6085442AD1B6EC00A2D26F /* visionos_frontendApp.swift in Sources */,
 				BAE61CAC2AD68BDC002587E6 /* CourseTitle.swift in Sources */,
+				111E9CA32AEC071500DEDD16 /* profilePictureView.swift in Sources */,
+				111E9CA92AEC17B900DEDD16 /* SettingsNavigationPanelListView.swift in Sources */,
 				BA968D852AD8EF7E00288012 /* TopCatagorySection.swift in Sources */,
 				BA4E4BED2AD875E900D7ED8E /* LearnMoreSection.swift in Sources */,
 				BAE61CAE2AD6D2FB002587E6 /* CourseCard.swift in Sources */,
