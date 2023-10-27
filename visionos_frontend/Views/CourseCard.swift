@@ -10,6 +10,9 @@ import SwiftUI
 // https://api.npoint.io/9d3f810992ced9049b44
 
 struct CourseCard: View {
+    let heading: String
+    let subHeading: String
+    let liveWatching: Int
     var body: some View {
             VStack {
                 ZStack {
@@ -39,13 +42,13 @@ struct CourseCard: View {
                         
                         VStack(spacing:8){
                             HStack {
-                                Text("UI/UX Design With Figma")
+                                Text("\(subHeading)")
                                     .font(.system(size: 16))
                                     .fontWeight(.medium)
                                 Spacer()
                             }
                             HStack {
-                                Text("5+ Real World Project")
+                                Text("\(heading)")
                                     .font(.system(size: 24))
                                     .fontWeight(/*@START_MENU_TOKEN@*/.bold/*@END_MENU_TOKEN@*/)
                                 Spacer()
@@ -55,7 +58,7 @@ struct CourseCard: View {
                                     .resizable()
                                     .aspectRatio(contentMode: .fit)
                                     .frame(width: 24)
-                                Text("100k Watching")
+                                Text("\(liveWatching)k Watching")
                                     .font(.system(size: 14))
                                     .fontWeight(.light)
                                 Spacer()
@@ -75,5 +78,6 @@ struct CourseCard: View {
 }
 
 #Preview {
-    CourseCard()
+    CourseCard(heading: "UI/UX Design With Figma", subHeading: "Learn Designing From Best UI UX Developers", liveWatching: 100000)
+
 }

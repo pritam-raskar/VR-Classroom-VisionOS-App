@@ -1,55 +1,74 @@
-//
-//  StudentHomePageScreen.swift
-//  visionos_frontend
-//
-//  Created by Abir Pal on 12/10/23.
-//
-
 import SwiftUI
 
 struct StudentHomePageScreen: View {
+    @State private var cardDetailsArray = [courseCardDetails]()
+    struct courseCardDetails: Codable {
+        let id: Int
+        let heading: String
+        let subHeading: String
+        let live_watching: Int
+    }
     var body: some View {
         ScrollView(showsIndicators: false) {
-            VStack() {
+            VStack {
                 ZStack {
-                    Image(.thumbnail)
+                    // Replace with a valid image
+                    Image("thumbnail")
                         .resizable()
                     
-                    VStack{
+                    VStack {
                         CourseHeaderStats()
                         Spacer()
                         CourseTitle()
-                        Spacer()
+                        Text("Followers Count: \(cardDetailsArray.count)")
+                        
+                
                         ScrollView(.horizontal, showsIndicators: false) {
-                            HStack(spacing: 20){
-                                    CourseCard()
-                                    CourseCard()
-                                    CourseCard()
-                                    CourseCard()
-                                    
-                                    
+                            HStack(spacing: 20) {
+                                ForEach(cardDetailsArray, id: \.id) { card in
+                                    CourseCard(heading: card.heading, subHeading: card.subHeading, liveWatching: card.live_watching)
+                                }
                             }.frame(maxWidth: .infinity)
                         }.padding(.horizontal, 4)
+                        
                     }
-                    .frame(width: .infinity,height: 1025)
-//                    .background(.red)
-                    .padding(.vertical, 32)
-//                    .padding(.horizontal, 10)
-                }.background(.univcolor)
-                LearnMoreSection()
-                    .padding(.bottom, 40)
-                TopCatagorySection()
-                    .padding(.bottom, 40)
+                    .frame(width: .infinity, height: 1025)
+                }.background(Color.red)
+                
+                LearnMoreSection().padding(.bottom, 40)
+                TopCatagorySection().padding(.bottom, 40)
             }
+        }
+        .task {
+            await getCardDetails()
         }
         .tabItem {
             Label("Browser", systemImage: "command")
         }.tag(0)
     }
+    
+    func getCardDetails() async {
+        let endpoint = "https://api.npoint.io/3ed15681b2d4ba45bdde"
+        guard let url = URL(string: endpoint) else {
+            print("Invalid URL")
+            return
+        }
+        do {
+            let (data, error) = try await URLSession.shared.data(from: url)
+            if let decodedResponse = try? JSONDecoder().decode([courseCardDetails].self, from: data) {
+                cardDetailsArray = decodedResponse
+            } else {
+                print(error)
+                print("Failed to decode JSON")
+            }
+        } catch {
+            print("Failed to Fetch the Request: \(error)")
+        }
+    }
 }
 
-#Preview {
-    StudentHomePageScreen()
+#Preview(windowStyle: .plain) {
+    NavigationStack {
+        StudentHomePageScreen()
+    }
 }
-
-
