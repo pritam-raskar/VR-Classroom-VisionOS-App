@@ -10,6 +10,9 @@
 		111E9CA32AEC071500DEDD16 /* profilePictureView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 111E9CA22AEC071500DEDD16 /* profilePictureView.swift */; };
 		111E9CA72AEC146900DEDD16 /* SettingsPageScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = 111E9CA62AEC146900DEDD16 /* SettingsPageScreen.swift */; };
 		111E9CA92AEC17B900DEDD16 /* SettingsNavigationPanelListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 111E9CA82AEC17B900DEDD16 /* SettingsNavigationPanelListView.swift */; };
+		116D6F422B1DEFB90050B51C /* SignupScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = 116D6F412B1DEFB90050B51C /* SignupScreen.swift */; };
+		116D6F442B1DFE440050B51C /* LoginScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = 116D6F432B1DFE440050B51C /* LoginScreen.swift */; };
+		11F2E2082AFD66D6007AD50B /* WebViewScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11F2E2072AFD66D6007AD50B /* WebViewScreen.swift */; };
 		BA4E4BED2AD875E900D7ED8E /* LearnMoreSection.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA4E4BEC2AD875E900D7ED8E /* LearnMoreSection.swift */; };
 		BA4E4BEF2AD8763100D7ED8E /* CourseCard2.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA4E4BEE2AD8763100D7ED8E /* CourseCard2.swift */; };
 		BA6085422AD1B6EC00A2D26F /* RealityKitContent in Frameworks */ = {isa = PBXBuildFile; productRef = BA6085412AD1B6EC00A2D26F /* RealityKitContent */; };
@@ -30,6 +33,9 @@
 		111E9CA22AEC071500DEDD16 /* profilePictureView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = profilePictureView.swift; sourceTree = "<group>"; };
 		111E9CA62AEC146900DEDD16 /* SettingsPageScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsPageScreen.swift; sourceTree = "<group>"; };
 		111E9CA82AEC17B900DEDD16 /* SettingsNavigationPanelListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsNavigationPanelListView.swift; sourceTree = "<group>"; };
+		116D6F412B1DEFB90050B51C /* SignupScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignupScreen.swift; sourceTree = "<group>"; };
+		116D6F432B1DFE440050B51C /* LoginScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginScreen.swift; sourceTree = "<group>"; };
+		11F2E2072AFD66D6007AD50B /* WebViewScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WebViewScreen.swift; sourceTree = "<group>"; };
 		BA4E4BEC2AD875E900D7ED8E /* LearnMoreSection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LearnMoreSection.swift; sourceTree = "<group>"; };
 		BA4E4BEE2AD8763100D7ED8E /* CourseCard2.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CourseCard2.swift; sourceTree = "<group>"; };
 		BA60853C2AD1B6EC00A2D26F /* visionos_frontend.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = visionos_frontend.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -137,6 +143,9 @@
 			children = (
 				BAF351AB2AD82012002B66F2 /* StudentHomePageScreen.swift */,
 				111E9CA62AEC146900DEDD16 /* SettingsPageScreen.swift */,
+				11F2E2072AFD66D6007AD50B /* WebViewScreen.swift */,
+				116D6F412B1DEFB90050B51C /* SignupScreen.swift */,
+				116D6F432B1DFE440050B51C /* LoginScreen.swift */,
 			);
 			path = Screens;
 			sourceTree = "<group>";
@@ -216,13 +225,16 @@
 			files = (
 				BAE61CAA2AD67BC3002587E6 /* CourseHeaderStats.swift in Sources */,
 				111E9CA72AEC146900DEDD16 /* SettingsPageScreen.swift in Sources */,
+				116D6F422B1DEFB90050B51C /* SignupScreen.swift in Sources */,
 				BACA3C7F2ADCF55D004B8B19 /* CourseCard3.swift in Sources */,
 				BA4E4BEF2AD8763100D7ED8E /* CourseCard2.swift in Sources */,
 				BAF351AC2AD82012002B66F2 /* StudentHomePageScreen.swift in Sources */,
+				116D6F442B1DFE440050B51C /* LoginScreen.swift in Sources */,
 				BA6085462AD1B6EC00A2D26F /* ContentView.swift in Sources */,
 				BA6085442AD1B6EC00A2D26F /* visionos_frontendApp.swift in Sources */,
 				BAE61CAC2AD68BDC002587E6 /* CourseTitle.swift in Sources */,
 				111E9CA32AEC071500DEDD16 /* profilePictureView.swift in Sources */,
+				11F2E2082AFD66D6007AD50B /* WebViewScreen.swift in Sources */,
 				111E9CA92AEC17B900DEDD16 /* SettingsNavigationPanelListView.swift in Sources */,
 				BA968D852AD8EF7E00288012 /* TopCatagorySection.swift in Sources */,
 				BA4E4BED2AD875E900D7ED8E /* LearnMoreSection.swift in Sources */,
