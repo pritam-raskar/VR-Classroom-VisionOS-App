@@ -7,9 +7,13 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		111090EE2B3B644700E5D688 /* Dashboard.swift in Sources */ = {isa = PBXBuildFile; fileRef = 111090ED2B3B644700E5D688 /* Dashboard.swift */; };
 		111E9CA32AEC071500DEDD16 /* profilePictureView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 111E9CA22AEC071500DEDD16 /* profilePictureView.swift */; };
 		111E9CA72AEC146900DEDD16 /* SettingsPageScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = 111E9CA62AEC146900DEDD16 /* SettingsPageScreen.swift */; };
 		111E9CA92AEC17B900DEDD16 /* SettingsNavigationPanelListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 111E9CA82AEC17B900DEDD16 /* SettingsNavigationPanelListView.swift */; };
+		112D824D2B30A71E00C65C9E /* AddNewCourse.swift in Sources */ = {isa = PBXBuildFile; fileRef = 112D824C2B30A71E00C65C9E /* AddNewCourse.swift */; };
+		1133F2972B3023A000EB2D61 /* LiveCourseModal.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1133F2962B3023A000EB2D61 /* LiveCourseModal.swift */; };
+		1133F2992B303B6400EB2D61 /* InstructorLiveClassessScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1133F2982B303B6400EB2D61 /* InstructorLiveClassessScreen.swift */; };
 		116D6F422B1DEFB90050B51C /* SignupScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = 116D6F412B1DEFB90050B51C /* SignupScreen.swift */; };
 		116D6F442B1DFE440050B51C /* LoginScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = 116D6F432B1DFE440050B51C /* LoginScreen.swift */; };
 		11F2E2082AFD66D6007AD50B /* WebViewScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11F2E2072AFD66D6007AD50B /* WebViewScreen.swift */; };
@@ -30,9 +34,13 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		111090ED2B3B644700E5D688 /* Dashboard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Dashboard.swift; sourceTree = "<group>"; };
 		111E9CA22AEC071500DEDD16 /* profilePictureView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = profilePictureView.swift; sourceTree = "<group>"; };
 		111E9CA62AEC146900DEDD16 /* SettingsPageScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsPageScreen.swift; sourceTree = "<group>"; };
 		111E9CA82AEC17B900DEDD16 /* SettingsNavigationPanelListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsNavigationPanelListView.swift; sourceTree = "<group>"; };
+		112D824C2B30A71E00C65C9E /* AddNewCourse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddNewCourse.swift; sourceTree = "<group>"; };
+		1133F2962B3023A000EB2D61 /* LiveCourseModal.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LiveCourseModal.swift; sourceTree = "<group>"; };
+		1133F2982B303B6400EB2D61 /* InstructorLiveClassessScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InstructorLiveClassessScreen.swift; sourceTree = "<group>"; };
 		116D6F412B1DEFB90050B51C /* SignupScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignupScreen.swift; sourceTree = "<group>"; };
 		116D6F432B1DFE440050B51C /* LoginScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginScreen.swift; sourceTree = "<group>"; };
 		11F2E2072AFD66D6007AD50B /* WebViewScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WebViewScreen.swift; sourceTree = "<group>"; };
@@ -134,6 +142,7 @@
 				BACA3C7E2ADCF55D004B8B19 /* CourseCard3.swift */,
 				111E9CA22AEC071500DEDD16 /* profilePictureView.swift */,
 				111E9CA82AEC17B900DEDD16 /* SettingsNavigationPanelListView.swift */,
+				1133F2962B3023A000EB2D61 /* LiveCourseModal.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -146,6 +155,9 @@
 				11F2E2072AFD66D6007AD50B /* WebViewScreen.swift */,
 				116D6F412B1DEFB90050B51C /* SignupScreen.swift */,
 				116D6F432B1DFE440050B51C /* LoginScreen.swift */,
+				1133F2982B303B6400EB2D61 /* InstructorLiveClassessScreen.swift */,
+				112D824C2B30A71E00C65C9E /* AddNewCourse.swift */,
+				111090ED2B3B644700E5D688 /* Dashboard.swift */,
 			);
 			path = Screens;
 			sourceTree = "<group>";
@@ -226,7 +238,10 @@
 				BAE61CAA2AD67BC3002587E6 /* CourseHeaderStats.swift in Sources */,
 				111E9CA72AEC146900DEDD16 /* SettingsPageScreen.swift in Sources */,
 				116D6F422B1DEFB90050B51C /* SignupScreen.swift in Sources */,
+				1133F2972B3023A000EB2D61 /* LiveCourseModal.swift in Sources */,
 				BACA3C7F2ADCF55D004B8B19 /* CourseCard3.swift in Sources */,
+				1133F2992B303B6400EB2D61 /* InstructorLiveClassessScreen.swift in Sources */,
+				112D824D2B30A71E00C65C9E /* AddNewCourse.swift in Sources */,
 				BA4E4BEF2AD8763100D7ED8E /* CourseCard2.swift in Sources */,
 				BAF351AC2AD82012002B66F2 /* StudentHomePageScreen.swift in Sources */,
 				116D6F442B1DFE440050B51C /* LoginScreen.swift in Sources */,
@@ -239,6 +254,7 @@
 				BA968D852AD8EF7E00288012 /* TopCatagorySection.swift in Sources */,
 				BA4E4BED2AD875E900D7ED8E /* LearnMoreSection.swift in Sources */,
 				BAE61CAE2AD6D2FB002587E6 /* CourseCard.swift in Sources */,
+				111090EE2B3B644700E5D688 /* Dashboard.swift in Sources */,
 				BA968D882AD8F0F300288012 /* Catagory.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
