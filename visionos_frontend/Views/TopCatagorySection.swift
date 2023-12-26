@@ -8,7 +8,13 @@
 import SwiftUI
 
 struct TopCatagorySection: View {
-    let colums: [GridItem] = [GridItem(.adaptive(minimum: 220, maximum: 330))]
+//    let colums: [GridItem] = [GridItem(.adaptive(minimum: 220, maximum: 330))]
+    let colums: [GridItem] = [
+        GridItem(.flexible()),
+        GridItem(.flexible()),
+        GridItem(.flexible()),
+        GridItem(.flexible())
+    ]
     var body: some View {
         ScrollView(.vertical) {
             VStack {
@@ -19,13 +25,13 @@ struct TopCatagorySection: View {
                     .padding(.horizontal, 25)
                 
                 
-                ScrollView(.horizontal, showsIndicators: false) {
-                    HStack (spacing: 20) {
-                        ForEach(0 ..< 5){ item in
+//                ScrollView(.horizontal, showsIndicators: false) {
+                    LazyVGrid(columns: colums, spacing: 40){
+                        ForEach(0 ..< 4){ item in
                             CourseCard3()
                         }
                     }
-                }
+//                }
                 .padding(.horizontal, 20)
                 
                 

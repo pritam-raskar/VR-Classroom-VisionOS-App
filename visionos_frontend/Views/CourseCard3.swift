@@ -62,7 +62,7 @@ struct CourseCard3: View {
             
             
         }
-            .frame(width: 323, height: 419)
+            .frame(height: 419)
 //            .background(.red)
     }
 }
