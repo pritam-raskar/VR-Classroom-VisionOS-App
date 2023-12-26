@@ -20,7 +20,6 @@ struct StudentHomePageScreen: View {
                         CourseHeaderStats()
                         Spacer()
                         CourseTitle()
-//                        Text("Followers Count: \(cardDetailsArray.count)")
                         
                         Spacer()
                 
