@@ -17,6 +17,9 @@ struct NewCourseView: View {
     
     var body: some View {
         VStack(){
+            Nabar(isInstructor: true, userName: "Pritam")
+                .padding(.horizontal, 30)
+                .padding(.vertical, 1)
             VStack(){
                 Text("Add New Course")
                     .font(.largeTitle)
@@ -99,6 +102,7 @@ struct NewCourseView: View {
             .navigationTitle("New Course")
             .padding()
             .background(.white.opacity(0.1))
+            .cornerRadius(10)
         }
     }
     

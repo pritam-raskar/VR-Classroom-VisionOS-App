@@ -5,6 +5,10 @@ struct InstructorLiveClassView: View {
     
     var body: some View {
         VStack {
+            Nabar(isInstructor: true, userName: "Pritam")
+                .padding(.horizontal, 30)
+                .padding(.vertical, 1)
+
             HStack {
                 Text("Live Classes")
                     .font(.largeTitle)
@@ -51,7 +55,7 @@ struct InstructorLiveClassView: View {
                 Spacer() // Add Spacer to push the Picker to the left
             }
             
-            ScrollView(.vertical) {
+            ScrollView(.vertical, showsIndicators: false) {
                 LazyVGrid(columns: [GridItem(.adaptive(minimum: 250))], spacing: 13) {
                     ForEach(0..<36) { _ in
                         LiveCourseModal(
