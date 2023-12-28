@@ -10,7 +10,10 @@ import WebKit
 
 struct WebViewScreenView: View {
     @State private var showWebView = false
-    private let urlString = "http://localhost:5173"
+    @State var roomId: String
+    
+    private let urlString = "http://localhost:5173/\(roomId)"
+    
     var body: some View {
         VStack(spacing:40){
             WebView(url: URL(string: urlString)!)
@@ -34,6 +37,6 @@ struct WebView:UIViewRepresentable{
 }
 
 #Preview {
-    WebViewScreenView()
+    WebViewScreenView(roomId: "1234")
     
 }

@@ -14,34 +14,29 @@ struct ContentView: View {
         TabView {
             HomePageView()
                 .tabItem {
-                    Label("Browser", systemImage: "command")
+                    Label("Home", systemImage: "house")
                 }
                 .tag(0)
             
+            DashboardView()
+                .tabItem {
+                    Label("Dashboard", systemImage: "square.grid.2x2")
+                }
+                .tag(1)
+            
+            InstructorLiveClassView()
+                .tabItem {
+                    Label("Schedule", systemImage: "calendar")
+                }
+                .tag(2)
+            
+            
+            
             UserSettingView()
                 .tabItem {
-                    Label("Setting", systemImage: "gearshape")
-                }.tag(1)
-            
-            Text("Photo1")
-                .tabItem {
-                    Label("Courses", systemImage: "photo.on.rectangle")
-                }.tag(2)
-            
-            Text("Photo2")
-                .tabItem {
-                    Label("Favorite", systemImage: "rectangle.stack.fill")
-                }.tag(3)
-            
-            Text("Photo3")
-                .tabItem {
-                    Label("Immersive Experience", systemImage: "pano.fill")
-                }.tag(4)
-            
-            Text("Photo4")
-                .tabItem {
-                    Label("Search", systemImage: "magnifyingglass")
-                }.tag(4)
+                    Label("Setting", systemImage: "person.fill")
+                }
+                .tag(3)
         }
     }
 }

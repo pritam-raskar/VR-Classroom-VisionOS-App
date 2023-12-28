@@ -17,16 +17,18 @@ struct NewCourseView: View {
     
     var body: some View {
         VStack(){
-            Nabar(isInstructor: true, userName: "Pritam")
-                .padding(.horizontal, 30)
-                .padding(.vertical, 1)
-            VStack(){
-                Text("Add New Course")
-                    .font(.largeTitle)
-                    .padding()
-            }
-            .frame(maxWidth: .infinity)
-            .background(Color.black.opacity(0.1))
+//            Nabar(isInstructor: true, userName: "Pritam")
+//                .padding(.horizontal, 30)
+//                .padding(.vertical, 1)
+//            VStack(){
+//                Text("Add New Course")
+//                    .font(.largeTitle)
+//                    .padding()
+//            }
+//            .frame(maxWidth: .infinity)
+//            .background(Color.black.opacity(0.1))
+            
+            // Remove form and wrap it in scoll view
             Form {
                 Section(header: Text("Image")) {
                     Button(action: {
@@ -99,7 +101,7 @@ struct NewCourseView: View {
             .alert("Success", isPresented: showAlert, actions: {
                 Button("OK", role: .cancel) { }
             })
-            .navigationTitle("New Course")
+            .navigationTitle("Add New Course")
             .padding()
             .background(.white.opacity(0.1))
             .cornerRadius(10)
