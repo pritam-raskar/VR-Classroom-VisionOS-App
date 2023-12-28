@@ -38,7 +38,8 @@ struct DashboardView: View {
                                 title: "How to Make an Array and its Types in C++",
                                 batchDescription: "BATCH 3CO - JVY",
                                 batchTiming: "12:34 PM",
-                                batchData: "Jan 1,  2023"
+                                batchData: "Jan 1,  2023",
+                                classLink: "1234"
                             )
                         }
                     }
