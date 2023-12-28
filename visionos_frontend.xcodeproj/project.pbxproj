@@ -101,13 +101,6 @@
 			path = Components;
 			sourceTree = "<group>";
 		};
-		BA5CEA5C2B3C6BE6000311A7 /* View Model */ = {
-			isa = PBXGroup;
-			children = (
-			);
-			path = "View Model";
-			sourceTree = "<group>";
-		};
 		BA5CEA622B3D461C000311A7 /* Root */ = {
 			isa = PBXGroup;
 			children = (
@@ -171,7 +164,6 @@
 			isa = PBXGroup;
 			children = (
 				BA5CEA632B3D467C000311A7 /* App */,
-				BA5CEA5C2B3C6BE6000311A7 /* View Model */,
 				BA5CEA592B3C6A12000311A7 /* Components */,
 				BA968D862AD8F0D000288012 /* Models */,
 				BAF351AA2AD81FF4002B66F2 /* Core */,
