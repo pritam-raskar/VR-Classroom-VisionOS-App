@@ -12,9 +12,16 @@ import RealityKitContent
 struct ContentView: View {
     var body: some View {
         TabView {
-            StudentHomePageScreen()
+            HomePageView()
+                .tabItem {
+                    Label("Browser", systemImage: "command")
+                }
+                .tag(0)
             
-            SplitView()
+            UserSettingView()
+                .tabItem {
+                    Label("Setting", systemImage: "gearshape")
+                }.tag(1)
             
             Text("Photo1")
                 .tabItem {

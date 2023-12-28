@@ -1,6 +1,6 @@
 import SwiftUI
 
-struct ProfilePictureView: View {
+struct UserSettingProfilePicture: View {
     let radius: CGFloat = 60
     
     var body: some View {
@@ -31,6 +31,6 @@ struct ProfilePictureView: View {
 
 struct ProfilePictureViews_Previews: PreviewProvider {
     static var previews: some View {
-        ProfilePictureView()
+        UserSettingProfilePicture()
     }
 }

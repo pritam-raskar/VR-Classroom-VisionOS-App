@@ -7,9 +7,9 @@
 
 import SwiftUI
 
-struct SettingsNavigationPanelList: View {
-    var imageName: String
-    var labelText: String
+struct SettingsNavigationOption: View {
+    @State var imageName: String
+    @State var labelText: String
     
     var body: some View {
         HStack(spacing: 10) {
@@ -24,5 +24,5 @@ struct SettingsNavigationPanelList: View {
 }
 
 #Preview {
-    SettingsNavigationPanelList(imageName: "user", labelText: "Account")
+    SettingsNavigationOption(imageName: "user", labelText: "Account")
 }

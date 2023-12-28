@@ -7,7 +7,7 @@
 
 import Foundation
 
-struct Catagory: Identifiable {
+struct Catagory: Identifiable, Hashable {
     var id = UUID()
     var image: String
     var title: String
@@ -15,12 +15,11 @@ struct Catagory: Identifiable {
 
 let catagory : [Catagory] = [
     Catagory(image: "image1", title: "Design"),
-    .init(image: "image2", title: "Development"),
+    Catagory(image: "image2", title: "Development"),
     Catagory(image: "image3", title: "Marketing"),
     Catagory(image: "image4", title: "IT and Software"),
     Catagory(image: "image5", title: "Personal Development"),
     Catagory(image: "image6", title: "Business"),
     Catagory(image: "image7", title: "Photography"),
     Catagory(image: "image8", title: "Music"),
-
 ]

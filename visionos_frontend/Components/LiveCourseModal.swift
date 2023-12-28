@@ -1,5 +1,10 @@
 import SwiftUI
 struct LiveCourseModal: View {
+    @State var title: String
+    @State var batchDescription: String
+    @State var batchTiming : String
+    @State var batchData : String
+    
     var body: some View {
         VStack(alignment: .leading, spacing: 11) {
             Text("How to Make an Array and its Types in C++")
@@ -80,6 +85,11 @@ struct LiveCourseModal: View {
 
 struct LiveCourseModal_Previews: PreviewProvider {
     static var previews: some View {
-        LiveCourseModal()
+        LiveCourseModal(
+            title: "How to Make an Array and its Types in C++",
+            batchDescription: "BATCH 3CO - JVY",
+            batchTiming: "12:34 PM",
+            batchData: "Jan 1,  2023"
+        )
     }
 }

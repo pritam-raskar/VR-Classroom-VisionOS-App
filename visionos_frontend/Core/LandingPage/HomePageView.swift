@@ -1,6 +1,6 @@
 import SwiftUI
 
-struct StudentHomePageScreen: View {
+struct HomePageView: View {
     @State private var cardDetailsArray = [courseCardDetails]()
     struct courseCardDetails: Codable {
         let id: Int
@@ -8,6 +8,7 @@ struct StudentHomePageScreen: View {
         let subHeading: String
         let live_watching: Int
     }
+    
     var body: some View {
         ScrollView(showsIndicators: false) {
             VStack {
@@ -17,7 +18,9 @@ struct StudentHomePageScreen: View {
                         .resizable()
                     
                     VStack {
-                        CourseHeaderStats()
+                        Nabar(isInstructor: true, userName: "Pritam")
+                            .padding(.horizontal, 20)
+                            .padding(.top, 10)
                         Spacer()
                         CourseTitle()
                         
@@ -26,7 +29,11 @@ struct StudentHomePageScreen: View {
                         ScrollView(.horizontal, showsIndicators: false) {
                             HStack(spacing: 20) {
                                 ForEach(cardDetailsArray, id: \.id) { card in
-                                    CourseCard(heading: card.heading, subHeading: card.subHeading, liveWatching: card.live_watching)
+                                    CourseCard(
+                                        heading: card.heading,
+                                        subHeading: card.subHeading,
+                                        liveWatching: card.live_watching
+                                    )
                                 }
                             }.frame(maxWidth: .infinity)
                         }.padding(.horizontal, 4)
@@ -36,17 +43,14 @@ struct StudentHomePageScreen: View {
                     .frame(width: .infinity, height: 1025)
                 }.background(Color.red)
                 
-                LearnMoreSection().padding(.bottom, 40)
-                TopCatagorySection().padding(.bottom, 40)
+                CourseListingSection().padding(.bottom, 40)
             }
         }
         .task {
             await getCardDetails()
         }
-        .tabItem {
-            Label("Browser", systemImage: "command")
-        }.tag(0)
     }
+    
     
     func getCardDetails() async {
         let endpoint = "https://api.npoint.io/3ed15681b2d4ba45bdde"
@@ -66,10 +70,10 @@ struct StudentHomePageScreen: View {
             print("Failed to Fetch the Request: \(error)")
         }
     }
+    
+    
 }
 
 #Preview(windowStyle: .plain) {
-    NavigationStack {
-        StudentHomePageScreen()
-    }
+    HomePageView()
 }

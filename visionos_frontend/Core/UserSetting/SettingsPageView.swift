@@ -7,7 +7,7 @@
 
 import SwiftUI
 
-struct SplitView: View {
+struct UserSettingView: View {
     @State private var username: String = ""
     @State private var email: String = ""
     //    @FocusState public var emailFieldIsFocused: Bool = false
@@ -16,11 +16,11 @@ struct SplitView: View {
         NavigationSplitView {
             List {
                 VStack(spacing:30){
-                    SettingsNavigationPanelList(imageName: "user", labelText: "Account")
-                    SettingsNavigationPanelList(imageName:"subscription", labelText: "Subscription")
-                    SettingsNavigationPanelList(imageName: "notification", labelText: "Notifications")
-                    SettingsNavigationPanelList(imageName: "privacy", labelText: "Privacy")
-                    SettingsNavigationPanelList(imageName: "about", labelText: "About")
+                    SettingsNavigationOption(imageName: "user", labelText: "Account")
+                    SettingsNavigationOption(imageName:"subscription", labelText: "Subscription")
+                    SettingsNavigationOption(imageName: "notification", labelText: "Notifications")
+                    SettingsNavigationOption(imageName: "privacy", labelText: "Privacy")
+                    SettingsNavigationOption(imageName: "about", labelText: "About")
                 }.foregroundColor(.white)
                 
             }.toolbar {
@@ -38,7 +38,7 @@ struct SplitView: View {
                     
                     VStack(alignment: .leading){
                         
-                        ProfilePictureView()
+                        UserSettingProfilePicture()
                             .frame(maxWidth: .infinity, alignment: .leading)
                             .padding(.bottom,20)
                         
@@ -109,13 +109,11 @@ struct SplitView: View {
                     
                 }
             }
-        }.tabItem {
-            Label("Setting", systemImage: "gearshape")
-        }.tag(1)
+        }
         
     }
 }
 
 #Preview {
-    SplitView()
+    UserSettingView()
 }

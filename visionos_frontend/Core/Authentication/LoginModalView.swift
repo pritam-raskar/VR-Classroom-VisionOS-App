@@ -1,19 +1,18 @@
 //
-//  Dashboard.swift
+//  LoginView.swift
 //  visionos_frontend
 //
-//  Created by Saikat Mukherjee on 27/12/23.
+//  Created by Abir Pal on 28/12/23.
 //
 
 import SwiftUI
-import Vision
-struct Dashboard: View {
+
+struct LoginModalView: View {
     var body: some View {
         Text(/*@START_MENU_TOKEN@*/"Hello, World!"/*@END_MENU_TOKEN@*/)
-//        Vision.Mac()
     }
 }
 
 #Preview {
-    Dashboard()
+    LoginView()
 }

@@ -13,6 +13,8 @@ struct CourseCard: View {
     let heading: String
     let subHeading: String
     let liveWatching: Int
+    
+    
     var body: some View {
             VStack {
                 ZStack {
@@ -78,6 +80,10 @@ struct CourseCard: View {
 }
 
 #Preview {
-    CourseCard(heading: "UI/UX Design With Figma", subHeading: "Learn Designing From Best UI UX Developers", liveWatching: 100000)
+    CourseCard(
+        heading: "UI/UX Design With Figma",
+        subHeading: "Learn Designing From Best UI UX Developers",
+        liveWatching: 100000
+    )
 
 }

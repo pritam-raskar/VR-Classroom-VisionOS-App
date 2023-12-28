@@ -8,10 +8,16 @@
 import SwiftUI
 
 struct CourseCard2: View {
+    @State var cardThumbnailImage: String
+    @State var courseTitle: String
+    @State var description : String
+    @State var specilizationDetails : String
+    
+    
     var body: some View {
         VStack(alignment: .center){
             VStack {
-                Image(.university)
+                Image(cardThumbnailImage)
                     .resizable()
                     .aspectRatio(contentMode: .fit)
                     .frame(maxHeight: 160)
@@ -23,23 +29,22 @@ struct CourseCard2: View {
 
                 
             VStack(alignment: .leading, spacing: 10) {
-                Text("Interlocution to Programming with Python and Java")
+                Text(courseTitle)
                     .font(.system(size: 24))
                     .fontWeight(/*@START_MENU_TOKEN@*/.bold/*@END_MENU_TOKEN@*/)
                 
-                Text("University of Pennsylvania")
+                Text(description)
                     .font(.system(size: 16))
                     .fontWeight(.light)
+                
                 Spacer()
                 
-                Text("SPECILIZATION (4 COURSE)")
+                Text(specilizationDetails)
                     .font(.system(size: 19))
                     .fontWeight(.medium)
                     .padding(.bottom, 10)
-                    
             }
             .padding(20)
-            
         }
         .frame(width: 331, height: 440)
         .glassBackgroundEffect()
@@ -48,5 +53,10 @@ struct CourseCard2: View {
 }
 
 #Preview {
-    CourseCard2()
+    CourseCard2(
+        cardThumbnailImage: "university",
+        courseTitle: "Interlocution to Programming with Python and Java",
+        description: "University of Pennsylvania",
+        specilizationDetails: "SPECILIZATION (5 COURSE)"
+    )
 }

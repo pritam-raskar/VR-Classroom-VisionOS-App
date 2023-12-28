@@ -70,7 +70,7 @@ struct NewCourseView: View {
                             .background(Color.black.opacity(0.3))
                             .cornerRadius(15)
                         
-                    }
+                    }.padding(.bottom)
                 }
                 .listRowBackground(Color.black.opacity(0.2))
                 
@@ -91,12 +91,14 @@ struct NewCourseView: View {
                     .disabled(isLoading)
                 }
             }
+            .frame(width: 500, alignment: .center)
             .overlay(loadingOverlay)
-            .alert("Error", isPresented: showAlert, actions: {
+            .alert("Success", isPresented: showAlert, actions: {
                 Button("OK", role: .cancel) { }
             })
             .navigationTitle("New Course")
             .padding()
+            .background(.white.opacity(0.1))
         }
     }
     
@@ -117,7 +119,7 @@ struct NewCourseView: View {
         }
         
         // Upload image (if any)
-        uploadImageIfNeeded()
+//        uploadImageIfNeeded()
         
         // Send course data to server (or store locally)
         // Call your API or perform the necessary action here
@@ -129,9 +131,9 @@ struct NewCourseView: View {
         }
     }
     
-    func uploadImageIfNeeded() {
-        // Implement image upload logic here
-    }
+//    func uploadImageIfNeeded() {
+//        // Implement image upload logic here
+//    }
     
     var loadingOverlay: some View {
         ProgressView()

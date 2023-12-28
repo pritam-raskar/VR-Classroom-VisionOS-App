@@ -8,7 +8,7 @@
 import SwiftUI
 import WebKit
 
-struct WebViewScreen: View {
+struct WebViewScreenView: View {
     @State private var showWebView = false
     private let urlString = "http://localhost:5173"
     var body: some View {
@@ -34,6 +34,6 @@ struct WebView:UIViewRepresentable{
 }
 
 #Preview {
-    WebViewScreen()
+    WebViewScreenView()
     
 }
