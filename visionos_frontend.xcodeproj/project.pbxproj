@@ -17,6 +17,11 @@
 		116D6F422B1DEFB90050B51C /* SignupView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 116D6F412B1DEFB90050B51C /* SignupView.swift */; };
 		116D6F442B1DFE440050B51C /* LoginView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 116D6F432B1DFE440050B51C /* LoginView.swift */; };
 		11F2E2082AFD66D6007AD50B /* WebViewScreenView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11F2E2072AFD66D6007AD50B /* WebViewScreenView.swift */; };
+		11F9CD0B2B4C37AE00395C06 /* StudentDashHeroCard.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11F9CD0A2B4C37AE00395C06 /* StudentDashHeroCard.swift */; };
+		11F9CD0E2B4C3CE100395C06 /* StudentDashCourseProgress.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11F9CD0D2B4C3CE000395C06 /* StudentDashCourseProgress.swift */; };
+		11F9CD102B4C41F500395C06 /* StudentDashLiveClassesCard.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11F9CD0F2B4C41F500395C06 /* StudentDashLiveClassesCard.swift */; };
+		11F9CD132B4C4D7F00395C06 /* StudentDashboardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11F9CD122B4C4D7E00395C06 /* StudentDashboardView.swift */; };
+		11F9CD152B4C51EB00395C06 /* NewCourseScreenView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11F9CD142B4C51EB00395C06 /* NewCourseScreenView.swift */; };
 		BA4E4BEF2AD8763100D7ED8E /* CourseCard2.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA4E4BEE2AD8763100D7ED8E /* CourseCard2.swift */; };
 		BA5CEA5B2B3C6A5E000311A7 /* Nabar.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA5CEA5A2B3C6A5D000311A7 /* Nabar.swift */; };
 		BA5CEA5F2B3C6C48000311A7 /* CourseLiveStat.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA5CEA5E2B3C6C48000311A7 /* CourseLiveStat.swift */; };
@@ -48,6 +53,11 @@
 		116D6F412B1DEFB90050B51C /* SignupView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignupView.swift; sourceTree = "<group>"; };
 		116D6F432B1DFE440050B51C /* LoginView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginView.swift; sourceTree = "<group>"; };
 		11F2E2072AFD66D6007AD50B /* WebViewScreenView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WebViewScreenView.swift; sourceTree = "<group>"; };
+		11F9CD0A2B4C37AE00395C06 /* StudentDashHeroCard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StudentDashHeroCard.swift; sourceTree = "<group>"; };
+		11F9CD0D2B4C3CE000395C06 /* StudentDashCourseProgress.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StudentDashCourseProgress.swift; sourceTree = "<group>"; };
+		11F9CD0F2B4C41F500395C06 /* StudentDashLiveClassesCard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StudentDashLiveClassesCard.swift; sourceTree = "<group>"; };
+		11F9CD122B4C4D7E00395C06 /* StudentDashboardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StudentDashboardView.swift; sourceTree = "<group>"; };
+		11F9CD142B4C51EB00395C06 /* NewCourseScreenView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewCourseScreenView.swift; sourceTree = "<group>"; };
 		BA4E4BEE2AD8763100D7ED8E /* CourseCard2.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CourseCard2.swift; sourceTree = "<group>"; };
 		BA5CEA5A2B3C6A5D000311A7 /* Nabar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Nabar.swift; sourceTree = "<group>"; };
 		BA5CEA5E2B3C6C48000311A7 /* CourseLiveStat.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CourseLiveStat.swift; sourceTree = "<group>"; };
@@ -82,9 +92,28 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		11F9CD092B4C374200395C06 /* StudentDashboard */ = {
+			isa = PBXGroup;
+			children = (
+				11F9CD0A2B4C37AE00395C06 /* StudentDashHeroCard.swift */,
+				11F9CD0D2B4C3CE000395C06 /* StudentDashCourseProgress.swift */,
+				11F9CD0F2B4C41F500395C06 /* StudentDashLiveClassesCard.swift */,
+			);
+			path = StudentDashboard;
+			sourceTree = "<group>";
+		};
+		11F9CD112B4C4D5800395C06 /* StudentDashboard */ = {
+			isa = PBXGroup;
+			children = (
+				11F9CD122B4C4D7E00395C06 /* StudentDashboardView.swift */,
+			);
+			path = StudentDashboard;
+			sourceTree = "<group>";
+		};
 		BA5CEA592B3C6A12000311A7 /* Components */ = {
 			isa = PBXGroup;
 			children = (
+				11F9CD092B4C374200395C06 /* StudentDashboard */,
 				BA5CEA5A2B3C6A5D000311A7 /* Nabar.swift */,
 				BA5CEA5E2B3C6C48000311A7 /* CourseLiveStat.swift */,
 				BAE61CAB2AD68BDC002587E6 /* CourseTitle.swift */,
@@ -205,6 +234,7 @@
 				111090ED2B3B644700E5D688 /* DashboardView.swift */,
 				1133F2982B303B6400EB2D61 /* InstructorLiveClassView.swift */,
 				112D824C2B30A71E00C65C9E /* AddNewCourseView.swift */,
+				11F9CD142B4C51EB00395C06 /* NewCourseScreenView.swift */,
 			);
 			path = "Instructor Dashboard";
 			sourceTree = "<group>";
@@ -236,6 +266,7 @@
 		BAF351AA2AD81FF4002B66F2 /* Core */ = {
 			isa = PBXGroup;
 			children = (
+				11F9CD112B4C4D5800395C06 /* StudentDashboard */,
 				BAD6FC612B3DC29F0016DC6A /*  Web View */,
 				BAD6FC5C2B3DB8DD0016DC6A /* Instructor Dashboard */,
 				BA5CEA662B3D4AE8000311A7 /* Authentication */,
@@ -332,17 +363,22 @@
 				116D6F442B1DFE440050B51C /* LoginView.swift in Sources */,
 				BA6085462AD1B6EC00A2D26F /* ContentView.swift in Sources */,
 				BA6085442AD1B6EC00A2D26F /* visionos_frontendApp.swift in Sources */,
+				11F9CD0B2B4C37AE00395C06 /* StudentDashHeroCard.swift in Sources */,
 				BAD6FC642B3DC4500016DC6A /* LoginModalView.swift in Sources */,
 				BAE61CAC2AD68BDC002587E6 /* CourseTitle.swift in Sources */,
+				11F9CD102B4C41F500395C06 /* StudentDashLiveClassesCard.swift in Sources */,
 				BA5CEA5F2B3C6C48000311A7 /* CourseLiveStat.swift in Sources */,
 				111E9CA32AEC071500DEDD16 /* UserSettingProfilePicture.swift in Sources */,
+				11F9CD0E2B4C3CE100395C06 /* StudentDashCourseProgress.swift in Sources */,
 				BA5CEA5B2B3C6A5E000311A7 /* Nabar.swift in Sources */,
 				11F2E2082AFD66D6007AD50B /* WebViewScreenView.swift in Sources */,
 				111E9CA92AEC17B900DEDD16 /* SettingsNavigationOption.swift in Sources */,
 				BA5CEA612B3D4046000311A7 /* SectionalCard.swift in Sources */,
 				BA968D852AD8EF7E00288012 /* CourseListingSection.swift in Sources */,
 				BAE61CAE2AD6D2FB002587E6 /* CourseCard.swift in Sources */,
+				11F9CD152B4C51EB00395C06 /* NewCourseScreenView.swift in Sources */,
 				111090EE2B3B644700E5D688 /* DashboardView.swift in Sources */,
+				11F9CD132B4C4D7F00395C06 /* StudentDashboardView.swift in Sources */,
 				BA968D882AD8F0F300288012 /* Catagory.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

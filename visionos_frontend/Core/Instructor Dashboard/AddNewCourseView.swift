@@ -30,24 +30,24 @@ struct NewCourseView: View {
             
             // Remove form and wrap it in scoll view
             Form {
-                Section(header: Text("Image")) {
-                    Button(action: {
-                        presentImagePicker()
-                    }) {
-                        HStack {
-                            Image(systemName: "photo")
-                            Text("Choose Image")
-                        }
-                        .foregroundColor(.white)
-                    }
-                    
-                    if let image = image {
-                        image
-                            .resizable()
-                            .aspectRatio(contentMode: .fit)
-                            .cornerRadius(8)
-                    }
-                }
+//                Section(header: Text("Image")) {
+//                    Button(action: {
+//                        presentImagePicker()
+//                    }) {
+//                        HStack {
+//                            Image(systemName: "photo")
+//                            Text("Choose Image")
+//                        }
+//                        .foregroundColor(.white)
+//                    }
+//                    
+//                    if let image = image {
+//                        image
+//                            .resizable()
+//                            .aspectRatio(contentMode: .fit)
+//                            .cornerRadius(8)
+//                    }
+//                }
                 Section(header: Text("Course Details")) {
                     VStack(alignment: .leading, spacing: 8) {
                         Text("Course Title")

@@ -11,13 +11,13 @@ struct CourseTitle: View {
     var body: some View {
         VStack {
             Text("Danial Walter Scott")
-                .font(.system(size : 18))
+                .font(.subheadline)
                 .fontWeight(.medium)
             
             Text("Figma UI UX Design Essentials")
-                .font(.system(size : 88))
+                .font(.extraLargeTitle2)
                 .fontWeight(.bold)
-                .frame(width: 800)
+                .frame(width: 400)
                 .multilineTextAlignment(.center)
                 .padding(.top, 10)
                 .padding(.bottom, 20)
@@ -25,7 +25,7 @@ struct CourseTitle: View {
                 print("Hi")
             }, label: {
                 Text("Watch Now!")
-                    .font(.system(size : 18))
+                    .font(.headline)
                     .fontWeight(.medium)
                     .padding(.horizontal, 5)
             }).tint(.white)

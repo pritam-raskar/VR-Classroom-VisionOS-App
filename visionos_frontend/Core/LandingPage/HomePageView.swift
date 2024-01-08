@@ -13,19 +13,19 @@ struct HomePageView: View {
         ScrollView(showsIndicators: false) {
             VStack {
                 ZStack {
-                    // Replace with a valid image
                     Image("thumbnail")
                         .resizable()
-                    
+                        .aspectRatio(contentMode: .fill)
+                        .frame(maxWidth: .infinity)
                     VStack {
                         Nabar(isInstructor: true, userName: "Pritam")
                             .padding(.horizontal, 20)
                             .padding(.top, 10)
-                        Spacer()
-                        CourseTitle()
                         
                         Spacer()
-                
+                        CourseTitle()
+                        Spacer()
+                        
                         ScrollView(.horizontal, showsIndicators: false) {
                             HStack(spacing: 20) {
                                 ForEach(cardDetailsArray, id: \.id) { card in
@@ -36,12 +36,14 @@ struct HomePageView: View {
                                     )
                                 }
                             }.frame(maxWidth: .infinity)
-                        }.padding(.horizontal, 4)
-                            .padding(.bottom, 10)
-                        
+                        }
+                        .padding(.horizontal, 4)
+                        .padding(.bottom, 10)
+//                        
                     }
-                    .frame(width: .infinity, height: 1025)
-                }.background(Color.red)
+//                                        
+//                    .frame(width: .infinity, height: 1025)
+                }
                 
                 CourseListingSection().padding(.bottom, 40)
             }

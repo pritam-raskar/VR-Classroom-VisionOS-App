@@ -21,8 +21,8 @@ struct InstructorLiveClassView: View {
                 
                     // Navigating to the add course screen
                     NavigationLink(
-                        destination: NewCourseView()
-                            .navigationTitle("Add")
+                        destination: NewCourseScreenView()
+                            .navigationTitle("Add New Class")
 //                            .navigationBarHidden(true) // we can change this
                     ) {
                         HStack {

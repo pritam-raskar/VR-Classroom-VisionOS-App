@@ -22,9 +22,9 @@ struct CourseCard: View {
                         .resizable()
                         .aspectRatio(contentMode: /*@START_MENU_TOKEN@*/.fill/*@END_MENU_TOKEN@*/)
                     
-                    VStack{
+                    VStack(alignment:.leading){
 //                        Live Button Bar
-                        HStack {
+                        
                             HStack(spacing: 8){
                                 Circle()
                                     .fill(.systemRed)
@@ -38,7 +38,7 @@ struct CourseCard: View {
                                 .padding(.vertical, 4)
                                 .glassBackgroundEffect()
                             Spacer()
-                        }
+                        
                         
                         Spacer()
                         
@@ -68,13 +68,13 @@ struct CourseCard: View {
                         }
 
                     }
-                    .padding(.horizontal, 24)
-//                    .padding(.vertical, 50)
-                    .padding(.top, 20)
+                    .padding(.horizontal, 10)
+//                    .padding(.vertical, 15)
+//                    .padding(.top, 20)
                     .padding(.bottom, 28)
                 }
             }
-            .frame(maxWidth: 562, maxHeight: 316)
+            .frame(maxWidth: 420, maxHeight: 230)
             .cornerRadius(24)
     }
 }
