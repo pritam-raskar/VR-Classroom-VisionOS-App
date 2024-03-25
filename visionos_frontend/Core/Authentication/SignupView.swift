@@ -1,4 +1,5 @@
 import SwiftUI
+import AuthenticationServices
 
 struct SwiftUIView: View {
     @State private var name: String = ""
@@ -27,54 +28,93 @@ struct SwiftUIView: View {
                         .font(.system(size: 13))
                         .padding(5)
                         .foregroundColor(Color.white)
-                    VStack(spacing: 10) {
-                        HStack{
-                            Image(systemName: "person")
-                                .foregroundColor(.white)
-                                .padding(.horizontal)
-                            
-                            TextField("Username", text: $name)
-                                .frame(height: 6)
-                                .padding()
-                            
-                                .autocapitalization(.none)
-                        }
-                        .background(Color.white.opacity(0.2))
-                        .cornerRadius(10.0)
-                        HStack {
-                            Image(systemName: "envelope")
-                                .foregroundColor(.white)
-                                .padding(.horizontal)
-                            TextField("Email", text: $email)
-                                .frame(height: 6)
-                                .padding()
-                                .autocapitalization(.none)
-                        }
-                        .background(Color.white.opacity(0.2))
-                        .cornerRadius(10.0)
-                        HStack {
-                            Image(systemName: "lock")
-                                .foregroundColor(.white)
-                                .padding(.horizontal)
-                            SecureField("Password", text: $password)
-                                .frame(height: 6)
-                                .padding()
-                            
-                                .cornerRadius(10.0)
-                        }
-                        .background(Color.white.opacity(0.2))
-                        .cornerRadius(10.0)
-                        
-                    }
+                    //                    VStack(spacing: 10) {
+                    //                        HStack{
+                    //                            Image(systemName: "person")
+                    //                                .foregroundColor(.white)
+                    //                                .padding(.horizontal)
+                    //
+                    //                            TextField("Username", text: $name)
+                    //                                .frame(height: 6)
+                    //                                .padding()
+                    //
+                    //                                .autocapitalization(.none)
+                    //                        }
+                    //                        .background(Color.white.opacity(0.2))
+                    //                        .cornerRadius(10.0)
+                    //                        HStack {
+                    //                            Image(systemName: "envelope")
+                    //                                .foregroundColor(.white)
+                    //                                .padding(.horizontal)
+                    //                            TextField("Email", text: $email)
+                    //                                .frame(height: 6)
+                    //                                .padding()
+                    //                                .autocapitalization(.none)
+                    //                        }
+                    //                        .background(Color.white.opacity(0.2))
+                    //                        .cornerRadius(10.0)
+                    //                        HStack {
+                    //                            Image(systemName: "lock")
+                    //                                .foregroundColor(.white)
+                    //                                .padding(.horizontal)
+                    //                            SecureField("Password", text: $password)
+                    //                                .frame(height: 6)
+                    //                                .padding()
+                    //
+                    //                                .cornerRadius(10.0)
+                    //                        }
+                    //                        .background(Color.white.opacity(0.2))
+                    //                        .cornerRadius(10.0)
+                    //
+                    //                    }
                     
-                    Button(action: {
-                        // Action when signup button is tapped
-                    }) {
-                        Text("Sign Up")
-                            .padding()
-                            .foregroundColor(.white)
-                            .cornerRadius(10.0)
-                    }.padding(.top)
+                    //                    Button(action: {
+                    //                        // Action when signup button is tapped
+                    //                    }) {
+                    //                        Text("Sign Up")
+                    //                            .padding()
+                    //                            .foregroundColor(.white)
+                    //                            .cornerRadius(10.0)
+                    //                    }.padding(.top)
+                    
+                    
+                    SignInWithAppleButton(
+                        .continue,
+                        onRequest: { request in
+                            request.requestedScopes = [.email, .fullName]
+                        },
+                        onCompletion: { result in
+                            switch result {
+                            case .success(let auth):
+                                switch auth.credential {
+                                case let credential as ASAuthorizationAppleIDCredential:
+                                    // Handle successful authentication
+                                    let userId = credential.user
+                                    
+                                    let email = credential.email
+                                    let firstName = credential.fullName?.givenName
+                                    let lastName = credential.fullName?.familyName
+                                    print("\(String(describing: email)) -- \(String(describing: firstName))")
+                                    print(credential     .user)
+                                    print(credential )
+                                default:
+                                    // Handle other typ"es of credentials if needed
+                                    break
+                                }
+                            case .failure(let error):
+                                // Handle the failure case
+                                if let authError = error as? ASAuthorizationError {
+                                    print("Apple Sign In failed with error: \(authError.localizedDescription)")
+                                    print("Error code: \(authError.code.rawValue)")
+                                } else {
+                                    print("Apple Sign In failed with an unknown error")
+                                }
+                            }
+                        }
+                    )
+                    .frame( height: 40)
+                    .padding()
+                    .cornerRadius(5.0)
                 }
                 .padding()
                 .background(Color.black.opacity(0.2))
