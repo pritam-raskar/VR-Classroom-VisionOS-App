@@ -1,0 +1,43 @@
+Alerts Disposition –
+Analyzed by AurorAI
+and Decided by Human
+
+
+
+
+AI-Driven Alerts Disposition (AurorAI)
+
+
+▪ 5-Agent AI Pipeline (Maker-Checker Pattern)
+   Dual-model validation: GPT-4.1 + Gemini Flash via BNY Eliza
+
+▪ 80% Faster Alert Review | 4x Throughput
+   15–30 min → 2–5 min/alert; 60–120 alerts/analyst/day
+
+▪ 99.7% Processing Success Rate
+   2,026 hits / 363 EMEA alerts validated end-to-end in POC
+
+▪ False Positive Auto-Identification: 73% → 17%
+   AI auto-classifies with evidence; analysts focus on true risks
+
+▪ Human-in-the-Loop – AI Assists, Analyst Decides
+   Confidence scores + rationale; one-click accept/override
+
+▪ Complete Regulatory Audit Trail
+   Every decision, score & cost persisted in Oracle — 100% traceable
+
+▪ Enterprise-Grade Security & Resilience
+   Zero data leakage; mTLS, JWT, circuit breakers, rate limiting
+
+
+
+
+
+Here's the updated slide. The bottom ribbon now tells a clear Before → After story:
+BEFORE (red label) — Legacy state with 1200+ P2P files, 45M+ daily records, manual alert disposition
+7 Screening Domains — The compliance scope bar stays in the middle
+AFTER (green label) — Post Bridger enhancement with 20+ managed feeds, 300K+ records (the improved numbers are highlighted in green)
+AI ADVANTAGE (orange bar) — Summarizes the transformation impact in one glance: P2P file consolidation, record deduplication, 80% faster review, false positive rate drop from 73% → 17%, and 4x analyst throughput
+This gives management a single-slide view of how the legacy system was operating vs. the measurable improvements Virtusa delivered through both the Bridger enhancement and
+
+
