@@ -1,0 +1,587 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SIERA – Town Hall Presentation</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: 'Segoe UI', Tahoma, sans-serif;
+    background: #0d1117;
+    color: #e6edf3;
+    height: 100vh;
+    overflow: hidden;
+  }
+
+  .deck { width: 100vw; height: 100vh; position: relative; }
+
+  .slide {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    padding: 60px 80px;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.45s ease;
+  }
+  .slide.active { opacity: 1; pointer-events: all; }
+
+  #progress-bar {
+    position: fixed; top: 0; left: 0;
+    height: 3px;
+    background: linear-gradient(90deg, #58a6ff, #79c0ff);
+    transition: width 0.4s ease;
+    z-index: 100;
+  }
+  #counter {
+    position: fixed; bottom: 22px; right: 32px;
+    font-size: 0.78rem; color: #484f58; z-index: 100; letter-spacing: 1px;
+  }
+  .nav-btn {
+    position: fixed; top: 50%; transform: translateY(-50%);
+    background: rgba(88,166,255,0.08); border: 1px solid rgba(88,166,255,0.2);
+    color: #58a6ff; width: 44px; height: 44px; border-radius: 50%;
+    font-size: 1.2rem; cursor: pointer; z-index: 100;
+    display: flex; align-items: center; justify-content: center;
+    transition: background 0.2s;
+  }
+  .nav-btn:hover { background: rgba(88,166,255,0.18); }
+  #prev-btn { left: 18px; }
+  #next-btn { right: 18px; }
+  #dots {
+    position: fixed; bottom: 22px; left: 50%; transform: translateX(-50%);
+    display: flex; gap: 8px; z-index: 100;
+  }
+  .dot { width: 8px; height: 8px; border-radius: 50%; background: #30363d; cursor: pointer; transition: background 0.3s; }
+  .dot.active { background: #58a6ff; }
+  .slide-label {
+    position: absolute; top: 28px; left: 50%; transform: translateX(-50%);
+    font-size: 0.72rem; letter-spacing: 3px; text-transform: uppercase; color: #484f58;
+  }
+  .slide-header { width: 100%; margin-bottom: 28px; }
+  .slide-header .tag { font-size: 0.72rem; letter-spacing: 3px; text-transform: uppercase; color: #58a6ff; margin-bottom: 6px; }
+  .slide-header h2 { font-size: clamp(1.8rem, 3.2vw, 2.4rem); font-weight: 700; color: #e6edf3; }
+
+  /* ── SLIDE 1 ── */
+  #slide-1 { background: radial-gradient(ellipse at 60% 40%, #0d1f3c 0%, #0d1117 70%); text-align: center; }
+  .eyebrow { font-size: 0.82rem; letter-spacing: 4px; text-transform: uppercase; color: #484f58; margin-bottom: 20px; }
+  #slide-1 h1 { font-size: clamp(3rem, 6vw, 5rem); font-weight: 800; line-height: 1; color: #58a6ff; margin-bottom: 6px; }
+  .title-full { font-size: clamp(0.9rem, 1.5vw, 1.1rem); color: #8b949e; margin-bottom: 10px; letter-spacing: 1px; }
+  .title-desc { font-size: clamp(0.85rem, 1.3vw, 1rem); color: #484f58; margin-bottom: 44px; }
+  .pill-row { display: flex; flex-wrap: wrap; gap: 12px; justify-content: center; }
+  .pill { padding: 7px 18px; border-radius: 20px; font-size: 0.8rem; font-weight: 600; }
+  .pill-blue   { background: rgba(88,166,255,0.1);  color: #58a6ff;  border: 1px solid rgba(88,166,255,0.3); }
+  .pill-purple { background: rgba(188,140,255,0.1); color: #bc8cff;  border: 1px solid rgba(188,140,255,0.3); }
+  .pill-green  { background: rgba(63,185,80,0.1);   color: #3fb850;  border: 1px solid rgba(63,185,80,0.3); }
+  .pill-orange { background: rgba(255,160,64,0.1);  color: #ffa040;  border: 1px solid rgba(255,160,64,0.3); }
+
+  /* ── SLIDE 2 ── */
+  #slide-2 { background: #0d1117; align-items: flex-start; }
+  .problem-bar {
+    width: 100%; background: rgba(255,123,114,0.07); border: 1px solid rgba(255,123,114,0.22);
+    border-radius: 10px; padding: 16px 22px; margin-bottom: 24px;
+    display: flex; gap: 14px; align-items: flex-start;
+  }
+  .problem-bar .ico { font-size: 1.4rem; flex-shrink: 0; padding-top: 2px; }
+  .problem-bar p { font-size: 0.9rem; color: #c9d1d9; line-height: 1.6; }
+  .problem-bar strong { color: #ff7b72; }
+  .card-grid-2 { display: grid; grid-template-columns: repeat(2,1fr); gap: 16px; width: 100%; }
+  .card { background: #161b22; border: 1px solid #21262d; border-radius: 12px; padding: 20px 22px; }
+  .card .ico { font-size: 1.4rem; margin-bottom: 8px; }
+  .card h3 { font-size: 0.95rem; font-weight: 700; color: #58a6ff; margin-bottom: 5px; }
+  .card p  { font-size: 0.83rem; color: #8b949e; line-height: 1.6; }
+
+  /* ── SLIDE 3 ── */
+  #slide-3 { background: #0d1117; align-items: flex-start; }
+  .arch-flow { width: 100%; display: flex; align-items: center; gap: 0; margin-bottom: 26px; }
+  .arch-node { flex: 1; background: #161b22; border: 1px solid #21262d; border-radius: 10px; padding: 14px 8px; text-align: center; min-width: 0; }
+  .arch-node.lit  { border-color: rgba(88,166,255,0.4); }
+  .arch-node.lit2 { border-color: rgba(188,140,255,0.4); }
+  .arch-node.lit3 { border-color: rgba(63,185,80,0.4); }
+  .arch-node .ico { font-size: 1.3rem; }
+  .arch-node .lbl { font-size: 0.75rem; font-weight: 700; color: #58a6ff; margin-top: 3px; }
+  .arch-node .sub { font-size: 0.65rem; color: #484f58; margin-top: 1px; }
+  .arch-arrow { color: #30363d; font-size: 1rem; padding: 0 3px; flex-shrink: 0; }
+  .arch-arrow.lit { color: #58a6ff; }
+  .agent-row { width: 100%; display: grid; grid-template-columns: repeat(3,1fr); gap: 14px; }
+  .agent-card { background: #161b22; border: 1px solid #21262d; border-radius: 10px; padding: 18px 18px; }
+  .abadge { display: inline-block; padding: 3px 10px; border-radius: 20px; font-size: 0.68rem; font-weight: 700; margin-bottom: 8px; }
+  .ab-blue   { background: rgba(88,166,255,0.1);  color: #58a6ff; }
+  .ab-purple { background: rgba(188,140,255,0.1); color: #bc8cff; }
+  .ab-green  { background: rgba(63,185,80,0.1);   color: #3fb850; }
+  .agent-card h4 { font-size: 0.9rem; color: #e6edf3; margin-bottom: 4px; }
+  .agent-card p  { font-size: 0.78rem; color: #8b949e; line-height: 1.55; }
+
+  /* ── SLIDE 4 ── */
+  #slide-4 { background: #0d1117; align-items: flex-start; }
+  .steps-grid { width: 100%; display: grid; grid-template-columns: repeat(4,1fr); gap: 14px; margin-bottom: 22px; }
+  .step { background: #161b22; border: 1px solid #21262d; border-radius: 10px; padding: 18px 16px; }
+  .step-num {
+    width: 28px; height: 28px; border-radius: 50%;
+    background: rgba(88,166,255,0.1); border: 1px solid rgba(88,166,255,0.3);
+    color: #58a6ff; font-size: 0.78rem; font-weight: 700;
+    display: flex; align-items: center; justify-content: center; margin-bottom: 9px;
+  }
+  .step h4 { font-size: 0.88rem; color: #e6edf3; margin-bottom: 5px; }
+  .step p  { font-size: 0.77rem; color: #8b949e; line-height: 1.5; }
+  .msg-levels { width: 100%; display: flex; gap: 12px; }
+  .level-card { flex: 1; border-radius: 10px; padding: 14px 16px; display: flex; align-items: center; gap: 12px; }
+  .level-card.l1 { background: rgba(88,166,255,0.06);  border: 1px solid rgba(88,166,255,0.18); }
+  .level-card.l2 { background: rgba(255,160,64,0.06);  border: 1px solid rgba(255,160,64,0.18); }
+  .level-card.l3 { background: rgba(63,185,80,0.06);   border: 1px solid rgba(63,185,80,0.18); }
+  .level-card .lvl { font-size: 1.1rem; font-weight: 800; flex-shrink: 0; }
+  .l1 .lvl { color: #58a6ff; } .l2 .lvl { color: #ffa040; } .l3 .lvl { color: #3fb850; }
+  .level-card h4 { font-size: 0.83rem; color: #e6edf3; }
+  .level-card p  { font-size: 0.73rem; color: #8b949e; }
+
+  /* ══════════════════════════════════════
+     SLIDE 5 – METRICS & IMPACT
+  ══════════════════════════════════════ */
+  #slide-5 { background: #0d1117; align-items: flex-start; padding-top: 52px; }
+
+  /* Big stat row */
+  .stat-row {
+    width: 100%;
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 14px;
+    margin-bottom: 20px;
+  }
+  .stat-card {
+    background: #161b22;
+    border: 1px solid #21262d;
+    border-radius: 12px;
+    padding: 18px 20px;
+    text-align: center;
+  }
+  .stat-card .stat-num {
+    font-size: clamp(1.6rem, 2.5vw, 2.2rem);
+    font-weight: 800;
+    line-height: 1;
+    margin-bottom: 4px;
+  }
+  .stat-card .stat-label { font-size: 0.75rem; color: #8b949e; text-transform: uppercase; letter-spacing: 1px; }
+  .stat-card .stat-sub   { font-size: 0.72rem; color: #484f58; margin-top: 3px; }
+  .sc-total   .stat-num { color: #58a6ff; }
+  .sc-ai      .stat-num { color: #bc8cff; }
+  .sc-release .stat-num { color: #3fb850; }
+  .sc-escalate .stat-num { color: #ffa040; }
+
+  /* Charts row */
+  .charts-row {
+    width: 100%;
+    display: grid;
+    grid-template-columns: 1.6fr 1fr 1fr;
+    gap: 14px;
+    margin-bottom: 16px;
+  }
+  .chart-card {
+    background: #161b22;
+    border: 1px solid #21262d;
+    border-radius: 12px;
+    padding: 16px 18px;
+  }
+  .chart-card h4 { font-size: 0.8rem; color: #8b949e; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 12px; }
+
+  /* Horizontal bar chart */
+  .bar-chart { display: flex; flex-direction: column; gap: 9px; }
+  .bar-row { display: flex; flex-direction: column; gap: 3px; }
+  .bar-label-row { display: flex; justify-content: space-between; align-items: center; }
+  .bar-lbl { font-size: 0.75rem; color: #c9d1d9; }
+  .bar-val { font-size: 0.75rem; font-weight: 700; }
+  .bar-track { height: 8px; background: #21262d; border-radius: 4px; overflow: hidden; }
+  .bar-fill  { height: 100%; border-radius: 4px; transition: width 0.8s ease; }
+  .bf-blue   { background: linear-gradient(90deg, #1d4ed8, #58a6ff); }
+  .bf-purple { background: linear-gradient(90deg, #7c3aed, #bc8cff); }
+  .bf-green  { background: linear-gradient(90deg, #166534, #3fb850); }
+  .bf-orange { background: linear-gradient(90deg, #92400e, #ffa040); }
+
+  /* Donut chart (CSS only) */
+  .donut-wrap { display: flex; align-items: center; justify-content: center; gap: 16px; }
+  .donut {
+    width: 90px; height: 90px;
+    border-radius: 50%;
+    background: conic-gradient(#3fb850 0% 95.8%, #ffa040 95.8% 100%);
+    position: relative;
+    flex-shrink: 0;
+  }
+  .donut::after {
+    content: '96%';
+    position: absolute; inset: 18px;
+    background: #161b22;
+    border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 0.85rem; font-weight: 800; color: #3fb850;
+  }
+  .donut-legend { display: flex; flex-direction: column; gap: 6px; }
+  .donut-legend-item { display: flex; align-items: center; gap: 6px; font-size: 0.73rem; color: #c9d1d9; }
+  .donut-legend-dot { width: 8px; height: 8px; border-radius: 50%; flex-shrink: 0; }
+
+  /* Disposition bar chart */
+  .dispo-chart { display: flex; flex-direction: column; gap: 10px; }
+  .dispo-row { display: flex; flex-direction: column; gap: 3px; }
+  .dispo-hdr { display: flex; justify-content: space-between; }
+  .dispo-lbl { font-size: 0.75rem; color: #c9d1d9; }
+  .dispo-pct { font-size: 0.75rem; font-weight: 700; }
+  .dispo-track { height: 10px; background: #21262d; border-radius: 5px; overflow: hidden; }
+  .dispo-fill  { height: 100%; border-radius: 5px; }
+
+  /* Footer */
+  .footer-bar {
+    width: 100%;
+    background: rgba(88,166,255,0.05); border: 1px solid rgba(88,166,255,0.14);
+    border-radius: 10px; padding: 11px 22px; text-align: center;
+  }
+  .footer-bar p { font-size: 0.8rem; color: #8b949e; }
+  .footer-bar strong { color: #58a6ff; }
+</style>
+</head>
+<body>
+
+<div id="progress-bar" style="width:20%"></div>
+<button class="nav-btn" id="prev-btn" onclick="changeSlide(-1)">&#8592;</button>
+<button class="nav-btn" id="next-btn" onclick="changeSlide(1)">&#8594;</button>
+<div id="dots"></div>
+<div id="counter">1 / 5</div>
+
+<div class="deck">
+
+  <!-- ══ SLIDE 1 – TITLE ══ -->
+  <div class="slide active" id="slide-1">
+    <div class="eyebrow"></div>
+    <h1>SIERA</h1>
+    <div class="title-full">Sanctions Intelligence Engine for Risk Assessment</div>
+    <div class="title-desc">AI-powered sanctions screening for financial transaction alerts</div>
+    <div class="pill-row">
+      <span class="pill pill-blue">LLM Agent Pipeline</span>
+      <span class="pill pill-purple">Dual-Agent Validation</span>
+      <span class="pill pill-green">Automated Disposition</span>
+      <span class="pill pill-orange">Real-Time Analytics</span>
+    </div>
+  </div>
+
+  <!-- ══ SLIDE 2 – WHAT IS SIERA ══ -->
+  <div class="slide" id="slide-2">
+    <div class="slide-label">Overview</div>
+    <div class="slide-header">
+      <div class="tag">What we're building</div>
+      <h2>What is SIERA?</h2>
+    </div>
+    <div class="problem-bar">
+      <div class="ico">⚠️</div>
+      <p>Financial institutions process thousands of payment messages daily. Each message is screened for <strong>sanctions hits</strong> — potential matches against restricted entities. Today, analysts manually review every hit, which is time-consuming and error-prone.</p>
+    </div>
+    <div class="card-grid-2">
+      <div class="card">
+        <div class="ico">🤖</div>
+        <h3>The Solution</h3>
+        <p>SIERA is an AI-powered orchestration layer that sits above the screening engine and uses LLM agents to analyse each sanctions hit — automatically determining whether it is a genuine threat or a false positive.</p>
+      </div>
+      <div class="card">
+        <div class="ico">📨</div>
+        <h3>Message Ingestion</h3>
+        <p>Receives payment events from MQ. Supports both SWIFT MT messages and Fircosoft Plaintext formats, automatically detecting which format each message uses.</p>
+      </div>
+      <div class="card">
+        <div class="ico">🧠</div>
+        <h3>AI Delivery</h3>
+        <p>A specialised LLM agent pipeline performs individual analysis of each sanctions hit — checking entity name, type, nationality, and context to make an informed recommendation.</p>
+      </div>
+      <div class="card">
+        <div class="ico">📊</div>
+        <h3>Analytics Engine</h3>
+        <p>Real-time metrics, evaluation of LLM decisions vs. human analyst outcomes, latency monitoring, and risk management dashboards for compliance teams.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- ══ SLIDE 3 – AI ARCHITECTURE ══ -->
+  <div class="slide" id="slide-3">
+    <div class="slide-label">Architecture</div>
+    <div class="slide-header">
+      <div class="tag">How we built it</div>
+      <h2>AI Architecture</h2>
+    </div>
+    <div class="arch-flow">
+      <div class="arch-node">
+        <div class="ico">📬</div>
+        <div class="lbl">MQ Listener</div>
+        <div class="sub">Event Intake</div>
+      </div>
+      <div class="arch-arrow">→</div>
+      <div class="arch-node">
+        <div class="ico">✅</div>
+        <div class="lbl">Validator</div>
+        <div class="sub">Hit Filtering</div>
+      </div>
+      <div class="arch-arrow">→</div>
+      <div class="arch-node">
+        <div class="ico">🔀</div>
+        <div class="lbl">Event Routing</div>
+        <div class="sub">Type Classification</div>
+      </div>
+      <div class="arch-arrow lit">→</div>
+      <div class="arch-node lit">
+        <div class="ico">⚙️</div>
+        <div class="lbl">DAG Processor</div>
+        <div class="sub">Orchestration</div>
+      </div>
+      <div class="arch-arrow lit">→</div>
+      <div class="arch-node lit2">
+        <div class="ico">🤖</div>
+        <div class="lbl">SAM Processor</div>
+        <div class="sub">LLM Agents</div>
+      </div>
+      <div class="arch-arrow lit">→</div>
+      <div class="arch-node lit3">
+        <div class="ico">🎯</div>
+        <div class="lbl">Disposition</div>
+        <div class="sub">Final Output</div>
+      </div>
+    </div>
+    <div class="agent-row">
+      <div class="agent-card">
+        <span class="abadge ab-blue">Primary Agent</span>
+        <h4>First-Pass Analysis</h4>
+        <p>Analyses each sanctions hit by entity type (Company, Individual, Vessel, Critic). Checks name, DOB, nationality, and payment context. Returns RELATED or CLEARED with reasoning.</p>
+      </div>
+      <div class="agent-card">
+        <span class="abadge ab-purple">Critic Agent</span>
+        <h4>Secondary Validation</h4>
+        <p>Receives the Primary Agent's decision and refines it. Verifies whether the beneficiary in the payment is genuinely the sanctioned entity or a false positive match.</p>
+      </div>
+      <div class="agent-card">
+        <span class="abadge ab-green">FME Rule Engine</span>
+        <h4>Auto-Disposition</h4>
+        <p>Known false positive patterns (FME rules) are matched before LLM processing. Matching hits are auto-released instantly, saving LLM compute for truly ambiguous cases.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- ══ SLIDE 4 – HOW IT WORKS ══ -->
+  <div class="slide" id="slide-4">
+    <div class="slide-label">Process</div>
+    <div class="slide-header">
+      <div class="tag">End-to-end flow</div>
+      <h2>How It Works</h2>
+    </div>
+    <div class="steps-grid">
+      <div class="step">
+        <div class="step-num">1</div>
+        <h4>Parse &amp; Fetch</h4>
+        <p>Incoming alert is parsed. Payment message is fetched and validated. Supports SWIFT MT and Fircosoft Plaintext formats.</p>
+      </div>
+      <div class="step">
+        <div class="step-num">2</div>
+        <h4>Construct LLM Request</h4>
+        <p>Each hit is enriched with entity data, payment context, and risk tags (OTN, TXI = High Risk; BNK = Low Risk) before being sent to agents.</p>
+      </div>
+      <div class="step">
+        <div class="step-num">3</div>
+        <h4>Parallel Processing</h4>
+        <p>Valid hits are partitioned into batches (default: 3 hits per batch) and processed in parallel by specialised LLM agents.</p>
+      </div>
+      <div class="step">
+        <div class="step-num">4</div>
+        <h4>Compute &amp; Persist</h4>
+        <p>Dispositions are calculated at hit and transaction level. Results are persisted and a recommended disposition is returned.</p>
+      </div>
+    </div>
+    <div class="msg-levels">
+      <div class="level-card l1">
+        <div class="lvl">L1</div>
+        <div>
+          <h4>Initial Hit — Full LLM Analysis</h4>
+          <p>New sanctions alerts entering SIERA for AI analysis</p>
+        </div>
+      </div>
+      <div class="level-card l2">
+        <div class="lvl">L2</div>
+        <div>
+          <h4>Escalated for Manual Review</h4>
+          <p>Hits requiring human analyst review after AI processing</p>
+        </div>
+      </div>
+      <div class="level-card l3">
+        <div class="lvl">L3</div>
+        <div>
+          <h4>Disposition Feedback</h4>
+          <p>Analyst decisions fed back to improve the model</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ══ SLIDE 5 – METRICS & IMPACT ══ -->
+  <div class="slide" id="slide-5">
+    <div class="slide-label">Metrics</div>
+    <div class="slide-header">
+      <div class="tag">Transaction Metrics Dashboard</div>
+      <h2>Impact &amp; Results</h2>
+    </div>
+
+    <!-- Big 4 stats -->
+    <div class="stat-row">
+      <div class="stat-card sc-total">
+        <div class="stat-num">12,456</div>
+        <div class="stat-label">Total Alerts</div>
+        <div class="stat-sub">processed by SIERA</div>
+      </div>
+      <div class="stat-card sc-ai">
+        <div class="stat-num">8,234</div>
+        <div class="stat-label">AI Processed</div>
+        <div class="stat-sub">66% of total alerts</div>
+      </div>
+      <div class="stat-card sc-release">
+        <div class="stat-num">7,891</div>
+        <div class="stat-label">Auto-Released</div>
+        <div class="stat-sub">95.8% release rate</div>
+      </div>
+      <div class="stat-card sc-escalate">
+        <div class="stat-num">343</div>
+        <div class="stat-label">Escalated</div>
+        <div class="stat-sub">4.2% escalation rate</div>
+      </div>
+    </div>
+
+    <!-- Charts -->
+    <div class="charts-row">
+
+      <!-- Alert Volume Breakdown bar chart -->
+      <div class="chart-card">
+        <h4>Alert Volume Breakdown</h4>
+        <div class="bar-chart">
+          <div class="bar-row">
+            <div class="bar-label-row">
+              <span class="bar-lbl">Total Alerts</span>
+              <span class="bar-val" style="color:#58a6ff;">12,456</span>
+            </div>
+            <div class="bar-track"><div class="bar-fill bf-blue" style="width:100%"></div></div>
+          </div>
+          <div class="bar-row">
+            <div class="bar-label-row">
+              <span class="bar-lbl">AI Processed</span>
+              <span class="bar-val" style="color:#bc8cff;">8,234</span>
+            </div>
+            <div class="bar-track"><div class="bar-fill bf-purple" style="width:66%"></div></div>
+          </div>
+          <div class="bar-row">
+            <div class="bar-label-row">
+              <span class="bar-lbl">Auto-Released</span>
+              <span class="bar-val" style="color:#3fb850;">7,891</span>
+            </div>
+            <div class="bar-track"><div class="bar-fill bf-green" style="width:63.3%"></div></div>
+          </div>
+          <div class="bar-row">
+            <div class="bar-label-row">
+              <span class="bar-lbl">Escalated to Analyst</span>
+              <span class="bar-val" style="color:#ffa040;">343</span>
+            </div>
+            <div class="bar-track"><div class="bar-fill bf-orange" style="width:2.8%"></div></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Donut – AI Release Rate -->
+      <div class="chart-card">
+        <h4>AI Release Rate</h4>
+        <div class="donut-wrap">
+          <div class="donut"></div>
+          <div class="donut-legend">
+            <div class="donut-legend-item">
+              <div class="donut-legend-dot" style="background:#3fb850"></div>
+              Auto-Released (95.8%)
+            </div>
+            <div class="donut-legend-item">
+              <div class="donut-legend-dot" style="background:#ffa040"></div>
+              Escalated (4.2%)
+            </div>
+          </div>
+        </div>
+        <div style="margin-top:12px;text-align:center;font-size:0.72rem;color:#484f58;">
+          of 8,234 AI-processed alerts
+        </div>
+      </div>
+
+      <!-- Disposition outcomes -->
+      <div class="chart-card">
+        <h4>Disposition Outcomes</h4>
+        <div class="dispo-chart">
+          <div class="dispo-row">
+            <div class="dispo-hdr">
+              <span class="dispo-lbl">False Positive (RELEASE)</span>
+              <span class="dispo-pct" style="color:#3fb850;">95.8%</span>
+            </div>
+            <div class="dispo-track"><div class="dispo-fill" style="width:95.8%;background:linear-gradient(90deg,#166534,#3fb850)"></div></div>
+          </div>
+          <div class="dispo-row">
+            <div class="dispo-hdr">
+              <span class="dispo-lbl">Escalate / Inconclusive</span>
+              <span class="dispo-pct" style="color:#ffa040;">4.2%</span>
+            </div>
+            <div class="dispo-track"><div class="dispo-fill" style="width:4.2%;background:linear-gradient(90deg,#92400e,#ffa040)"></div></div>
+          </div>
+          <div class="dispo-row" style="margin-top:8px;">
+            <div class="dispo-hdr">
+              <span class="dispo-lbl">Confusion Matrix</span>
+              <span class="dispo-pct" style="color:#58a6ff;">AI vs Human</span>
+            </div>
+            <div style="font-size:0.72rem;color:#484f58;margin-top:3px;">LLM decisions compared to analyst decisions for model accuracy analysis</div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+    <div class="footer-bar">
+      <p>Source: Transaction Metrics Dashboard &nbsp;·&nbsp; <strong>Version 01232026</strong> &nbsp;·&nbsp;  Treasury Services</p>
+    </div>
+  </div>
+
+</div><!-- .deck -->
+
+<script>
+  const TOTAL = 5;
+  let current = 1;
+  const slides   = document.querySelectorAll('.slide');
+  const dotsEl   = document.getElementById('dots');
+  const counter  = document.getElementById('counter');
+  const progress = document.getElementById('progress-bar');
+  const prevBtn  = document.getElementById('prev-btn');
+  const nextBtn  = document.getElementById('next-btn');
+
+  for (let i = 1; i <= TOTAL; i++) {
+    const d = document.createElement('div');
+    d.className = 'dot' + (i === 1 ? ' active' : '');
+    d.onclick = () => goTo(i);
+    dotsEl.appendChild(d);
+  }
+
+  function goTo(n) {
+    slides[current - 1].classList.remove('active');
+    document.querySelectorAll('.dot')[current - 1].classList.remove('active');
+    current = Math.max(1, Math.min(TOTAL, n));
+    slides[current - 1].classList.add('active');
+    document.querySelectorAll('.dot')[current - 1].classList.add('active');
+    counter.textContent = current + ' / ' + TOTAL;
+    progress.style.width = (current / TOTAL * 100) + '%';
+    prevBtn.style.opacity = current === 1     ? '0.25' : '1';
+    nextBtn.style.opacity = current === TOTAL ? '0.25' : '1';
+  }
+
+  function changeSlide(dir) { goTo(current + dir); }
+
+  document.addEventListener('keydown', e => {
+    if (e.key === 'ArrowRight' || e.key === 'ArrowDown' || e.key === ' ') changeSlide(1);
+    if (e.key === 'ArrowLeft'  || e.key === 'ArrowUp')                     changeSlide(-1);
+  });
+
+  goTo(1);
+</script>
+</body>
+</html>
