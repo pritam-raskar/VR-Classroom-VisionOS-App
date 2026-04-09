@@ -1,0 +1,70 @@
+🎤 SIERA — 4-Minute Town Hall Script
+~100 words per slide · ~130 words/min speaking pace
+
+SLIDE 1 — Title (~30 sec)
+
+"Thank you all for being here. Today I want to share something the team has built that's already changing how we handle sanctions screening. It's called SIERA — Sanctions Intelligence Engine for Risk Assessment. It uses AI to analyse payment alerts automatically, so our analysts spend time on real threats — not false alarms. Let me show you how."
+
+
+SLIDE 2 — What is SIERA? (~60 sec)
+
+"Every payment we process gets screened against a sanctions list. When there's a potential match — a hit — someone has to review it. The problem? Most hits are false positives. Names that look similar, not actual violations. Analysts were manually reviewing thousands of these every day.
+SIERA fixes that. It's an AI layer that reads the full payment message, understands the context, and makes an intelligent recommendation — automatically. It supports both SWIFT and Fircosoft formats and feeds a live analytics dashboard so we can measure every decision it makes."
+
+
+SLIDE 3 — AI Architecture (~60 sec)
+
+"Here's how it works. A payment comes in through MQ, gets validated, and enters our AI pipeline.
+Two agents work in sequence. The Primary Agent analyses the hit — checking entity name, type, country, context. Then the Critic Agent challenges that decision — confirming it's not just a name similarity.
+Before any of that, the FME Rule Engine catches known false positive patterns and auto-releases them instantly — no AI needed, no analyst time wasted.
+The result flows to Disposition — a clear, actionable recommendation."
+
+
+SLIDE 4 — How It Works (~45 sec)
+
+"Each alert goes through four steps: parse the message, enrich it with risk context — fields like Ordering Customer and Remittance carry higher risk — batch the hits for parallel processing, then compute and persist the final disposition.
+We handle three message levels: Level 1 is new AI analysis, Level 2 escalates to a human analyst, and Level 3 feeds analyst decisions back into the system — so SIERA gets smarter over time."
+
+
+SLIDE 5 — Metrics (~45 sec)
+
+"And here are the real numbers.
+12,456 alerts processed. 8,234 handled by AI — that's 66% autonomously.
+Of those, 7,891 were auto-released as false positives. A 95.8% release rate.
+Only 343 alerts — 4.2% — needed a human analyst. Those are the ones that actually matter.
+That's the value. Thousands of hours of analyst time redirected toward genuine risk, not noise.
+SIERA is live, it's working, and the team continues to improve it. Thank you."
+
+
+Total: ~4 minutes. Speak the numbers on Slide 5 slowly — one beat per stat.make it 3 min speech🎤 SIERA — 3-Minute Town Hall Script
+~80 words per slide · keep a steady, confident pace
+
+SLIDE 1 — Title (~20 sec)
+
+"Thank you all. Today I want to share a system the team built that's transforming how we handle sanctions screening. It's called SIERA — Sanctions Intelligence Engine for Risk Assessment. It uses AI to analyse payment alerts automatically, so our analysts focus only on real threats. Let me walk you through it."
+
+
+SLIDE 2 — What is SIERA? (~50 sec)
+
+"Every payment we process gets screened against a sanctions list. When there's a match, someone has to review it. The problem — most hits are false alarms. Analysts were manually reviewing thousands of these every day.
+SIERA fixes that. It reads the full payment, understands the context, and makes an intelligent recommendation — automatically. It also feeds a live dashboard so every AI decision is tracked and measured."
+
+
+SLIDE 3 — AI Architecture (~45 sec)
+
+"Under the hood, two AI agents work in sequence. The Primary Agent analyses the hit — name, entity type, country, payment context. The Critic Agent then challenges that decision to confirm it's not just a name similarity.
+Before either agent runs, our FME Rule Engine catches known false positive patterns and auto-releases them instantly — no analyst time needed. Clean, fast, transparent."
+
+
+SLIDE 4 — How It Works (~35 sec)
+
+"Each alert is parsed, enriched with risk context, batched for parallel processing, then dispositioned. Three message levels handle the flow — Level 1 for new AI analysis, Level 2 to escalate genuine concerns to a human, and Level 3 feeds analyst decisions back in — so SIERA gets smarter over time."
+
+
+SLIDE 5 — Metrics (~30 sec)
+
+"The numbers tell the story. 12,456 alerts processed. 7,891 auto-released as false positives — a 95.8% release rate. Only 343 alerts needed a human analyst.
+That's thousands of analyst hours redirected to cases that actually matter. SIERA is live, it's working. Thank you."
+
+
+Total: ~3 minutes. Pause one full second on each number in Slide 5.
