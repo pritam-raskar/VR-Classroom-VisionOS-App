@@ -41,3 +41,102 @@ AI ADVANTAGE (orange bar) — Summarizes the transformation impact in one glance
 This gives management a single-slide view of how the legacy system was operating vs. the measurable improvements Virtusa delivered through both the Bridger enhancement and
 
 
+DW:
+
+# Sanctions QA Digital Worker - Presentation Script
+**Total Duration: ~3 minutes 30 seconds**
+
+
+## SLIDE 1 - Title (~25 seconds)
+Good morning everyone.
+
+Today I'd like to introduce the Sanctions QA Digital Worker - an AI-powered solution we've built to transform
+how we perform Quality Control on sanctions screening dispositions.
+
+Let me walk you through the why, what, how, and impact.
+
+
+## SLIDE 2 - Why We Need This (~45 seconds)
+
+Today our QC process is entirely manual and Excel-based.
+Analysts review dispositions one by one in spreadsheets - it's slow and hard to scale.
+
+Now, new regulatory obligations require us to increase QC from 1% to 3% of daily transactions - a 3-fold increase.
+With the current manual process, that's simply not manageable - it would require tripling analyst hours.
+
+On top of that, Excel makes it difficult to allocate work and track progress across the team.
+
+The opportunity is clear -
+build a Digital Employee that handles this 3x volume, and gives us one single platform
+to consolidate, allocate, and track all QC work.
+
+## SLIDE 3 - What is the Digital Worker? (~40 seconds)
+
+Think of it as an AI-powered QA analyst.
+It reads the same data a human would -
+transaction details, investigation notes, client communications - and evaluates whether the screener made the right call.
+
+Three things to know:
+
+First - AI-powered.
+Specialized agents emulate how an analyst reads, reasons, and evaluates.
+
+Second - human oversight.
+Uncertain cases are always flagged for a human analyst.
+The AI never makes a final call alone.
+
+Third - every disposition gets a clear outcome:
+AI reviewed, needs human review, or out of scope.
+
+Operations subject matter experts provide the instructions - the AI follows their guidance.
+
+---
+
+## SLIDE 4 - How It Works (~40 seconds)
+
+Four simple steps.
+
+Data comes in daily and is automatically sampled.
+
+Each sampled disposition goes through three AI agents - a Worker assesses, a Fixer validates,
+and if they disagree, a Challenger breaks the tie.
+This consensus approach ensures quality.
+
+Results are categorized -
+in-scope, needs human review, or out-of-scope - and everything is stored on dashboards for reporting.
+
+Cases are also smartly routed by entity type - individual, company, vessel, or other - so each review uses the right lens.
+
+## SLIDE 5 - Impact & Value (~35 seconds)
+
+The numbers speak for themselves:
+3x QC coverage - from 1% to 3% - without growing the team.
+80% time saved on routine reviews.
+
+	• Click through the three tabs:
+
+For the business - scalability without headcount.
+
+For analysts - less tedious spreadsheet work, more focus on cases that truly need human expertise.
+
+For compliance - every AI review produces a structured, auditable rationale - meeting the new 3% mandate with a complete trail for regulators.
+
+with a complete trail for regulators.
+
+## SLIDE 6 - Thank You (~25 seconds)
+To summarize:
+AI reviews and extracts.
+Humans oversee and validate.
+BNY stays compliant - with a full audit trail.
+
+The Digital Worker is a decision-support tool.
+It assists. Humans decide.
+
+
+
+
+
+
+
+
+
