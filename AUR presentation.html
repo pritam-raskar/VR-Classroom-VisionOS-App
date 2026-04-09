@@ -1,0 +1,839 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=1536,initial-scale=1">
+<title>AuroraAI — Interactive Executive Overview</title>
+<style>
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
+html{font-size:16px;scroll-behavior:smooth}
+body{font-family:'Segoe UI','Helvetica Neue',Arial,sans-serif;background:#0a0f1a;color:#e0e6ed;overflow:hidden}
+:root{--navy:#0a0f1a;--navy2:#111827;--slate:#1c293b;--blue:#3b82f6;--blue-1:#60a5fa;--gold:#d4a843;--gold-1:#f0d080;--white:#f4f6f8;--gray:#6b7b8d;--green:#22c55e;--teal:#14b8a6;--red:#ef4444;--purple:#a78bfa}
+
+/* — Slide Engine */
+.deck{position:relative;width:100vw;height:100vh;overflow:hidden}
+.slide{position:absolute;top:0;left:0;width:100%;height:100%;display:flex;flex-direction:column;justify-content:center;align-items:center;padding:50px 80px;opacity:0;transform:translateX(60px);transition:opacity .55s ease,transform .55s ease;pointer-events:none;will-change:transform,opacity}
+.slide.active{opacity:1;transform:translateX(0);pointer-events:auto;z-index:2}
+.slide.exit-left{opacity:0;transform:translateX(-60px)}
+
+/* — Navigation */
+.nav-bar{position:fixed;bottom:0;left:0;right:0;height:56px;background:rgba(10,15,26,.92);backdrop-filter:blur(12px);display:flex;align-items:center;justify-content:center;gap:10px;z-index:100;border-top:1px solid rgba(255,255,255,.06)}
+.nav-dot{width:12px;height:12px;border-radius:50%;background:rgba(255,255,255,.12);cursor:pointer;transition:all .3s}
+.nav-dot:hover{background:rgba(255,255,255,.3)}
+.nav-dot.active{background:var(--gold);box-shadow:0 0 12px rgba(212,168,67,.4)}
+.nav-arrows{position:fixed;top:50%;z-index:100;width:44px;height:44px;border-radius:50%;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.1);color:#fff;font-size:20px;display:flex;align-items:center;justify-content:center;cursor:pointer;transition:all .25s;backdrop-filter:blur(8px)}
+.nav-arrows:hover{background:rgba(212,168,67,.2);border-color:var(--gold)}
+#prevBtn{left:20px;transform:translateY(-50%)}
+#nextBtn{right:20px;transform:translateY(-50%)}
+.progress-bar{position:fixed;top:0;left:0;height:3px;background:linear-gradient(90deg,var(--gold),var(--blue));z-index:100;transition:width .4s ease}
+.slide-counter{position:fixed;top:14px;right:24px;font-size:13px;color:var(--gray);z-index:100;letter-spacing:1px}
+.brand{position:fixed;top:14px;left:24px;font-size:12px;color:var(--gray);z-index:100;letter-spacing:2px;text-transform:uppercase;font-weight:600}
+
+/* — Typography */
+h1{font-size:58px;font-weight:700;color:var(--white);letter-spacing:-.5px}
+h1 .g{color:var(--gold)}
+h2{font-size:40px;font-weight:600;color:var(--white);margin-bottom:6px}
+h2 .g{color:var(--gold)}
+h3{font-size:20px;font-weight:600;color:var(--gold);margin-bottom:12px}
+.sub{font-size:22px;color:var(--gray);font-weight:300;margin-bottom:32px}
+.sep{width:70px;height:3px;background:var(--gold);margin:14px auto 30px;border-radius:2px}
+p,li{font-size:17px;line-height:1.7;color:#b8c5d3}
+.hi{color:var(--gold-1);font-weight:600}
+.dim{color:var(--gray);font-size:14px}
+.cen{text-align:center}
+.g{color:var(--gold)}
+
+/* — Layout */
+.content{width:100%;max-width:1200px;z-index:1}
+.g2{display:grid;grid-template-columns:1fr 1fr;gap:24px}
+.g3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:20px}
+.g4{display:grid;grid-template-columns:repeat(4,1fr);gap:16px}
+
+/* — Cards */
+.card{background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.07);border-radius:14px;padding:28px 24px;transition:transform .25s,box-shadow .25s}
+.card:hover{transform:translateY(-4px);box-shadow:0 12px 40px rgba(0,0,0,.3)}
+.card-gold{border-left:4px solid var(--gold)}
+.card-blue{border-left:4px solid var(--blue)}
+.card-green{border-left:4px solid var(--green)}
+.card-teal{border-left:4px solid var(--teal)}
+
+/* — Animated Stat Counters */
+.stat{text-align:center;padding:24px 16px;background:rgba(255,255,255,.02);border:1px solid rgba(255,255,255,.06);border-radius:14px}
+.stat-num{font-size:48px;font-weight:700;color:var(--gold);font-variant-numeric:tabular-nums}
+.stat-lbl{font-size:13px;color:var(--gray);text-transform:uppercase;letter-spacing:1px;margin-top:4px}
+
+/* — Lists */
+ul{list-style:none;padding:0}
+ul li{padding:5px 0 5px 24px;position:relative}
+ul li::before{content:'';position:absolute;left:2px;top:14px;width:8px;height:8px;border-radius:50%;background:var(--gold);opacity:.5}
+
+/* — Animated SVG Pipeline */
+.pipeline-svg{width:100%;max-width:1100px;margin:10px auto}
+.pipe-node{cursor:pointer;transition:transform .2s}
+.pipe-node:hover{transform:scale(1.04)}
+.pipe-pulse{animation:pulse 2s ease-in-out infinite}
+@keyframes pulse{0%,100%{opacity:.6}50%{opacity:1}}
+.pipe-flow{stroke-dasharray:8 4;animation:flowDash 1.5s linear infinite}
+@keyframes flowDash{to{stroke-dashoffset:-24}}
+.pipe-tooltip{position:absolute;background:rgba(17,24,39,.96);border:1px solid var(--gold);border-radius:10px;padding:16px 20px;font-size:14px;color:#c8d6e5;max-width:280px;z-index:50;pointer-events:none;opacity:0;transform:translateY(8px);transition:opacity .25s,transform .25s}
+.pipe-tooltip.show{opacity:1;transform:translateY(0)}
+.pipe-tooltip h4{color:var(--gold);font-size:15px;margin-bottom:6px}
+
+/* — Architecture Layered Diagram */
+.arch-visual{position:relative;width:100%;max-width:1050px;margin:0 auto}
+.arch-layer-box{position:absolute;border-radius:12px;border:1.5px solid rgba(255,255,255,.1);padding:18px 16px;text-align:center;cursor:pointer;transition:all .3s}
+.arch-layer-box:hover{border-color:var(--gold);box-shadow:0 0 20px rgba(212,168,67,.15)}
+.arch-layer-box .lbl{font-size:11px;text-transform:uppercase;letter-spacing:1.2px;font-weight:700;margin-bottom:6px}
+.arch-layer-box .items{font-size:12px;color:#8899aa;line-height:1.6}
+
+/* — Donut Chart (CSS) */
+.donut-wrap{position:relative;width:180px;height:180px;margin:0 auto}
+.donut{width:180px;height:180px;border-radius:50%;display:flex;align-items:center;justify-content:center}
+.donut-center{position:absolute;inset:30px;border-radius:50%;background:var(--navy2);display:flex;align-items:center;justify-content:center;flex-direction:column}
+.donut-center .val{font-size:32px;font-weight:700;color:var(--gold)}
+.donut-center .lbl{font-size:11px;color:var(--gray)}
+
+/* — Flow Diagram Boxes */
+.flow-box{padding:14px 20px;border-radius:10px;font-size:14px;font-weight:600;text-align:center;min-width:130px;transition:transform .2s}
+.flow-box:hover{transform:scale(1.05)}
+.fb-user{background:rgba(59,130,246,.12);color:var(--blue-1);border:1px solid rgba(59,130,246,.25)}
+.fb-ai{background:rgba(212,168,67,.1);color:var(--gold);border:1px solid rgba(212,168,67,.25)}
+.fb-analyst{background:rgba(34,197,94,.1);color:var(--green);border:1px solid rgba(34,197,94,.25)}
+
+/* — ROI Table */
+.tbl{width:100%;border-collapse:separate;border-spacing:0;border-radius:12px;overflow:hidden}
+.tbl th{background:rgba(212,168,67,.12);color:var(--gold);font-size:14px;font-weight:600;padding:13px 18px;text-align:left}
+.tbl td{padding:12px 18px;font-size:14px;color:#b8c5d3;border-bottom:1px solid rgba(255,255,255,.04)}
+.tbl tr:hover td{background:rgba(255,255,255,.02)}
+.tbl .imp{color:var(--gold-1);font-weight:700}
+
+/* — Bar Chart (CSS animated) */
+.bar-chart{display:flex;align-items:flex-end;gap:20px;height:200px;padding:0 10px;margin:20px auto;max-width:600px}
+.bar-col{flex:1;display:flex;flex-direction:column;align-items:center;gap:6px}
+.bar{width:100%;border-radius:6px 6px 0 0;transition:height 1.2s cubic-bezier(.34,1.56,.64,1);position:relative}
+.bar-val{font-size:12px;color:var(--gold);font-weight:700}
+.bar-lbl{font-size:11px;color:var(--gray);text-align:center}
+
+/* — Animations */
+.fade-up{opacity:0;transform:translateY(30px);transition:opacity .6s ease,transform .6s ease}
+.slide.active .fade-up{opacity:1;transform:translateY(0)}
+.slide.active .fade-up.d1{transition-delay:.15s}
+.slide.active .fade-up.d2{transition-delay:.3s}
+.slide.active .fade-up.d3{transition-delay:.45s}
+.slide.active .fade-up.d4{transition-delay:.6s}
+.slide.active .fade-up.d5{transition-delay:.75s}
+
+/* — Particles BG */
+.particles{position:fixed;top:0;left:0;width:100%;height:100%;z-index:0;pointer-events:none;overflow:hidden}
+.particle{position:absolute;width:2px;height:2px;background:rgba(212,168,67,.15);border-radius:50%;animation:float linear infinite}
+@keyframes float{0%{transform:translateY(100vh) scale(0);opacity:0}10%{opacity:1}90%{opacity:1}100%{transform:translateY(-10vh) scale(1);opacity:0}}
+
+/* — Interactive Tabs */
+.tabs{display:flex;gap:4px;margin-bottom:20px;justify-content:center}
+.tab{padding:10px 22px;border-radius:8px;font-size:14px;font-weight:600;cursor:pointer;background:rgba(255,255,255,.04);color:var(--gray);border:1px solid rgba(255,255,255,.06);transition:all .25s}
+.tab:hover,.tab.active{background:rgba(212,168,67,.12);color:var(--gold);border-color:rgba(212,168,67,.3)}
+.tab-panel{display:none}
+.tab-panel.active{display:block}
+
+@media print{.slide{position:relative!important;page-break-after:always;opacity:1!important;transform:none!important;pointer-events:auto!important}.nav-bar,.nav-arrows,.progress-bar,.slide-counter,.brand,.particles{display:none!important}}
+</style>
+</head>
+<body>
+
+<!-- Floating particles background -->
+<div class="particles" id="particles"></div>
+
+<!-- Progress bar -->
+<div class="progress-bar" id="progressBar" style="width:0%"></div>
+<div class="brand">BNY &bull; AuroraAI</div>
+<div class="slide-counter" id="counter">01 / 12</div>
+
+<!-- Nav arrows -->
+<button class="nav-arrows" id="prevBtn" onclick="go(-1)">&#8592;</button>
+<button class="nav-arrows" id="nextBtn" onclick="go(1)">&#8594;</button>
+
+<!-- Dot navigation -->
+<div class="nav-bar" id="navBar"></div>
+
+<!-- SLIDE DECK -->
+<div class="deck" id="deck">
+
+<!-- SLIDE 1 — TITLE -->
+<div class="slide active" data-bg="radial-gradient(ellipse at 30% 50%,#14213d 0%,#0a0f1a 70%)">
+  <div class="content cen">
+    <div class="fade-up">
+      <svg width="80" height="80" viewBox="0 0 80 80" style="margin-bottom:20px;">
+        <defs><linearGradient id="gAur" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stop-color="#d4a843"/><stop offset="100%" stop-color="#f0d080"/></linearGradient></defs>
+        <circle cx="40" cy="40" r="36" fill="none" stroke="url(#gAur)" stroke-width="2.5" opacity=".5"/>
+        <circle cx="40" cy="40" r="26" fill="none" stroke="url(#gAur)" stroke-width="1.5" opacity=".3"/>
+        <text x="40" y="47" text-anchor="middle" fill="url(#gAur)" font-size="28" font-weight="700" font-family="Segoe UI">A</text>
+      </svg>
+    </div>
+    <h1 class="fade-up d1" style="font-size:62px;">Aurora<span class="g">AI</span></h1>
+    <div class="sep fade-up d2"></div>
+    <p class="sub fade-up d3" style="font-size:24px;max-width:750px;margin:0 auto 14px;">AI-Powered Sanctions Screening Alert Reconciliation</p>
+    <p class="fade-up d4" style="color:var(--gray);font-size:16px;margin-top:20px;">Executive Overview &bull; March 2026</p>
+    <p class="fade-up d5" style="color:var(--gray);font-size:13px;margin-top:6px;">Quality Screening Services &mdash; QSS Aurora Team</p>
+  </div>
+</div>
+
+<!-- SLIDE 2 — THE CHALLENGE -->
+<div class="slide" data-bg="linear-gradient(135deg,#0a0f1a 0%,#111827 100%)">
+  <div class="content">
+    <h2 class="cen fade-up">The <span class="g">Challenge</span></h2>
+    <div class="sep fade-up d1"></div>
+    <div class="g2">
+      <div class="fade-up d2">
+        <h3 style="color:#ef4444;">Current Pain Points</h3>
+        <!-- Animated icon bars -->
+        <div style="margin:16px 0;">
+          <div style="display:flex;align-items:center;gap:12px;margin-bottom:14px;" class="fade-up d2">
+            <svg width="40" height="40"><rect x="4" y="4" width="32" height="32" rx="8" fill="rgba(239,68,68,.12)" stroke="#ef4444" stroke-width="1.2"/><text x="20" y="25" text-anchor="middle" fill="#ef4444" font-size="18">&#8593;</text></svg>
+            <div><strong style="color:var(--white);font-size:15px;">High Volume</strong><br><span class="dim">Thousands of alerts daily across AMER, EMEA, APAC</span></div>
+          </div>
+          <div style="display:flex;align-items:center;gap:12px;margin-bottom:14px;" class="fade-up d3">
+            <svg width="40" height="40"><rect x="4" y="4" width="32" height="32" rx="8" fill="rgba(239,68,68,.12)" stroke="#ef4444" stroke-width="1.2"/><text x="20" y="25" text-anchor="middle" fill="#ef4444" font-size="18">&#9201;</text></svg>
+            <div><strong style="color:var(--white);font-size:15px;">Manual Review</strong><br><span class="dim">15-30 min per alert, field-by-field comparison</span></div>
+          </div>
+          <div style="display:flex;align-items:center;gap:12px;margin-bottom:14px;" class="fade-up d4">
+            <svg width="40" height="40"><rect x="4" y="4" width="32" height="32" rx="8" fill="rgba(239,68,68,.12)" stroke="#ef4444" stroke-width="1.2"/><text x="20" y="25" text-anchor="middle" fill="#ef4444" font-size="18">&#128203;</text></svg>
+            <div><strong style="color:var(--white);font-size:15px;">Inconsistency</strong><br><span class="dim">Decision quality varies by analyst, shift, and fatigue</span></div>
+          </div>
+          <div style="display:flex;align-items:center;gap:12px;" class="fade-up d5">
+            <svg width="40" height="40"><rect x="4" y="4" width="32" height="32" rx="8" fill="rgba(239,68,68,.12)" stroke="#ef4444" stroke-width="1.2"/><text x="20" y="25" text-anchor="middle" fill="#ef4444" font-size="18">&#9888;</text></svg>
+            <div><strong style="color:var(--white);font-size:15px;">Compliance Risk</strong><br><span class="dim">Human fatigue leads to inconsistent decisions</span></div>
+          </div>
+        </div>
+      </div>
+      <div class="fade-up d3">
+        <h3 style="color:var(--green);">The Opportunity</h3>
+        <div class="card card-green" style="margin-bottom:18px;">
+          <p>Leverage <span class="hi">Generative AI</span> to automate alert review, providing consistent, auditable recommendations while keeping the <span class="hi">human analyst as final decision-maker</span>.</p>
+        </div>
+        <!-- Before/After visual -->
+        <div style="display:flex;gap:16px;margin-top:16px;">
+          <div style="flex:1;background:rgba(239,68,68,.06);border:1px solid rgba(239,68,68,.15);border-radius:10px;padding:18px;text-align:center;">
+            <p style="font-size:13px;color:#ef4444;font-weight:700;margin-bottom:8px;">TODAY</p>
+            <svg width="60" height="60"><circle cx="30" cy="30" r="26" fill="none" stroke="#ef4444" stroke-width="2" stroke-dasharray="120 44" transform="rotate(-90 30 30)"/><text x="30" y="35" text-anchor="middle" fill="#ef4444" font-size="14" font-weight="700">73%</text></svg>
+            <p style="font-size:12px;color:var(--gray);margin-top:6px;">Analyst time on<br>false positives</p>
+          </div>
+          <div style="flex:1;background:rgba(34,197,94,.06);border:1px solid rgba(34,197,94,.15);border-radius:10px;padding:18px;text-align:center;">
+            <p style="font-size:13px;color:var(--green);font-weight:700;margin-bottom:8px;">WITH AuroraAI</p>
+            <svg width="60" height="60"><circle cx="30" cy="30" r="26" fill="none" stroke="var(--green)" stroke-width="2" stroke-dasharray="28 136" transform="rotate(-90 30 30)"/><text x="30" y="35" text-anchor="middle" fill="var(--green)" font-size="14" font-weight="700">17%</text></svg>
+            <p style="font-size:12px;color:var(--gray);margin-top:6px;">Analyst time on<br>false positives</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- SLIDE 3 — WHAT IS AuroraAI -->
+<div class="slide">
+  <div class="content">
+    <h2 class="cen fade-up">What is <span class="g">AuroraAI</span>?</h2>
+    <div class="sep fade-up d1"></div>
+    <p class="cen dim fade-up d1" style="max-width:850px;margin:0 auto 30px;font-size:18px;">An <span class="hi">end-to-end AI platform</span> that processes Bridger sanctions alerts through a multi-agent pipeline, delivering structured recommendations to analysts.</p>
+    <div class="g3">
+      <div class="card cen fade-up d2" style="position:relative;overflow:hidden;">
+        <svg width="56" height="56" style="margin-bottom:14px;"><circle cx="28" cy="28" r="24" fill="rgba(212,168,67,.1)" stroke="var(--gold)" stroke-width="1.2"/><text x="28" y="34" text-anchor="middle" fill="var(--gold)" font-size="24">&#9881;</text></svg>
+        <h3>Multi-Agent AI Engine</h3>
+        <p style="font-size:15px;">5 specialized AI agents work in sequence &mdash; analyzing, deciding, and quality-checking each alert.</p>
+      </div>
+      <div class="card cen fade-up d3" style="position:relative;overflow:hidden;">
+        <svg width="56" height="56" style="margin-bottom:14px;"><circle cx="28" cy="28" r="24" fill="rgba(59,130,246,.1)" stroke="var(--blue)" stroke-width="1.2"/><text x="28" y="34" text-anchor="middle" fill="var(--blue-1)" font-size="24">&#128202;</text></svg>
+        <h3 style="color:var(--blue-1);">Oracle Persistence</h3>
+        <p style="font-size:15px;">Every decision, score, and rationale is persisted to Oracle &mdash; providing a complete audit trail for regulators.</p>
+      </div>
+      <div class="card cen fade-up d4" style="position:relative;overflow:hidden;">
+        <svg width="56" height="56" style="margin-bottom:14px;"><circle cx="28" cy="28" r="24" fill="rgba(34,197,94,.1)" stroke="var(--green)" stroke-width="1.2"/><text x="28" y="34" text-anchor="middle" fill="var(--green)" font-size="24">&#128202;</text></svg>
+        <h3 style="color:var(--green);">Audit &amp; Reporting</h3>
+        <p style="font-size:15px;">Complete decision trail in Oracle &mdash; every recommendation, confidence score, and action is traceable.</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- SLIDE 4 — ARCHITECTURE (Interactive SVG) -->
+<div class="slide">
+  <div class="content">
+    <h2 class="cen fade-up">End-to-End <span class="g">Architecture</span></h2>
+    <div class="sep fade-up d1"></div>
+    <p class="cen dim fade-up d1" style="margin-bottom:20px;">Click any component to see details</p>
+    <div class="fade-up d2">
+      <svg viewBox="0 0 1100 320" class="pipeline-svg" id="archSvg">
+        <defs>
+          <linearGradient id="gGold" x1="0%" y1="0%" x2="100%"><stop offset="0%" stop-color="#d4a843"/><stop offset="100%" stop-color="#f0d080"/></linearGradient>
+          <linearGradient id="gBlue" x1="0%" y1="0%" x2="100%"><stop offset="0%" stop-color="#3b82f6"/><stop offset="100%" stop-color="#60a5fa"/></linearGradient>
+          <linearGradient id="gGreen" x1="0%" y1="0%" x2="100%"><stop offset="0%" stop-color="#22c55e"/><stop offset="100%" stop-color="#86efac"/></linearGradient>
+          <linearGradient id="gPurple" x1="0%" y1="0%" x2="100%"><stop offset="0%" stop-color="#8b5cf6"/><stop offset="100%" stop-color="#a78bfa"/></linearGradient>
+          <linearGradient id="gTeal" x1="0%" y1="0%" x2="100%"><stop offset="0%" stop-color="#14b8a6"/><stop offset="100%" stop-color="#5eead4"/></linearGradient>
+          <filter id="glow"><feGaussianBlur stdDeviation="3" result="blur"/><feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
+        </defs>
+        <!-- Flow arrows -->
+        <line x1="195" y1="105" x2="240" y2="105" stroke="#4b5563" stroke-width="2" class="pipe-flow"/>
+        <line x1="435" y1="105" x2="480" y2="105" stroke="#4b5563" stroke-width="2" class="pipe-flow"/>
+        <line x1="675" y1="105" x2="720" y2="105" stroke="#4b5563" stroke-width="2" class="pipe-flow"/>
+        <line x1="915" y1="105" x2="960" y2="105" stroke="#4b5563" stroke-width="2" class="pipe-flow"/>
+        <!-- Layer 1: Data Source -->
+        <g class="pipe-node" onclick="showArchDetail(0)" data-tip="0">
+          <rect x="0" y="40" width="195" height="130" rx="14" fill="rgba(139,92,246,.06)" stroke="var(--purple)" stroke-width="1.5"/>
+          <text x="97" y="72" text-anchor="middle" fill="var(--purple)" font-size="11" font-weight="700" letter-spacing="1">DATA SOURCE</text>
+          <text x="97" y="96" text-anchor="middle" fill="#a78bfa" font-size="15" font-weight="600">Bridger System</text>
+          <text x="97" y="116" text-anchor="middle" fill="#8899aa" font-size="12">Oracle Source DB</text>
+          <text x="97" y="134" text-anchor="middle" fill="#8899aa" font-size="12">RCV_QSS_CONSUMPTION</text>
+          <circle cx="170" cy="55" r="4" fill="var(--purple)" class="pipe-pulse"/>
+        </g>
+        <!-- Layer 2: Backend API -->
+        <g class="pipe-node" onclick="showArchDetail(1)" data-tip="1">
+          <rect x="240" y="40" width="195" height="130" rx="14" fill="rgba(59,130,246,.06)" stroke="var(--blue)" stroke-width="1.5"/>
+          <text x="337" y="72" text-anchor="middle" fill="var(--blue)" font-size="11" font-weight="700" letter-spacing="1">BACKEND API</text>
+          <text x="337" y="96" text-anchor="middle" fill="var(--blue-1)" font-size="15" font-weight="600">FastAPI Service</text>
+          <text x="337" y="116" text-anchor="middle" fill="#8899aa" font-size="12">Batch Orchestration</text>
+          <text x="337" y="134" text-anchor="middle" fill="#8899aa" font-size="12">REST &bull; Polling &bull; Trigger</text>
+          <circle cx="410" cy="55" r="4" fill="var(--blue)" class="pipe-pulse"/>
+        </g>
+        <!-- Layer 3: AI Engine -->
+        <g class="pipe-node" onclick="showArchDetail(2)" data-tip="2">
+          <rect x="480" y="40" width="195" height="130" rx="14" fill="rgba(212,168,67,.06)" stroke="var(--gold)" stroke-width="1.5"/>
+          <text x="577" y="72" text-anchor="middle" fill="var(--gold)" font-size="11" font-weight="700" letter-spacing="1">AI ENGINE</text>
+          <text x="577" y="96" text-anchor="middle" fill="var(--gold-1)" font-size="15" font-weight="600">5-Agent Pipeline</text>
+          <text x="577" y="116" text-anchor="middle" fill="#8899aa" font-size="12">Eliza Cognitive Engine</text>
+          <text x="577" y="134" text-anchor="middle" fill="#8899aa" font-size="12">GPT-4 &bull; Gemini &bull; LLaMA</text>
+          <circle cx="650" cy="55" r="4" fill="var(--gold)" class="pipe-pulse"/>
+        </g>
+        <!-- Layer 4: Persistence -->
+        <g class="pipe-node" onclick="showArchDetail(3)" data-tip="3">
+          <rect x="720" y="40" width="195" height="130" rx="14" fill="rgba(34,197,94,.06)" stroke="var(--green)" stroke-width="1.5"/>
+          <text x="817" y="72" text-anchor="middle" fill="var(--green)" font-size="11" font-weight="700" letter-spacing="1">PERSISTENCE</text>
+          <text x="817" y="96" text-anchor="middle" fill="#86efac" font-size="15" font-weight="600">Oracle Target DB</text>
+          <text x="817" y="116" text-anchor="middle" fill="#8899aa" font-size="12">QSS FPR Schema</text>
+          <text x="817" y="134" text-anchor="middle" fill="#8899aa" font-size="12">Batch &bull; Alert &bull; Hit</text>
+          <circle cx="890" cy="55" r="4" fill="var(--green)" class="pipe-pulse"/>
+        </g>
+        <!-- Layer 5: Analyst UI -->
+        <g class="pipe-node" onclick="showArchDetail(4)" data-tip="4">
+          <rect x="960" y="40" width="130" height="130" rx="14" fill="rgba(20,184,166,.06)" stroke="var(--teal)" stroke-width="1.5"/>
+          <text x="1025" y="72" text-anchor="middle" fill="var(--teal)" font-size="11" font-weight="700" letter-spacing="1">ANALYST UI</text>
+          <text x="1025" y="96" text-anchor="middle" fill="#5eead4" font-size="14" font-weight="600">Review</text>
+          <text x="1025" y="112" text-anchor="middle" fill="#5eead4" font-size="14" font-weight="600">Dashboard</text>
+          <text x="1025" y="134" text-anchor="middle" fill="#8899aa" font-size="12">Reports</text>
+          <circle cx="1070" cy="55" r="4" fill="var(--teal)" class="pipe-pulse"/>
+        </g>
+        <!-- Infrastructure strip -->
+        <rect x="10" y="210" width="1080" height="90" rx="12" fill="rgba(255,255,255,.02)" stroke="rgba(255,255,255,.06)" stroke-width="1"/>
+        <text x="550" y="236" text-anchor="middle" fill="var(--gray)" font-size="11" font-weight="700" letter-spacing="1.5">INFRASTRUCTURE</text>
+        <text x="140" y="265" text-anchor="middle" fill="#8899aa" font-size="12">&#9729; BNY AppEngine</text>
+        <text x="140" y="283" text-anchor="middle" fill="#6b7b8d" font-size="10">Containerized &bull; K8s</text>
+        <text x="380" y="265" text-anchor="middle" fill="#8899aa" font-size="12">&#129302; BNY Eliza AI</text>
+        <text x="380" y="283" text-anchor="middle" fill="#6b7b8d" font-size="10">Enterprise LLM Gateway</text>
+        <text x="620" y="265" text-anchor="middle" fill="#8899aa" font-size="12">&#128274; Certificate Auth</text>
+        <text x="620" y="283" text-anchor="middle" fill="#6b7b8d" font-size="10">JWT &bull; mTLS &bull; No PII</text>
+        <text x="860" y="265" text-anchor="middle" fill="#8899aa" font-size="12">&#128737; Resilience</text>
+        <text x="860" y="283" text-anchor="middle" fill="#6b7b8d" font-size="10">Circuit Breaker &bull; Throttle</text>
+      </svg>
+    </div>
+    <div class="pipe-tooltip" id="archTooltip"></div>
+  </div>
+</div>
+
+<!-- SLIDE 5 — AI PIPELINE (Interactive) -->
+<div class="slide">
+  <div class="content">
+    <h2 class="cen fade-up">Multi-Agent <span class="g">AI Pipeline</span></h2>
+    <div class="sep fade-up d1"></div>
+    <p class="cen dim fade-up d1" style="margin-bottom:14px;">Click each agent to explore</p>
+    <div class="fade-up d2">
+      <svg viewBox="0 0 1100 280" class="pipeline-svg" id="pipeSvg">
+        <defs>
+          <marker id="arrowP" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto"><polygon points="0 0, 8 3, 0 6" fill="#4b5563"/></marker>
+        </defs>
+        <!-- Flow lines -->
+        <line x1="192" y1="105" x2="228" y2="105" stroke="#4b5563" stroke-width="2" class="pipe-flow"/>
+        <line x1="420" y1="105" x2="456" y2="105" stroke="#4b5563" stroke-width="2" class="pipe-flow"/>
+        <line x1="648" y1="105" x2="684" y2="105" stroke="#4b5563" stroke-width="2" class="pipe-flow"/>
+        <line x1="876" y1="105" x2="912" y2="105" stroke="#4b5563" stroke-width="2" class="pipe-flow"/>
+        <!-- Agent 0: Pre-Processor -->
+        <g class="pipe-node" onclick="showPipeDetail(0)">
+          <rect x="0" y="20" width="192" height="170" rx="12" fill="rgba(139,92,246,.08)" stroke="var(--purple)" stroke-width="1.5"/>
+          <text x="96" y="48" text-anchor="middle" fill="#8899aa" font-size="10" font-weight="700" letter-spacing="1">STEP 0</text>
+          <text x="96" y="72" text-anchor="middle" fill="var(--purple)" font-size="15" font-weight="700">Pre-Processor</text>
+          <text x="96" y="94" text-anchor="middle" fill="#8899aa" font-size="11">Parses &amp; structures</text>
+          <text x="96" y="110" text-anchor="middle" fill="#8899aa" font-size="11">watchlist XML data</text>
+          <text x="96" y="162" text-anchor="middle" fill="#8b5cf6" font-size="10" font-style="italic">Gemini Flash</text>
+          <circle cx="165" cy="35" r="5" fill="var(--purple)" class="pipe-pulse"/>
+        </g>
+        <!-- Agent 1: Analyzer -->
+        <g class="pipe-node" onclick="showPipeDetail(1)">
+          <rect x="228" y="20" width="192" height="170" rx="12" fill="rgba(59,130,246,.08)" stroke="var(--blue)" stroke-width="1.5"/>
+          <text x="324" y="48" text-anchor="middle" fill="#8899aa" font-size="10" font-weight="700" letter-spacing="1">STEP 1</text>
+          <text x="324" y="72" text-anchor="middle" fill="var(--blue-1)" font-size="15" font-weight="700">Analyzer</text>
+          <text x="324" y="94" text-anchor="middle" fill="#8899aa" font-size="11">Field-by-field</text>
+          <text x="324" y="110" text-anchor="middle" fill="#8899aa" font-size="11">comparison</text>
+          <text x="324" y="162" text-anchor="middle" fill="var(--blue-1)" font-size="10" font-style="italic">Gemini Flash</text>
+          <circle cx="393" cy="35" r="5" fill="var(--blue)" class="pipe-pulse"/>
+        </g>
+        <!-- Agent 2: Maker -->
+        <g class="pipe-node" onclick="showPipeDetail(2)">
+          <rect x="456" y="20" width="192" height="170" rx="12" fill="rgba(212,168,67,.08)" stroke="var(--gold)" stroke-width="1.5"/>
+          <text x="552" y="48" text-anchor="middle" fill="#8899aa" font-size="10" font-weight="700" letter-spacing="1">STEP 2</text>
+          <text x="552" y="72" text-anchor="middle" fill="var(--gold)" font-size="15" font-weight="700">Maker</text>
+          <text x="552" y="94" text-anchor="middle" fill="#8899aa" font-size="11">Decision Engine</text>
+          <text x="552" y="110" text-anchor="middle" fill="#8899aa" font-size="11">True Match / False / Review</text>
+          <text x="552" y="162" text-anchor="middle" fill="var(--gold)" font-size="10" font-style="italic">Gemini Flash</text>
+          <circle cx="621" cy="35" r="5" fill="var(--gold)" class="pipe-pulse"/>
+        </g>
+        <!-- Agent 3: Validator (Checker) -->
+        <g class="pipe-node" onclick="showPipeDetail(3)">
+          <rect x="684" y="20" width="192" height="170" rx="12" fill="rgba(34,197,94,.08)" stroke="var(--green)" stroke-width="1.5"/>
+          <text x="780" y="48" text-anchor="middle" fill="#8899aa" font-size="10" font-weight="700" letter-spacing="1">STEP 3</text>
+          <text x="780" y="72" text-anchor="middle" fill="var(--green)" font-size="15" font-weight="700">Checker</text>
+          <text x="780" y="94" text-anchor="middle" fill="#8899aa" font-size="11">Independent</text>
+          <text x="780" y="110" text-anchor="middle" fill="#8899aa" font-size="11">QA Validation</text>
+          <text x="780" y="162" text-anchor="middle" fill="var(--green)" font-size="10" font-style="italic">GPT-4.1</text>
+          <circle cx="849" cy="35" r="5" fill="var(--green)" class="pipe-pulse"/>
+        </g>
+        <!-- Agent 4: Consolidator -->
+        <g class="pipe-node" onclick="showPipeDetail(4)">
+          <rect x="912" y="20" width="180" height="170" rx="12" fill="rgba(20,184,166,.08)" stroke="var(--teal)" stroke-width="1.5"/>
+          <text x="1002" y="48" text-anchor="middle" fill="#8899aa" font-size="10" font-weight="700" letter-spacing="1">STEP 4</text>
+          <text x="1002" y="72" text-anchor="middle" fill="var(--teal)" font-size="15" font-weight="700">Consolidator</text>
+          <text x="1002" y="94" text-anchor="middle" fill="#8899aa" font-size="11">Alert-level</text>
+          <text x="1002" y="110" text-anchor="middle" fill="#8899aa" font-size="11">recommendation</text>
+          <text x="1002" y="162" text-anchor="middle" fill="var(--teal)" font-size="10" font-style="italic">Gemini Flash</text>
+          <circle cx="1070" cy="35" r="5" fill="var(--teal)" class="pipe-pulse"/>
+        </g>
+        <!-- Labels -->
+        <text x="440" y="214" text-anchor="middle" fill="var(--gray)" font-size="11" font-weight="700" letter-spacing="1">HIT-LEVEL PROCESSING</text>
+        <line x1="50" y1="220" x2="860" y2="220" stroke="rgba(255,255,255,.08)" stroke-width="1" stroke-dasharray="4 3"/>
+        <text x="440" y="244" text-anchor="middle" fill="var(--gray)" font-size="11" font-weight="700" letter-spacing="1">ALERT-LEVEL</text>
+      </svg>
+    </div>
+    <div class="pipe-tooltip" id="pipeTooltip"></div>
+    <div class="g2 fade-up d3" style="margin-top:18px;max-width:1000px;margin-left:auto;margin-right:auto;">
+      <div class="card card-gold">
+        <h3>Maker-Checker Pattern</h3>
+        <p style="font-size:15px;"><span class="hi">Maker</span> proposes a decision; <span class="hi">Checker</span> (different AI model) independently validates. Disagreements flagged for human review.</p>
+      </div>
+      <div class="card card-blue">
+        <h3 style="color:var(--blue-1);">Alert-Level Consolidation</h3>
+        <p style="font-size:15px;">One alert may have multiple hits. <span class="hi">Consolidator</span> aggregates all hit-level decisions into one alert-level recommendation.</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- SLIDE 6 — USER INTERACTION -->
+<div class="slide">
+  <div class="content">
+    <h2 class="cen fade-up">User <span class="g">Interaction Flow</span></h2>
+    <div class="sep fade-up d1"></div>
+    <div class="fade-up d2" style="position:relative;margin-bottom:16px;">
+      <svg viewBox="0 0 1000 280" width="100%">
+        <defs><marker id="arrowF6" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto"><polygon points="0 0,8 3,0 6" fill="#4b5563"/></marker></defs>
+        <!-- Bridger System -->
+        <rect x="5" y="15" width="190" height="85" rx="12" fill="rgba(212,168,67,.07)" stroke="var(--gold)" stroke-width="1.5"/>
+        <text x="100" y="50" text-anchor="middle" fill="var(--gold)" font-size="13" font-weight="700">&#128279; Bridger System</text>
+        <text x="100" y="68" text-anchor="middle" fill="#8899aa" font-size="11">Sanctions screening</text>
+        <text x="100" y="84" text-anchor="middle" fill="#8899aa" font-size="11">Alert source</text>
+        <!-- Arrow 1 -->
+        <line x1="195" y1="57" x2="263" y2="57" stroke="#4b5563" stroke-width="2" marker-end="url(#arrowF6)"/>
+        <!-- AuroraAI Batch Engine -->
+        <rect x="263" y="15" width="190" height="85" rx="12" fill="rgba(212,168,67,.07)" stroke="var(--gold)" stroke-width="1.5"/>
+        <text x="358" y="46" text-anchor="middle" fill="var(--gold)" font-size="13" font-weight="700">&#9889; AuroraAI Batch</text>
+        <text x="358" y="62" text-anchor="middle" fill="var(--gold)" font-size="12" font-weight="600">Engine</text>
+        <text x="358" y="79" text-anchor="middle" fill="#8899aa" font-size="11">Scheduled polling</text>
+        <text x="358" y="94" text-anchor="middle" fill="#8899aa" font-size="10">FastAPI + Celery</text>
+        <!-- Arrow 2 -->
+        <line x1="453" y1="57" x2="521" y2="57" stroke="#4b5563" stroke-width="2" marker-end="url(#arrowF6)"/>
+        <!-- AI Agent Pipeline -->
+        <rect x="521" y="15" width="190" height="85" rx="12" fill="rgba(212,168,67,.07)" stroke="var(--gold)" stroke-width="1.5"/>
+        <text x="616" y="46" text-anchor="middle" fill="var(--gold)" font-size="13" font-weight="700">&#129302; AI Agent</text>
+        <text x="616" y="62" text-anchor="middle" fill="var(--gold)" font-size="12" font-weight="600">Pipeline</text>
+        <text x="616" y="79" text-anchor="middle" fill="#8899aa" font-size="11">5-agent analysis</text>
+        <text x="616" y="94" text-anchor="middle" fill="#8899aa" font-size="10">Maker-Checker</text>
+        <!-- Arrow 3 -->
+        <line x1="711" y1="57" x2="779" y2="57" stroke="#4b5563" stroke-width="2" marker-end="url(#arrowF6)"/>
+        <!-- Oracle Results -->
+        <rect x="779" y="15" width="216" height="85" rx="12" fill="rgba(34,197,94,.07)" stroke="var(--green)" stroke-width="1.5"/>
+        <text x="887" y="50" text-anchor="middle" fill="var(--green)" font-size="13" font-weight="700">&#128190; Oracle Results</text>
+        <text x="887" y="68" text-anchor="middle" fill="#8899aa" font-size="11">Decisions persisted</text>
+        <text x="887" y="84" text-anchor="middle" fill="#8899aa" font-size="11">Hit &amp; alert level</text>
+        <!-- Oracle → Review Dashboard loop -->
+        <polyline points="887,100 887,148 616,148 616,165" stroke="#4b5563" stroke-width="2" fill="none" marker-end="url(#arrowF6)"/>
+        <!-- Review Dashboard -->
+        <rect x="521" y="165" width="190" height="80" rx="12" fill="rgba(212,168,67,.07)" stroke="var(--gold)" stroke-width="1.5"/>
+        <text x="616" y="196" text-anchor="middle" fill="var(--gold)" font-size="13" font-weight="700">&#128196; Review</text>
+        <text x="616" y="212" text-anchor="middle" fill="var(--gold)" font-size="12" font-weight="600">Dashboard</text>
+        <text x="616" y="230" text-anchor="middle" fill="#8899aa" font-size="11">AI rec + evidence</text>
+        <!-- Review Dashboard → QSS Analyst -->
+        <line x1="521" y1="205" x2="453" y2="205" stroke="#4b5563" stroke-width="2" marker-end="url(#arrowF6)"/>
+        <!-- QSS Analyst -->
+        <rect x="263" y="165" width="190" height="80" rx="12" fill="rgba(59,130,246,.08)" stroke="var(--blue)" stroke-width="1.5"/>
+        <text x="358" y="197" text-anchor="middle" fill="var(--blue-1)" font-size="18">&#128100;</text>
+        <text x="358" y="216" text-anchor="middle" fill="var(--blue-1)" font-size="13" font-weight="700">QSS Analyst</text>
+        <text x="358" y="233" text-anchor="middle" fill="#8899aa" font-size="11">Reviews &bull; Decides</text>
+        <!-- Footer label -->
+        <rect x="263" y="258" width="448" height="18" rx="5" fill="rgba(212,168,67,.06)"/>
+        <text x="487" y="271" text-anchor="middle" fill="var(--gold)" font-size="11" font-weight="600">Human-in-the-Loop — AI assists, Analyst decides</text>
+      </svg>
+    </div>
+    <div class="g3 fade-up d3" style="margin-top:4px;">
+      <div class="card cen"><div style="font-size:28px;margin-bottom:8px;color:var(--blue-1);">1</div><h3 style="font-size:15px;color:var(--blue-1);">Alerts Ingested</h3><p style="font-size:13px;">Batch engine pulls alerts via scheduled poll or API trigger</p></div>
+      <div class="card cen"><div style="font-size:28px;margin-bottom:8px;color:var(--gold);">2</div><h3 style="font-size:15px;">AI Recommends</h3><p style="font-size:13px;">5-agent pipeline produces decision with confidence &amp; rationale</p></div>
+      <div class="card cen"><div style="font-size:28px;margin-bottom:8px;color:var(--green);">3</div><h3 style="font-size:15px;color:var(--green);">Analyst Decides</h3><p style="font-size:13px;">Accepts or overrides AI recommendation, submits final decision</p></div>
+    </div>
+  </div>
+</div>
+
+<!-- SLIDE 7 — ANALYST BENEFITS (Tabbed) -->
+<div class="slide">
+  <div class="content">
+    <h2 class="cen fade-up">How AuroraAI Helps the <span class="g">Analyst</span></h2>
+    <div class="sep fade-up d1"></div>
+    <div class="fade-up d2">
+      <div class="tabs" id="benefitTabs">
+        <div class="tab active" onclick="switchTab('benefit',0)">&#9201; Speed</div>
+        <div class="tab" onclick="switchTab('benefit',1)">&#128270; Analysis</div>
+        <div class="tab" onclick="switchTab('benefit',2)">&#9989; Quality</div>
+        <div class="tab" onclick="switchTab('benefit',3)">&#127919; Focus</div>
+        <div class="tab" onclick="switchTab('benefit',4)">&#128218; Audit</div>
+      </div>
+      <div id="benefit-panels">
+        <div class="tab-panel active">
+          <div class="g2">
+            <div class="card card-gold">
+              <h3>&#9201; Dramatic Time Savings</h3>
+              <div class="g2" style="margin-top:16px;">
+                <div class="stat"><div class="stat-num" data-target="80" data-suffix="%">0%</div><div class="stat-lbl">Time Reduction</div></div>
+                <div class="stat"><div class="stat-num" data-target="4">0</div><div class="stat-lbl">Throughput Gain</div></div>
+              </div>
+              <ul style="margin-top:16px;"><li>Review time: 15-30 min &rarr; 3-5 min per alert</li><li>3-4x daily throughput increase</li><li>Immediate structured AI summary on load</li></ul>
+            </div>
+            <div class="card">
+              <h3 style="color:var(--blue-1);">Before vs. After</h3>
+              <table class="tbl" style="margin-top:8px;">
+                <thead><tr><th>Metric</th><th>Before</th><th>With AuroraAI</th></tr></thead>
+                <tbody>
+                  <tr><td>Alerts/analyst/day</td><td>10-20</td><td class="imp">60-120 &#8593;</td></tr>
+                  <tr><td>Review time/alert</td><td>15-30 min</td><td class="imp">3-5 min</td></tr>
+                  <tr><td>False positive rate</td><td>~73%</td><td class="imp">~17%</td></tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+        <div class="tab-panel">
+          <div class="card card-blue" style="max-width:800px;margin:0 auto;">
+            <h3>&#128202; Analysis Provided</h3>
+            <p>Every recommendation includes:<br>
+            <span class="hi">Field-by-field comparison</span> of customer vs. watchlist data &bull; <span class="hi">Detailed rationale</span> &amp; why TF, FF, or Human Review &bull; <span class="hi">Supporting evidence</span> pulled from structured CDEs &bull; No more manual data gathering &mdash; everything the analyst needs is presented in one view.</p>
+          </div>
+        </div>
+        <div class="tab-panel">
+          <div class="card card-green" style="max-width:800px;margin:0 auto;">
+            <h3 style="color:var(--green);">&#9989; Consistent Decision Quality</h3>
+            <p>The <span class="hi">Maker-Checker</span> pattern eliminates decision drift from fatigue, shift changes, or varying analyst experience. Two different AI models independently evaluate each alert, and disagreements are flagged for human review.</p>
+            <div style="display:flex;align-items:center;gap:20px;margin-top:16px;padding:14px;background:rgba(255,255,255,.03);border-radius:8px;">
+              <div style="text-align:center;"><p style="font-size:14px;color:var(--gold);font-weight:700;">Maker Agent</p><span class="dim">Proposes a decision</span></div>
+              <div style="font-size:24px;color:var(--gray);">&#8644;</div>
+              <div style="text-align:center;"><p style="font-size:14px;color:#a45773;font-weight:700;">Checker Agent</p><span class="dim">Validates independently</span></div>
+            </div>
+          </div>
+        </div>
+        <div class="tab-panel">
+          <div class="card card-teal" style="max-width:800px;margin:0 auto;">
+            <h3 style="color:var(--teal);">&#127919; Focus on What Matters</h3>
+            <p>With AuroraAI handling the bulk of false positive identification, analysts can focus their expertise on:</p>
+            <ul style="margin-top:12px;"><li><span class="hi">Genuine True Positives</span> &bull; Complex edge cases</li><li>Cases flagged as <span class="hi">Human Review</span></li><li>Higher-value compliance work</li></ul>
+          </div>
+        </div>
+        <div class="tab-panel">
+          <div class="card card-gold" style="max-width:800px;margin:0 auto;">
+            <h3>&#128218; Built-in Audit Trail</h3>
+            <p>Every agent score, rationale, token cost, and analyst action is persisted in Oracle. Full traceability for regulatory audits with <span class="hi">zero manual documentation overhead</span>. AI feedback loop for continuous improvement.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="card card-gold cen fade-up d5" style="max-width:850px;margin:30px auto 0;">
+      <p style="font-size:17px;"><span class="hi">Key Principle:</span> AuroraAI is a <strong>decision-support tool</strong>. AI recommends; humans decide. This ensures regulatory compliance while maximizing efficiency.</p>
+    </div>
+  </div>
+</div>
+
+<!-- SLIDE 8 — ROI -->
+<div class="slide">
+  <div class="content">
+    <h2 class="cen fade-up">Return on <span class="g">Investment</span></h2>
+    <div class="sep fade-up d1"></div>
+    <div class="g4 fade-up d2" style="margin-bottom:30px;">
+      <div class="stat"><div class="stat-num" data-target="80" data-suffix="%">0%</div><div class="stat-lbl">Time Reduction</div></div>
+      <div class="stat"><div class="stat-num" data-target="99.7" data-suffix="%" data-decimals="1">0%</div><div class="stat-lbl">Success Rate</div></div>
+      <div class="stat"><div class="stat-num" data-prefix="$" data-target="0.05" data-decimals="2">$0.00</div><div class="stat-lbl">Cost / Alert</div></div>
+      <div class="stat"><div class="stat-num" data-target="4" data-suffix="x">0x</div><div class="stat-lbl">Throughput Gain</div></div>
+    </div>
+    <div class="fade-up d3">
+      <table class="tbl">
+        <thead>
+          <tr><th>Metric</th><th>Before AuroraAI</th><th>With AuroraAI</th><th>Impact</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>Avg. review time / alert</td><td>15-30 min</td><td>2-5 min</td><td class="imp">&#8593; 80% faster</td></tr>
+          <tr><td>Alerts / analyst / day</td><td>20-30</td><td>60-120</td><td class="imp">&#8593; 4x throughput</td></tr>
+          <tr><td>Standardisation</td><td>Variable</td><td>Standardised + rationale</td><td class="imp">Instantly with evidence</td></tr>
+          <tr><td>False positive handling</td><td>Manual field-by-field</td><td>Auto-identified + rationale</td><td class="imp">Instant with evidence</td></tr>
+          <tr><td>Audit readiness</td><td>Manual documentation</td><td>Automatic full trail</td><td class="imp">100% traceable</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+
+<!-- SLIDE 9 — BNY BENEFITS -->
+<div class="slide">
+  <div class="content">
+    <h2 class="cen fade-up">How BNY can <span class="g">Benefit</span></h2>
+    <div class="sep fade-up d1"></div>
+    <div class="g3 fade-up d2">
+      <div class="card cen fade-up d2">
+        <svg width="50" height="50" style="margin-bottom:12px;"><circle cx="25" cy="25" r="22" fill="rgba(212,168,67,.11)" stroke="var(--gold)" stroke-width="1.2"/><text x="25" y="31" text-anchor="middle" fill="var(--gold)" font-size="20">&#9881;</text></svg>
+        <h3>Operational Efficiency</h3>
+        <ul style="text-align:left;"><li>70-80% reduction in review time</li><li>3-4x daily throughput increase</li><li>Redeploy capacity to high-value work</li></ul>
+      </div>
+      <div class="card cen fade-up d3">
+        <svg width="50" height="50" style="margin-bottom:12px;"><circle cx="25" cy="25" r="22" fill="rgba(34,197,94,.11)" stroke="var(--green)" stroke-width="1.2"/><text x="25" y="31" text-anchor="middle" fill="var(--green)" font-size="20">&#128737;</text></svg>
+        <h3 style="color:var(--green);">Compliance</h3>
+        <ul style="text-align:left;"><li>Consistent, auditable decisions</li><li>Complete trail for regulators</li><li>Reduced missed True Match risk</li></ul>
+      </div>
+      <div class="card cen fade-up d4">
+        <svg width="50" height="50" style="margin-bottom:12px;"><circle cx="25" cy="25" r="22" fill="rgba(59,130,246,.11)" stroke="var(--blue)" stroke-width="1.2"/><text x="25" y="31" text-anchor="middle" fill="var(--blue-1)" font-size="20">&#128100;</text></svg>
+        <h3 style="color:var(--blue-1);">Human in Control</h3>
+        <ul style="text-align:left;"><li>Human always final decision-maker</li><li>AI assists, never replaces</li><li>Full override capability</li></ul>
+      </div>
+    </div>
+    <div class="card card-gold cen fade-up d5" style="max-width:850px;margin:30px auto 0;">
+      <p style="font-size:17px;"><span class="hi">Key Principle:</span> AuroraAI is a <strong>decision-support tool</strong>. All AI outputs are recommendations for human analyst review. The AI does not take final decisions.</p>
+    </div>
+  </div>
+</div>
+
+<!-- SLIDE 10 — POC RESULTS -->
+<div class="slide" style="display:none">
+  <div class="content">
+    <h2 class="cen fade-up">Proof of Concept <span class="g">Results</span></h2>
+    <div class="sep fade-up d1"></div>
+    <p class="cen dim fade-up d1" style="margin-bottom:24px;">EMEA Region Pilot &mdash; December 2025 Sanctions Alerts</p>
+    <div class="g4 fade-up d2" style="margin-bottom:30px;">
+      <div class="stat"><div class="stat-num" data-target="2026">0</div><div class="stat-lbl">Hits Processed</div></div>
+      <div class="stat"><div class="stat-num" data-target="363">0</div><div class="stat-lbl">Alerts Analyzed</div></div>
+      <div class="stat"><div class="stat-num" data-target="99.7" data-suffix="%" data-decimals="1">0%</div><div class="stat-lbl">Success Rate</div></div>
+      <div class="stat"><div class="stat-num" data-target="5">0</div><div class="stat-lbl">AI Agents</div></div>
+    </div>
+    <div class="g2 fade-up d3">
+      <div class="card card-gold">
+        <h3>Performance Highlights</h3>
+        <ul><li>363 EMEA alerts processed end-to-end</li><li>High Maker-Checker agreement rate</li><li>Structured JSON output with rationale</li><li>Full Oracle persistence (hit + alert level)</li><li>Configurable concurrent processing</li></ul>
+      </div>
+      <div class="card card-blue">
+        <h3 style="color:var(--blue-1);">Technical Validation</h3>
+        <ul><li>Circuit breakers, rate limiting, exponential backoff</li><li>Multi-model: GPT-4, Gemini Flash, LLaMA</li><li>Batched LLM calls for cost efficiency</li><li>Zero data leakage via internal Eliza</li><li>Every token &amp; cost tracked per agent</li></ul>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- SLIDE 11 — ROADMAP -->
+<div class="slide">
+  <div class="content">
+    <h2 class="cen fade-up">Roadmap &amp; <span class="g">Next Steps</span></h2>
+    <div class="sep fade-up d1"></div>
+    <div class="fade-up d2" style="max-width:1000px;margin:0 auto;">
+      <svg viewBox="0 0 1000 120" width="100%">
+        <defs>
+          <filter id="glow2"><feGaussianBlur stdDeviation="3" result="blur"/><feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
+        </defs>
+        <!-- Timeline line -->
+        <line x1="50" y1="40" x2="950" y2="40" stroke="rgba(255,255,255,.08)" stroke-width="3" stroke-linecap="round"/>
+        <!-- Active progress (current = first dot) -->
+        <line x1="50" y1="40" x2="200" y2="40" stroke="url(#gGold)" stroke-width="3" stroke-linecap="round"/>
+        <!-- Phase dots -->
+        <circle cx="200" cy="40" r="8" fill="var(--gold)" filter="url(#glow2)"/>
+        <circle cx="500" cy="40" r="8" fill="rgba(255,255,255,.2)"/>
+        <circle cx="800" cy="40" r="8" fill="rgba(255,255,255,.2)"/>
+        <!-- Phase labels -->
+        <text x="200" y="68" text-anchor="middle" fill="var(--gold)"  font-size="13" font-weight="700">Q1 2026</text>
+        <text x="500" y="68" text-anchor="middle" fill="#8899aa" font-size="13" font-weight="700">Q2&#x2013;Q3 2026</text>
+        <text x="800" y="68" text-anchor="middle" fill="#8899aa" font-size="13" font-weight="700">Q4 2026+</text>
+        <!-- Phase names -->
+        <text x="200" y="90" text-anchor="middle" fill="var(--gold-1)" font-size="12">&#x25CF; Current</text>
+        <text x="500" y="90" text-anchor="middle" fill="#8899aa" font-size="12">Scale</text>
+        <text x="800" y="90" text-anchor="middle" fill="#8899aa" font-size="12">Optimise</text>
+      </svg>
+    </div>
+    <div class="g3 fade-up d3" style="margin-top:10px;">
+      <div class="card card-gold">
+        <h3 style="font-size:15px;">&#x25CF; Current / Q1 2026</h3>
+        <ul><li>EMEA batch processing &#10003;</li><li>5-agent Maker-Checker pipeline</li><li>Oracle persistence &amp; review API</li><li>FastAPI + scheduled polling</li></ul>
+      </div>
+      <div class="card card-blue">
+        <h3 style="font-size:15px;color:var(--blue-1);">Scale / Q2&#x2013;Q3 2026</h3>
+        <ul><li>Analyst Review Portal (UI)</li><li>AMER &amp; APAC expansion</li><li>Real-time processing</li><li>Analyst feedback loop</li></ul>
+      </div>
+      <div class="card card-green">
+        <h3 style="font-size:15px;color:var(--green);">Optimise / Q4 2026+</h3>
+        <ul><li>Self-learning from feedback</li><li>Advanced analytics dashboard</li><li>Downstream system integration</li><li>New compliance screening domains</li></ul>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- SLIDE 12 — THANK YOU -->
+<div class="slide" data-bg="radial-gradient(ellipse at 50% 50%,#14213d 0%,#0a0f1a 70%)">
+  <div class="content cen">
+    <svg width="75" height="75" style="margin-bottom:20px;"><circle cx="37" cy="37" r="33" fill="none" stroke="url(#gAur)" stroke-width="2" opacity=".4"/><text x="37" y="24" text-anchor="middle" fill="url(#gAur)" font-size="30" font-weight="700">A</text></svg>
+    <h1 class="fade-up d1" style="font-size:52px;">Thank <span class="g">You</span></h1>
+    <div class="sep fade-up d2"></div>
+    <p class="sub fade-up d3" style="font-size:20px;">AuroraAI &mdash; Empowering Analysts with AI-Assisted Sanctions Screening</p>
+    <p class="fade-up d4" style="color:var(--gray);margin-top:16px;">Questions &amp; Discussion</p>
+    <p class="fade-up d5" style="color:var(--gray);font-size:13px;margin-top:6px;">Quality Screening Services &bull; BNY</p>
+    <div class="card fade-up d5" style="max-width:700px;margin:30px auto;text-align:left;background:rgba(255,255,255,.02);border-radius:10px;padding:16px;font-size:13px;color:var(--gray);">
+      <p>AuroraAI is a decision-support tool. All AI outputs are recommendations for human analyst review. The AI does not take final decisions. AuroraAI uses an internal IT Pipeline using BNY Eliza (enterprise LLM gateway). Models: GPT-4.1 for Checker, Gemini Flash for others.</p>
+    </div>
+  </div>
+</div>
+
+</div><!-- /deck -->
+
+<script>
+var slides = document.querySelectorAll('.slide');
+var total = slides.length;
+var cur = 0;
+var progBar = document.getElementById('progressBar');
+var counter = document.getElementById('counter');
+
+// Build nav dots
+var navBar = document.getElementById('navBar');
+slides.forEach(function(s, i) {
+  var d = document.createElement('div');
+  d.className = 'nav-dot' + (i === 0 ? ' active' : '');
+  d.onclick = function() { goTo(i); };
+  navBar.appendChild(d);
+});
+
+function goTo(n) {
+  if (n < 0 || n >= total || n === cur) return;
+  slides[cur].classList.remove('active');
+  slides[cur].classList.add('exit-left');
+  setTimeout(function() { slides[cur].classList.remove('exit-left'); cur = n; }, 100);
+  var prev = cur; cur = n;
+  slides[cur].classList.remove('exit-left');
+  slides[cur].classList.add('active');
+  if (slides[cur].dataset.bg) slides[cur].style.background = slides[cur].dataset.bg;
+  document.querySelectorAll('.nav-dot').forEach(function(d, i) { d.classList.toggle('active', i === cur); });
+  progBar.style.width = ((cur) / (total - 1) * 100) + '%';
+  counter.textContent = String(cur + 1).padStart(2, '0') + ' / ' + total;
+  animateCounters();
+  setTimeout(function() { slides[prev].classList.remove('exit-left'); }, 550);
+}
+
+function go(dir) { goTo(cur + dir); }
+
+document.addEventListener('keydown', function(e) {
+  if (e.key === 'ArrowRight' || e.key === ' ' || e.key === 'PageDown') go(1);
+  else if (e.key === 'ArrowLeft' || e.key === 'PageUp') go(-1);
+});
+
+// Swipe support
+var tx = 0;
+document.addEventListener('touchstart', function(e) { tx = e.touches[0].clientX; });
+document.addEventListener('touchend', function(e) {
+  var dx = e.changedTouches[0].clientX - tx;
+  if (Math.abs(dx) > 50) { dx < 0 ? go(1) : go(-1); }
+});
+
+// Animated Counters
+function animateCounters() {
+  slides[cur].querySelectorAll('.stat-num[data-target]').forEach(function(el) {
+    var target = parseFloat(el.dataset.target),
+        suffix = el.dataset.suffix || '',
+        prefix = el.dataset.prefix || '',
+        dec = parseInt(el.dataset.decimals) || 0,
+        dur = 1200, start = 0, startTime = null;
+    function step(ts) {
+      if (!startTime) startTime = ts;
+      var p = Math.min((ts - startTime) / dur, 1);
+      var v = start + (target - start) * easeOut(p);
+      el.textContent = prefix + (dec > 0 ? v.toFixed(dec) : Math.round(v)) + suffix;
+      if (p < 1) requestAnimationFrame(step);
+    }
+    requestAnimationFrame(step);
+  });
+}
+function easeOut(t) { return 1 - Math.pow(1 - t, 3); }
+
+// Particles
+(function() {
+  var c = document.getElementById('particles');
+  for (var i = 0; i < 30; i++) {
+    var p = document.createElement('div');
+    p.className = 'particle';
+    p.style.left = Math.random() * 100 + '%';
+    p.style.animationDuration = (8 + Math.random() * 12) + 's';
+    p.style.animationDelay = Math.random() * 10 + 's';
+    p.style.width = p.style.height = (1 + Math.random() * 2) + 'px';
+    c.appendChild(p);
+  }
+})();
+
+// Architecture Tooltips
+var archDetails = [
+  {title:'Data Source', desc:'Bridger sanctions screening system generates alerts stored in Oracle RCV_QSS_CONSUMPTION. AuroraAI reads new alerts via scheduled batch polling or on-demand API trigger.'},
+  {title:'Backend API', desc:'FastAPI service with REST endpoints for batch trigger, status tracking, progress monitoring, and review reports. Background poller auto-detects new triggers.'},
+  {title:'AI Engine', desc:'5-agent pipeline using BNY Eliza (enterprise LLM gateway). Models: GPT-4.1 for Checker, Gemini Flash for others. Circuit breakers, rate limiting, and auto-retry for resilience.'},
+  {title:'Persistence', desc:'Oracle QSS_FPR schema stores batch metadata, alert-level decisions, hit-level results, agent metrics, and token usage. Full audit trail for every decision.'},
+  {title:'Analyst UI', desc:'Web-based review dashboard where QSS analysts see AI recommendations with rationale, confidence scores, and field comparisons. One-click accept/override workflow.'}
+];
+
+function showArchDetail(idx) {
+  var tt = document.getElementById('archTooltip');
+  tt.innerHTML = '<h4>' + archDetails[idx].title + '</h4>' + archDetails[idx].desc;
+  tt.classList.add('show');
+  tt.style.left = '50%';
+  tt.style.transform = 'translateX(-50%) translateY(0)';
+  tt.style.top = 'auto';
+  tt.style.bottom = '80px';
+  setTimeout(function() { tt.classList.remove('show'); }, 4000);
+}
+
+// Pipeline Tooltips
+var pipeDetails = [
+  {title:'Pre-Processor Agent', desc:'Parses watchlist MatchData XML into structured CDEs. Uses AI to extract party names from address fields (FBO, C/O patterns). Output: clean JSON with all customer and watchlist fields.'},
+  {title:'Analyzer Agent', desc:'Performs field-by-field comparison: names, DOB, nationality, addresses, ID numbers. Calculates similarity scores and flags data completeness issues. Output: detailed comparison matrix.'},
+  {title:'Maker Agent', desc:'Decision engine that evaluates analyzer output against configurable thresholds. Decisions: True Match (score>90 + evidence), False Positive (score<75), or Human Review (borderline). Output: decision + confidence + rationale.'},
+  {title:'Checker Agent', desc:'Independent QA using a DIFFERENT AI model (GPT-4.1). Validates Maker decision. Flags disagreements for human review. Ensures dual-model quality assurance on every hit.'},
+  {title:'Consolidator Agent', desc:'Aggregates all hit-level decisions into one alert-level recommendation. Applies business rules for multi-hit alerts. Final output: structured JSON with overall decision, confidence, and full evidence chain.'}
+];
+
+function showPipeDetail(idx) {
+  var tt = document.getElementById('pipeTooltip');
+  tt.innerHTML = '<h4>' + pipeDetails[idx].title + '</h4>' + pipeDetails[idx].desc;
+  tt.classList.add('show');
+  tt.style.transform = 'translateX(-50%) translateY(0)';
+  tt.style.top = 'auto';
+  tt.style.bottom = '60px';
+  setTimeout(function() { tt.classList.remove('show'); }, 4500);
+}
+
+function switchTab(group, idx) {
+  var tabs = document.querySelectorAll('#' + group + 'Tabs .tab');
+  var panels = document.querySelectorAll('#' + group + '-panels .tab-panel');
+  tabs.forEach(function(t, i) { t.classList.toggle('active', i === idx); });
+  panels.forEach(function(p, i) { p.classList.toggle('active', i === idx); });
+}
+
+// Initial
+animateCounters();
+</script>
+</body>
+</html>
