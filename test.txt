@@ -137,6 +137,13 @@ It assists. Humans decide.
 
 
 
-
+[Open — 10 seconds]
+This is the Governance Dial. It shows how every AI initiative flows end-to-end, and why governance isn't bolted on — it's built into the path.
+[The arc — 20 seconds]
+The gold arc is the delivery journey, six stages. We start on the left with a business use case. Then we register it in the AI Control Plane at the center. Governance review. Build and test. Release. And on the right, we go live and monitor continuously.
+[The gates — 20 seconds]
+The five red stops are the gates. ADAB validates the design. MRMG validates the model. Permission-to-Build locks the scope. Permission-to-Operate is the production release gate. And OPM means approval decays — it has to be re-earned.
+[Close — 10 seconds]
+That's the headline at the bottom: no project advances past a red stop without evidence, and approval is never permanent.
 
 
