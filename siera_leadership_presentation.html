@@ -1,0 +1,1031 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=1536,initial-scale=1">
+<title>SIERA — Leadership Briefing</title>
+<style>
+/* Same visual system as "AUR presentation.html": navy canvas, gold accent, glass cards, animated SVG flows. */
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
+html{font-size:16px}
+body{font-family:'Segoe UI','Helvetica Neue',Arial,sans-serif;background:#0a0f1a;color:#e0e6ed;overflow:hidden}
+:root{--navy:#0a0f1a;--navy2:#111827;--slate:#1c293b;--blue:#3b82f6;--blue-1:#60a5fa;--gold:#d4a843;--gold-1:#f0d080;--white:#f4f6f8;--gray:#8a99ab;--green:#22c55e;--teal:#14b8a6;--red:#ef4444;--purple:#a78bfa;--line:#7a8ba3;--zone:#18253f;--zone-focus:#203050;--zone-ai:#211a45}
+
+/* — Slide engine */
+.deck{position:relative;width:100vw;height:100vh;overflow:hidden}
+.slide{position:absolute;top:0;left:0;width:100%;height:100%;display:flex;flex-direction:column;justify-content:center;align-items:center;padding:50px 80px 76px;opacity:0;transform:translateX(60px);transition:opacity .55s ease,transform .55s ease;pointer-events:none;background:linear-gradient(135deg,#0a0f1a 0%,#111827 100%)}
+.slide.active{opacity:1;transform:translateX(0);pointer-events:auto;z-index:2}
+.slide.exit-left{opacity:0;transform:translateX(-60px)}
+.slide.hero{background:radial-gradient(ellipse at 30% 50%,#14213d 0%,#0a0f1a 70%)}
+
+/* — Navigation */
+.nav-bar{position:fixed;bottom:0;left:0;right:0;height:56px;background:rgba(10,15,26,.92);backdrop-filter:blur(12px);display:flex;align-items:center;justify-content:center;gap:10px;z-index:100;border-top:1px solid rgba(255,255,255,.06)}
+.nav-dot{width:12px;height:12px;border-radius:50%;background:rgba(255,255,255,.12);cursor:pointer;border:0;transition:background .3s,box-shadow .3s}
+.nav-dot:hover{background:rgba(255,255,255,.3)}
+.nav-dot.active{background:var(--gold);box-shadow:0 0 12px rgba(212,168,67,.4)}
+.nav-arrows{position:fixed;top:50%;z-index:100;width:44px;height:44px;border-radius:50%;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.1);color:#fff;font-size:20px;display:flex;align-items:center;justify-content:center;cursor:pointer;transition:background .25s,border-color .25s;backdrop-filter:blur(8px)}
+.nav-arrows:hover{background:rgba(212,168,67,.2);border-color:var(--gold)}
+.nav-dot:focus-visible,.nav-arrows:focus-visible{outline:2px solid var(--gold-1);outline-offset:3px}
+#prevBtn{left:20px;transform:translateY(-50%)}
+#nextBtn{right:20px;transform:translateY(-50%)}
+.progress-bar{position:fixed;top:0;left:0;height:3px;width:100%;background:linear-gradient(90deg,var(--gold),var(--blue));z-index:100;transform-origin:left;transform:scaleX(0);transition:transform .4s ease}
+.slide-counter{position:fixed;top:14px;right:24px;font-size:13px;color:var(--gray);z-index:100;letter-spacing:1px}
+.brand{position:fixed;top:14px;left:24px;font-size:12px;color:var(--gray);z-index:100;letter-spacing:2px;text-transform:uppercase;font-weight:600}
+
+/* — Typography */
+h1{font-size:58px;font-weight:700;color:var(--white);letter-spacing:-.5px}
+h2{font-size:40px;font-weight:600;color:var(--white);margin-bottom:6px}
+h3{font-size:19px;font-weight:600;color:var(--gold);margin-bottom:10px}
+.g{color:var(--gold)}
+.sub{font-size:22px;color:var(--gray);font-weight:300;margin-bottom:32px}
+.sep{width:70px;height:3px;background:var(--gold);margin:14px auto 26px;border-radius:2px}
+p,li{font-size:16px;line-height:1.65;color:#b8c5d3}
+.hi{color:var(--gold-1);font-weight:600}
+.dim{color:var(--gray);font-size:14px}
+.cen{text-align:center}
+.lead{max-width:900px;margin:0 auto 26px;font-size:18px;text-align:center}
+.pipe-node:focus{outline:none}.pipe-node:focus-visible{outline:2px solid var(--gold-1);outline-offset:3px}
+.part{font-size:12px;font-weight:700;letter-spacing:2.5px;text-transform:uppercase;color:var(--gold);text-align:center;margin-bottom:8px}
+.chip{display:inline-block;padding:6px 16px;border-radius:999px;font-size:14px;font-weight:700;color:#fff;margin:0 5px}
+.c-ok{background:#17853f}.c-man{background:#0d8278}.c-sys{background:#2b3950}
+.pain{display:flex;align-items:center;gap:14px;margin-bottom:14px}
+.pain strong{color:var(--white);font-size:16px}
+.tile{flex:none;width:42px;height:42px;border-radius:10px;background:rgba(239,68,68,.16);color:#f87171;font-weight:800;font-size:15px;display:flex;align-items:center;justify-content:center}
+
+/* — Layout */
+.content{width:100%;max-width:1200px;z-index:1}
+.content.wide{max-width:1400px}
+.g2{display:grid;grid-template-columns:1fr 1fr;gap:24px}
+.g3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:20px}
+.g4{display:grid;grid-template-columns:repeat(4,1fr);gap:16px}
+
+/* — Cards */
+.card{background:linear-gradient(160deg,rgba(255,255,255,.055),rgba(255,255,255,.02));box-shadow:0 10px 30px rgba(0,0,0,.22);border-radius:14px;padding:24px 22px;transition:transform .25s,box-shadow .25s}
+.card:hover{transform:translateY(-4px);box-shadow:0 12px 40px rgba(0,0,0,.3)}
+.card.tight{padding:16px 18px}
+.kick{font-size:12px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:var(--gray);margin-bottom:6px}
+.principle{max-width:880px;margin:22px auto 0;text-align:center}
+
+/* — Stats */
+.stat{text-align:center;padding:20px 14px;background:rgba(255,255,255,.035);border-radius:14px}
+.stat-num{font-size:46px;font-weight:700;color:var(--gold);font-variant-numeric:tabular-nums;line-height:1.1}
+.stat-lbl{font-size:13px;color:var(--gray);text-transform:uppercase;letter-spacing:1px;margin-top:4px}
+
+/* — Lists */
+ul{list-style:none;padding:0}
+ul li{padding:3px 0 3px 22px;position:relative;font-size:15px}
+ul li::before{content:'';position:absolute;left:2px;top:13px;width:7px;height:7px;border-radius:50%;background:var(--gold);opacity:.55}
+
+/* — Tables */
+.tbl{width:100%;border-collapse:separate;border-spacing:0;border-radius:12px;overflow:hidden}
+.tbl th{background:rgba(212,168,67,.12);color:var(--gold);font-size:14px;font-weight:600;padding:11px 18px;text-align:left}
+.tbl td{padding:9px 18px;font-size:14px;color:#b8c5d3;border-bottom:1px solid rgba(255,255,255,.05)}
+.tbl tr:hover td{background:rgba(255,255,255,.02)}
+.tbl .imp{color:var(--gold-1);font-weight:700}
+
+/* — Diagrams (inline SVG) */
+.dia{display:block;width:100%;margin:0 auto}
+.dia text{font-family:inherit}
+.n{stroke:none;filter:drop-shadow(0 6px 12px rgba(0,0,0,.38))}
+.n-ai{fill:url(#fAi)}
+.n-man{fill:url(#fMan)}
+.n-sys{fill:url(#fSys)}
+.n-ok{fill:url(#fOk)}
+.n-gold{fill:url(#fAmb)}
+.n-blue{fill:url(#fBlue)}
+.n-tool{fill:url(#fTool)}
+.zone{fill:var(--zone)}
+.zone-focus{fill:var(--zone-focus)}
+.zone-ai{fill:var(--zone-ai)}
+.th{fill:#fff;font-size:14px;font-weight:700;text-anchor:middle}
+.ts{fill:rgba(255,255,255,.78);font-size:12px;text-anchor:middle}
+.tko,.pipe-node .tk{fill:rgba(255,255,255,.72)}
+.tl{fill:#b8c5d3;font-size:12px}
+.tk{fill:var(--gray);font-size:12px;font-weight:700;letter-spacing:1.3px}
+.e{fill:none;stroke:var(--line);stroke-width:2;marker-end:url(#aS)}
+.eg{fill:none;stroke:var(--green);stroke-width:2;stroke-dasharray:7 5;marker-end:url(#aG);animation:flowDash 1.2s linear infinite}
+.eb{fill:none;stroke:var(--blue-1);stroke-width:2;stroke-dasharray:3 5;marker-end:url(#aB)}
+.nohead{marker-end:none}
+.agree{fill:var(--green);font-weight:700;font-style:italic}
+.dis{fill:#f87171;font-weight:700;font-style:italic}
+.lane{fill:rgba(255,255,255,.03)}
+.ef{fill:none;stroke:var(--gold-1);stroke-width:3;marker-end:url(#aF)}
+.et{fill:none;stroke:var(--purple);stroke-width:2}
+@keyframes flowDash{to{stroke-dashoffset:-24}}
+.pipe-node{cursor:pointer;transition:transform .2s;transform-box:fill-box;transform-origin:center}
+.pipe-node:hover{transform:scale(1.04)}
+.pipe-tooltip{position:fixed;left:50%;bottom:80px;background:rgba(17,24,39,.97);box-shadow:0 16px 40px rgba(0,0,0,.5);border-radius:10px;padding:16px 20px;font-size:14px;line-height:1.55;color:#c8d6e5;width:560px;z-index:50;pointer-events:none;opacity:0;transform:translate(-50%,8px);transition:opacity .25s,transform .25s}
+.pipe-tooltip.show{opacity:1;transform:translate(-50%,0)}
+.pipe-tooltip .tip-title{color:var(--gold);font-size:15px;font-weight:700;margin-bottom:6px}
+
+/* — Priority ladder and result bars */
+.rung{display:flex;align-items:center;gap:16px;padding:14px 18px;border-radius:10px;margin-bottom:10px}
+.rung b{font-size:16px;letter-spacing:.5px;min-width:230px}
+.rung span{font-size:14px;color:#b8c5d3}
+.r-esc{background:rgba(239,68,68,.12)}.r-esc b{color:#f87171}
+.r-hold{background:rgba(212,168,67,.12)}.r-hold b{color:var(--gold-1)}
+.r-rel{background:rgba(34,197,94,.12)}.r-rel b{color:#86efac}
+.hbar-row{display:grid;grid-template-columns:230px 1fr;gap:18px;align-items:center;margin-bottom:12px}
+.hbar-row span{font-size:14px;color:#b8c5d3;text-align:right}
+.hbar-track{height:22px;border-radius:6px;background:rgba(255,255,255,.04);overflow:hidden}
+.hbar{height:100%;border-radius:6px;transform:scaleX(0);transform-origin:left;transition:transform 1.1s cubic-bezier(.16,1,.3,1) .3s}
+.slide.active .hbar{transform:scaleX(1)}
+
+/* — Entrance animation */
+.fade-up{opacity:0;transform:translateY(30px);transition:opacity .6s ease,transform .6s ease}
+.slide.active .fade-up{opacity:1;transform:translateY(0)}
+.slide.active .d1{transition-delay:.15s}.slide.active .d2{transition-delay:.3s}.slide.active .d3{transition-delay:.45s}.slide.active .d4{transition-delay:.6s}.slide.active .d5{transition-delay:.75s}
+
+/* — Particles */
+.particles{position:fixed;inset:0;z-index:0;pointer-events:none;overflow:hidden}
+.particle{position:absolute;width:2px;height:2px;background:rgba(212,168,67,.15);border-radius:50%;animation:float linear infinite}
+@keyframes float{0%{transform:translateY(100vh) scale(0);opacity:0}10%{opacity:1}90%{opacity:1}100%{transform:translateY(-10vh) scale(1);opacity:0}}
+
+@media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+@media print{.slide{position:relative!important;page-break-after:always;opacity:1!important;transform:none!important;pointer-events:auto!important;height:100vh}.fade-up{opacity:1!important;transform:none!important}.hbar{transform:none!important}.nav-bar,.nav-arrows,.progress-bar,.slide-counter,.brand,.particles{display:none!important}body{overflow:visible}}
+</style>
+</head>
+<body>
+
+<!-- Shared SVG definitions: arrow heads, gradients, and the workflow base both AI-1.2 slides reuse -->
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+<defs>
+  <marker id="aS" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto"><polygon points="0 0,8 3,0 6" fill="#7a8ba3"/></marker>
+  <marker id="aG" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto"><polygon points="0 0,8 3,0 6" fill="#22c55e"/></marker>
+  <marker id="aB" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto"><polygon points="0 0,8 3,0 6" fill="#60a5fa"/></marker>
+  <marker id="aF" markerWidth="7" markerHeight="6" refX="6" refY="3" orient="auto"><polygon points="0 0,7 3,0 6" fill="#f0d080"/></marker>
+  <symbol id="aiIcon" viewBox="0 0 24 24"><g fill="none" stroke="#fff" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M12 5 C12 3.6 10.9 2.5 9.5 2.5 C8.3 2.5 7.3 3.3 7.1 4.4 C5.6 4.6 4.5 5.9 4.5 7.4 C4.5 7.8 4.6 8.2 4.7 8.5 C3.7 9.1 3 10.2 3 11.5 C3 12.6 3.5 13.6 4.3 14.2 C4.1 14.6 4 15.1 4 15.6 C4 17.3 5.3 18.7 7 18.9 C7.4 20.1 8.5 21 9.8 21 C11 21 12 20 12 18.8 Z"/><path d="M12 5 C12 3.6 13.1 2.5 14.5 2.5 C15.7 2.5 16.7 3.3 16.9 4.4 C18.4 4.6 19.5 5.9 19.5 7.4 C19.5 7.8 19.4 8.2 19.3 8.5 C20.3 9.1 21 10.2 21 11.5 C21 12.6 20.5 13.6 19.7 14.2 C19.9 14.6 20 15.1 20 15.6 C20 17.3 18.7 18.7 17 18.9 C16.6 20.1 15.5 21 14.2 21 C13 21 12 20 12 18.8 Z"/><path d="M12 9 H9.4 M12 14.5 H9.4 M12 11.8 H14.6"/></g><g fill="#fff"><circle cx="8.5" cy="9" r="1"/><circle cx="8.5" cy="14.5" r="1"/><circle cx="15.5" cy="11.8" r="1"/></g></symbol>
+  <linearGradient id="fAi" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#8b3fd9"/><stop offset="1" stop-color="#6420b4"/></linearGradient>
+  <symbol id="toolIcon" viewBox="0 0 24 24"><path transform="rotate(45 12 12)" fill="none" stroke="#fff" stroke-width="3" stroke-linecap="round" d="M14.6 3.7 A4.2 4.2 0 1 1 9.4 3.7 M12 11.2 V20.5"/></symbol>
+  <linearGradient id="fTool" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#6a5ae0"/><stop offset="1" stop-color="#4a3bb5"/></linearGradient>
+  <linearGradient id="fMan" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#12998d"/><stop offset="1" stop-color="#0b7269"/></linearGradient>
+  <linearGradient id="fOk" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#1c9c4d"/><stop offset="1" stop-color="#14773a"/></linearGradient>
+  <linearGradient id="fAmb" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#a87417"/><stop offset="1" stop-color="#7f560e"/></linearGradient>
+  <linearGradient id="fBlue" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#2f6fe6"/><stop offset="1" stop-color="#1e4fc0"/></linearGradient>
+  <linearGradient id="fSys" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#3d4e6e"/><stop offset="1" stop-color="#2d3b55"/></linearGradient>
+  <linearGradient id="gGold" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stop-color="#d4a843"/><stop offset="100%" stop-color="#f0d080"/></linearGradient>
+
+  <!-- Workflow frame (viewBox 1500 x 660), shared by the current-flow slide and both AI-1.2 slides.
+       Zones (solid fills): Fircosoft 4-230, Level 1 240-970, Level 2 980-1496, all y 44-526
+       SC circle(70,300,r46)  Automation capsule 165-305 x 268-332 (DR | MIERA)  SI 350,262,130,76
+       RFI 1210,336,130,68  SUG 1380,196,116,68  QA band y 556-616 (human dispositions chip 390-660, QA node 720-1080)
+       Human figures (head + shoulders): UI 570-690 x 280-338, UD 790-920 x 280-338, CT 1030-1150 x 272-332, L3 1210-1340 x 200-264 -->
+  <g id="wfFrame">
+    <rect x="4" y="44" width="226" height="482" rx="14" class="zone"/>
+    <rect x="240" y="44" width="730" height="482" rx="14" class="zone-focus"/>
+    <rect x="980" y="44" width="516" height="482" rx="14" class="zone"/>
+    <text x="117" y="29" text-anchor="middle" fill="#f4f6f8" font-size="17" font-weight="700">Fircosoft</text>
+    <rect x="250" y="10" width="92" height="27" rx="6" fill="#d4a843"/>
+    <text x="296" y="29" text-anchor="middle" fill="#0a0f1a" font-size="14" font-weight="800">LEVEL 1</text>
+    <path class="e" d="M478 23 H362"/>
+    <text x="612" y="29" text-anchor="middle" fill="#f4f6f8" font-size="17" font-weight="700">Global Screening Utility (GSU)</text>
+    <path class="e" d="M746 23 H1176"/>
+    <text x="1238" y="29" text-anchor="middle" fill="#f4f6f8" font-size="15" font-weight="700">LEVEL 2</text>
+
+    <path class="e" d="M1308 200 V78 H70 V254"/>
+    <path class="e nohead" d="M1122 272 V78"/>
+    <path class="e nohead" d="M885 280 V78"/>
+    <path class="e" d="M116 300 H165"/>
+    <path class="e" d="M305 300 H350"/>
+    <path class="e" d="M690 300 H790"/>
+    <path class="e" d="M1150 300 H1180 V230 H1210"/>
+    <path class="e" d="M1180 300 V370 H1210"/>
+    <path class="e" d="M1275 336 V264"/>
+    <path class="e" d="M1340 230 H1380"/>
+
+    <rect x="556" y="66" width="188" height="24" rx="12" fill="#131c2c"/>
+    <text x="650" y="83" text-anchor="middle" class="tk" fill="#b8c5d3">RESOLVED – COMPLETED</text>
+
+    <circle cx="70" cy="300" r="46" class="n n-sys"/><text x="70" y="305" class="th">Screening</text>
+    <text x="235" y="258" class="tl" text-anchor="middle">Automation</text>
+    <path class="n n-sys" d="M235 268 H177 Q165 268 165 280 V320 Q165 332 177 332 H235 Z"/>
+    <path class="n n-gold" d="M235 268 H293 Q305 268 305 280 V320 Q305 332 293 332 H235 Z"/>
+    <text x="200" y="305" class="th">DR</text>
+    <text x="270" y="298" class="th">MIERA</text><text x="270" y="315" class="ts">Rules</text>
+    <rect x="350" y="262" width="130" height="76" rx="10" class="n n-ai"/><use href="#aiIcon" x="458" y="266" width="18" height="18"/><text x="415" y="296" class="th">SIERA</text><text x="415" y="315" class="ts">LLM · Initial</text>
+    <circle cx="630" cy="258" r="16" class="n n-man"/><path class="n n-man" d="M580 338 Q570 338 570 328 V306 Q570 280 596 280 H664 Q690 280 690 306 V328 Q690 338 680 338 Z"/><text x="630" y="306" class="th">User Initial</text><text x="630" y="324" class="th">Review</text>
+    <circle cx="855" cy="258" r="16" class="n n-man"/><path class="n n-man" d="M800 338 Q790 338 790 328 V306 Q790 280 816 280 H894 Q920 280 920 306 V328 Q920 338 910 338 Z"/><text x="855" y="306" class="th">User Dual</text><text x="855" y="324" class="th">Review</text>
+    <circle cx="1090" cy="252" r="14" class="n n-man"/><path class="n n-man" d="M1040 332 Q1030 332 1030 322 V296 Q1030 272 1054 272 H1126 Q1150 272 1150 296 V322 Q1150 332 1140 332 Z"/><text x="1090" y="298" class="th">Cash</text><text x="1090" y="316" class="th">Triage / L2</text>
+    <circle cx="1275" cy="182" r="13" class="n n-man"/><path class="n n-man" d="M1220 264 Q1210 264 1210 254 V224 Q1210 200 1234 200 H1316 Q1340 200 1340 224 V254 Q1340 264 1330 264 Z"/><text x="1275" y="229" class="th">L3 review</text><text x="1275" y="248" class="ts">SSI, Embargo etc.</text>
+    <rect x="1210" y="336" width="130" height="68" rx="10" class="n n-sys"/><text x="1275" y="359" class="th">Request for</text><text x="1275" y="377" class="th">information</text><text x="1275" y="394" class="ts">RFI</text>
+    <rect x="1380" y="196" width="116" height="68" rx="10" class="n n-sys"/><text x="1438" y="220" class="th">L3 Suggests</text><text x="1438" y="238" class="ts">Reject / Block /</text><text x="1438" y="254" class="ts">Cancel</text>
+
+    <text x="140" y="292" class="tl" text-anchor="middle">Hit</text>
+    <text x="740" y="292" class="tl" text-anchor="middle">False Positive</text>
+    <text x="877" y="172" class="tl" text-anchor="middle" transform="rotate(-90 877 172)">False Positive</text>
+    <text x="1114" y="172" class="tl" text-anchor="middle" transform="rotate(-90 1114 172)">False Positive</text>
+    <text x="1326" y="138" class="tl" text-anchor="middle" transform="rotate(-90 1326 138)">False Positive</text>
+    <text x="1285" y="305" class="tl">Refer L3</text>
+
+    <!-- post-processing band: the QA Digital Worker runs daily on top of the human dispositions -->
+    <rect x="4" y="556" width="1492" height="60" rx="14" class="zone-ai"/>
+    <text x="24" y="591" class="tk">POST-PROCESSING &#183; DAILY</text>
+    <rect x="390" y="564" width="270" height="44" rx="10" class="n n-man"/>
+    <circle cx="412" cy="578" r="4.5" fill="#fff"/><path d="M402 599 V594 Q402 587 409 587 H415 Q422 587 422 594 V599 Z" fill="#fff"/>
+    <text x="540" y="582" class="th">Human dispositions</text><text x="540" y="600" class="ts">User review &#183; L2 &#183; L3</text>
+    <path class="e" d="M660 586 H716"/>
+    <rect x="720" y="562" width="360" height="48" rx="10" class="n n-ai"/><use href="#aiIcon" x="1054" y="567" width="18" height="18"/><text x="900" y="582" class="th">QA Digital Worker</text><text x="900" y="600" class="ts">Evaluates the quality of each human disposition</text>
+    <text x="1476" y="591" class="tl" text-anchor="end">Covered in Part 7</text>
+
+    <rect x="248" y="629" width="24" height="20" rx="5" class="n n-ai"/><use href="#aiIcon" x="252" y="631" width="16" height="16"/><text x="280" y="644" class="tl">AI agent / agentic flow</text>
+    <circle cx="461" cy="629" r="4.5" fill="url(#fMan)"/><path d="M451 648 V643 Q451 636 458 636 H464 Q471 636 471 643 V648 Z" fill="url(#fMan)"/><text x="480" y="644" class="tl">Human in the loop</text>
+    <rect x="608" y="631" width="22" height="16" rx="4" class="n n-gold"/><text x="638" y="644" class="tl">MIERA rules</text>
+    <path class="e nohead" d="M740 639 H780"/><text x="788" y="644" class="tl">Existing flow</text>
+  </g>
+
+  <!-- Challenger layer for the AI-1.2 slides: CA 350,120,130,76  CB 350,404,130,76 -->
+  <g id="wfChal">
+    <path class="eb" d="M480 300 H570"/>
+    <path class="eg nohead" d="M415 120 V78"/>
+    <path class="eg" d="M415 262 V196"/>
+    <path class="eg" d="M415 338 V404"/>
+    <path class="eg" d="M480 158 H825 V280"/>
+    <path class="eg" d="M480 442 H855 V338"/>
+    <rect x="350" y="120" width="130" height="76" rx="10" class="n n-ai"/><use href="#aiIcon" x="458" y="124" width="18" height="18"/><text x="415" y="154" class="th">Challenger</text><text x="415" y="173" class="ts">LLM · Dual</text>
+    <rect x="350" y="404" width="130" height="76" rx="10" class="n n-ai"/><use href="#aiIcon" x="458" y="408" width="18" height="18"/><text x="415" y="438" class="th">Challenger</text><text x="415" y="457" class="ts">LLM · Dual</text>
+    <rect x="902" y="240" width="58" height="22" rx="11" fill="#22c55e"/><text x="931" y="256" text-anchor="middle" fill="#0a0f1a" font-size="12" font-weight="800">AI-1.2</text>
+    <text x="425" y="104" class="tl">False Positive <tspan class="agree">(AGREEMENT)</tspan></text>
+    <text x="425" y="233" class="tl">False Positive</text>
+    <text x="425" y="376" class="tl">Inconclusive</text>
+    <text x="500" y="150" class="tl">Inconclusive <tspan class="dis">(DISAGREEMENT)</tspan></text>
+    <text x="500" y="434" class="tl">False Positive <tspan class="dis">(DISAGREEMENT)</tspan></text>
+    <path class="eg nohead" d="M890 639 H930"/><text x="938" y="644" class="tl">Desired flow</text>
+    <path class="eb nohead" d="M1040 639 H1080"/><text x="1088" y="644" class="tl">Current hand-off</text>
+  </g>
+</defs>
+</svg>
+
+<div class="particles" id="particles"></div>
+<div class="progress-bar" id="progressBar"></div>
+<div class="brand">BNY &bull; SIERA &bull; QA Digital Worker</div>
+<div class="slide-counter" id="counter">01 / 23</div>
+<button class="nav-arrows" id="prevBtn" aria-label="Previous slide">&#8592;</button>
+<button class="nav-arrows" id="nextBtn" aria-label="Next slide">&#8594;</button>
+<nav class="nav-bar" id="navBar" aria-label="Slides"></nav>
+<div class="pipe-tooltip" id="tip" role="status"></div>
+
+<main class="deck" id="deck">
+
+<!-- 1 — TITLE -->
+<section class="slide hero active">
+  <div class="content cen">
+    <div class="fade-up">
+      <svg width="80" height="80" viewBox="0 0 80 80" style="margin-bottom:20px" aria-hidden="true">
+        <circle cx="40" cy="40" r="36" fill="none" stroke="url(#gGold)" stroke-width="2.5" opacity=".5"/>
+        <circle cx="40" cy="40" r="26" fill="none" stroke="url(#gGold)" stroke-width="1.5" opacity=".3"/>
+        <text x="40" y="50" text-anchor="middle" fill="url(#gGold)" font-size="28" font-weight="700" font-family="Segoe UI,Arial">S</text>
+      </svg>
+    </div>
+    <h1 class="fade-up d1" style="font-size:62px">SIE<span class="g">RA</span></h1>
+    <div class="sep fade-up d2"></div>
+    <p class="sub fade-up d3" style="font-size:24px;max-width:800px;margin:0 auto 14px">Sanctions Intelligence Engine for Risk Assessment</p>
+    <p class="fade-up d4" style="color:var(--gray);font-size:16px;margin-top:20px">From sanctions alert to quality assurance &bull; Leadership Briefing</p>
+    <p class="fade-up d5" style="color:var(--gray);font-size:13px;margin-top:6px">SIERA today &bull; Future plans &bull; QA Digital Worker on the human dispositions</p>
+  </div>
+</section>
+
+<!-- 2 — AGENDA -->
+<section class="slide">
+  <div class="content">
+    <h2 class="cen fade-up">What We Will <span class="g">Cover</span></h2>
+    <div class="sep fade-up d1"></div>
+    <div class="fade-up d2">
+      <svg viewBox="0 0 1100 160" class="dia" role="img" aria-label="Eight parts. Parts one to six cover SIERA: what it is, current working with MIERA, how it works internally, daily numbers and cost, future plans, and the future flow. Parts seven and eight cover post-processing and the QA Digital Worker.">
+        <path d="M63 34 V26 H767 V34" fill="none" stroke="var(--gold)" stroke-width="2"/>
+        <text x="415" y="18" text-anchor="middle" class="tk" style="fill:var(--gold-1)">SIERA</text>
+        <path d="M867 34 V26 H1035 V34" fill="none" stroke="var(--purple)" stroke-width="2"/>
+        <text x="951" y="18" text-anchor="middle" class="tk" style="fill:#c4b5fd">QA DIGITAL WORKER</text>
+        <line x1="80" y1="78" x2="1018" y2="78" stroke="rgba(255,255,255,.12)" stroke-width="3" stroke-linecap="round"/>
+        <circle cx="80" cy="78" r="17" fill="url(#gGold)"/><text x="80" y="84" text-anchor="middle" fill="#0a0f1a" font-size="16" font-weight="800">1</text><text x="80" y="122" class="th" style="font-size:13px">What SIERA is</text><text x="80" y="141" class="ts">and where it sits</text>
+        <circle cx="214" cy="78" r="17" fill="url(#gGold)"/><text x="214" y="84" text-anchor="middle" fill="#0a0f1a" font-size="16" font-weight="800">2</text><text x="214" y="122" class="th" style="font-size:13px">Current working</text><text x="214" y="141" class="ts">with MIERA</text>
+        <circle cx="348" cy="78" r="17" fill="url(#gGold)"/><text x="348" y="84" text-anchor="middle" fill="#0a0f1a" font-size="16" font-weight="800">3</text><text x="348" y="122" class="th" style="font-size:13px">Inside SIERA</text><text x="348" y="141" class="ts">how it works</text>
+        <circle cx="482" cy="78" r="17" fill="url(#gGold)"/><text x="482" y="84" text-anchor="middle" fill="#0a0f1a" font-size="16" font-weight="800">4</text><text x="482" y="122" class="th" style="font-size:13px">Daily numbers</text><text x="482" y="141" class="ts">and current cost</text>
+        <circle cx="616" cy="78" r="17" fill="url(#gGold)"/><text x="616" y="84" text-anchor="middle" fill="#0a0f1a" font-size="16" font-weight="800">5</text><text x="616" y="122" class="th" style="font-size:13px">Future plans</text><text x="616" y="141" class="ts">what comes next</text>
+        <circle cx="750" cy="78" r="17" fill="url(#gGold)"/><text x="750" y="84" text-anchor="middle" fill="#0a0f1a" font-size="16" font-weight="800">6</text><text x="750" y="122" class="th" style="font-size:13px">Future flow</text><text x="750" y="141" class="ts">the AI-1.2 flow</text>
+        <circle cx="884" cy="78" r="17" fill="url(#fAi)"/><text x="884" y="84" text-anchor="middle" fill="#fff" font-size="16" font-weight="800">7</text><text x="884" y="122" class="th" style="font-size:13px">Post-processing</text><text x="884" y="141" class="ts">on human dispositions</text>
+        <circle cx="1018" cy="78" r="17" fill="url(#fAi)"/><text x="1018" y="84" text-anchor="middle" fill="#fff" font-size="16" font-weight="800">8</text><text x="1018" y="122" class="th" style="font-size:13px">QA Digital Worker</text><text x="1018" y="141" class="ts">quality control</text>
+      </svg>
+    </div>
+    <div class="g2 fade-up d3" style="margin-top:22px">
+      <div class="card"><p class="kick">Parts 1 to 6</p><h3>SIERA</h3><p>What it is, how it works today with MIERA, the daily numbers and cost, and the future plans with Challenger and Deep Research.</p></div>
+      <div class="card"><p class="kick">Parts 7 and 8</p><h3 style="color:var(--purple)">QA Digital Worker</h3><p>A daily quality check that runs on top of the dispositions made by people, and how its AI agents evaluate the quality of each one.</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- 3 — PART 1: WHAT IS SIERA -->
+<section class="slide">
+  <div class="content">
+    <p class="part fade-up">Part 1 · What SIERA is</p>
+    <h2 class="cen fade-up">What is <span class="g">SIERA</span>?</h2>
+    <div class="sep fade-up d1"></div>
+    <p class="lead fade-up d1">SIERA is the AI decision-support service that assesses <span class="hi">Level 1 sanctions alerts</span> on payments and returns a recommendation with its rationale.</p>
+    <div class="g3">
+      <div class="card fade-up d2"><p class="kick">How it assesses</p><h3 style="color:var(--purple)">Rules plus AI</h3><p>Deterministic MIERA and pattern rules handle configured scenarios. Eligible remaining hits go to an entity-specific AI agent through Eliza.</p></div>
+      <div class="card fade-up d3"><p class="kick">What it returns</p><h3 style="color:var(--blue-1)">Explained recommendations</h3><p>Each hit gets one of two decisions, Inconclusive (HOLD) or False Positive (RELEASE), with an evidence-based rationale operations can review.</p></div>
+      <div class="card fade-up d4"><p class="kick">Who decides</p><h3 style="color:var(--green)">People stay in control</h3><p>GSU keeps review, resolution and escalation. A recommendation is not the payment action.</p></div>
+    </div>
+    <div class="card principle fade-up d5"><p style="font-size:17px"><span class="hi">Key principle:</span> SIERA recommends. The operational workflow decides.</p></div>
+  </div>
+</section>
+
+<!-- 4 — PART 1: PAYMENT DOMAIN MAP -->
+<section class="slide">
+  <div class="content">
+    <p class="part fade-up">Part 1 · What SIERA is</p>
+    <h2 class="cen fade-up">Where SIERA Sits in the <span class="g">Payment Domain</span></h2>
+    <div class="sep fade-up d1"></div>
+    <div class="fade-up d2">
+      <svg viewBox="0 0 1200 425" class="dia" style="max-height:calc(100vh - 400px)" role="img" aria-label="Current state: transaction and static sources feed the OSA and QSS screening engines. OSA alerts go to GSU, where the SIERA AI agent assists alert management. QSS alerts are assisted by Aurora. Both feed regulatory reporting.">
+        <!-- A 150,52,300,74  B 500,52,340,74  C 890,52,300,74  D 200,176,200,74  E 570,176,200,74  F 150,300,230,74  G 410,300,150,74  H 570,300,230,74  I 960,300,220,74 -->
+        <rect x="0" y="34" width="1200" height="110" rx="12" class="lane"/>
+        <rect x="0" y="158" width="1200" height="110" rx="12" class="lane"/>
+        <rect x="0" y="282" width="1200" height="110" rx="12" class="lane"/>
+        <path d="M140 58 Q140 42 156 42 H444 Q460 42 460 58 V140 Q460 152 448 152 H412 Q400 152 400 164 V372 Q400 386 386 386 H154 Q140 386 140 372 Z" fill="rgba(212,168,67,.16)"/>
+        <rect x="14" y="76" width="112" height="26" rx="6" fill="rgba(59,130,246,.22)"/><text x="70" y="94" text-anchor="middle" fill="#93c5fd" font-size="12" font-weight="700">Sourcing</text>
+        <rect x="14" y="200" width="112" height="26" rx="6" fill="rgba(59,130,246,.22)"/><text x="70" y="218" text-anchor="middle" fill="#93c5fd" font-size="12" font-weight="700">Screening</text>
+        <rect x="14" y="324" width="112" height="26" rx="6" fill="rgba(59,130,246,.22)"/><text x="70" y="342" text-anchor="middle" fill="#93c5fd" font-size="12" font-weight="700">Post-screening</text>
+        <text x="300" y="22" text-anchor="middle" class="tk" style="fill:var(--gold-1)">TRANSACTION SCREENING · OUR FOCUS</text>
+        <text x="670" y="22" text-anchor="middle" class="tk">STATIC SCREENING</text>
+
+        <path class="ef" d="M300 126 V176"/>
+        <path class="e" d="M640 126 V176"/>
+        <path class="e" d="M1040 126 V151 H360 V176"/>
+        <path class="e" d="M720 151 V176"/>
+        <path class="ef" d="M265 250 V300"/>
+        <path class="e" d="M400 213 H485 V300"/>
+        <path class="e" d="M670 250 V300"/>
+        <path class="e" d="M800 337 H960"/>
+        <path class="e" d="M265 374 V408 H1070 V374"/>
+
+        <rect x="150" y="52" width="300" height="74" rx="10" class="n n-gold" style="filter:drop-shadow(0 0 12px rgba(212,168,67,.45))"/><text x="300" y="80" class="th">Transactional Sources</text><text x="300" y="104" class="ts">Payments (9) · Custody (6) · GP&amp;T (5) · Other (4)</text>
+        <rect x="500" y="52" width="340" height="74" rx="10" class="n n-sys"/><text x="670" y="80" class="th">Non-transactional / Static Sources</text><text x="670" y="104" class="ts">UCM · KYC · Lake · LOB apps</text>
+        <rect x="890" y="52" width="300" height="74" rx="10" class="n n-sys"/><text x="1040" y="80" class="th">Screening List Providers</text><text x="1040" y="104" class="ts">Six · Bloomberg · Firco · LSEG</text>
+        <rect x="200" y="176" width="200" height="74" rx="10" class="n n-gold" style="filter:drop-shadow(0 0 12px rgba(212,168,67,.45))"/><text x="300" y="204" class="th">OSA</text><text x="300" y="228" class="ts">Fircosoft</text>
+        <rect x="570" y="176" width="200" height="74" rx="10" class="n n-sys"/><text x="670" y="204" class="th">QSS</text><text x="670" y="228" class="ts">Bridger</text>
+        <text x="800" y="206" class="tl" fill="#8899aa">Feeds: FinCEN · Sanctions · Reg O · Volcker</text>
+        <text x="800" y="224" class="tl" fill="#8899aa">PEP · DNDBW · Negative News</text>
+        <rect x="150" y="300" width="230" height="74" rx="10" class="n n-gold" style="filter:drop-shadow(0 0 12px rgba(212,168,67,.45))"/><text x="240" y="328" class="th">GSU (CIA)</text><text x="240" y="352" class="ts">Alert management</text>
+        <rect x="318" y="310" width="52" height="54" rx="8" class="n n-ai"/><use href="#aiIcon" x="333" y="314" width="22" height="22"/><text x="344" y="354" text-anchor="middle" fill="#fff" font-size="12" font-weight="800">SIERA</text>
+        
+        <rect x="410" y="300" width="150" height="74" rx="10" class="n n-sys"/><text x="485" y="342" class="th">BEX / Data Lake</text>
+        <rect x="570" y="300" width="230" height="74" rx="10" class="n n-sys"/><text x="660" y="328" class="th">QSS</text><text x="660" y="352" class="ts">Alert management</text>
+        <rect x="738" y="310" width="52" height="54" rx="8" class="n n-ai"/><use href="#aiIcon" x="753" y="314" width="22" height="22"/><text x="764" y="354" text-anchor="middle" fill="#fff" font-size="12" font-weight="800">Aurora</text>
+        <rect x="960" y="300" width="220" height="74" rx="10" class="n n-sys"/><text x="1070" y="328" class="th">ORR</text><text x="1070" y="352" class="ts">Regulatory reporting</text>
+      </svg>
+    </div>
+    <div class="g3 fade-up d3" style="margin-top:14px;grid-template-columns:1fr 1fr 1.6fr">
+      <div class="stat" style="padding:12px"><div class="stat-num" style="font-size:34px" data-target="4.5" data-suffix="%" data-decimals="1">0%</div><div class="stat-lbl">L1 alerts &bull; payments</div></div>
+      <div class="stat" style="padding:12px"><div class="stat-num" style="font-size:34px" data-target="0.2" data-suffix="%" data-decimals="1">0%</div><div class="stat-lbl">L1 alerts &bull; securities</div></div>
+      <div class="card card-gold tight"><p style="font-size:14px"><span class="hi">Post-screening pressure:</span> high L1 alerts, inefficient operational workflows, limited MIS and self-service reporting.</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- 5 — PART 2: ALERT ROUND TRIP -->
+<section class="slide">
+  <div class="content">
+    <p class="part fade-up">Part 2 · Current working</p>
+    <h2 class="cen fade-up">How an Alert Reaches <span class="g">SIERA</span></h2>
+    <div class="sep fade-up d1"></div>
+    <div class="fade-up d2">
+      <svg viewBox="0 0 1100 250" class="dia" role="img" aria-label="Payments and other messages go to OSA for sanctions screening. Alerts enter the GSU / CIA workflow, which sends an alert request to SIERA. SIERA returns a disposition and rationale to GSU.">
+        <!-- P 10,70,220,90  O 290,70,200,90  G 550,70,220,90  S 870,70,220,90 -->
+        <text x="250" y="36" text-anchor="middle" class="tk">BNY TRANSACTION SYSTEMS</text>
+        <text x="820" y="36" text-anchor="middle" class="tk">GLOBAL SCREENING UTILITY (GSU)</text>
+        <path class="e" d="M230 115 H290"/>
+        <path class="e" d="M490 115 H550"/>
+        <path class="e" d="M770 115 H870"/>
+        <path class="eg" d="M980 160 V205 H660 V160"/>
+        <text x="820" y="104" text-anchor="middle" class="tl">Alert request</text>
+        <rect x="717" y="193" width="206" height="24" rx="12" fill="#131c2c"/><text x="820" y="210" text-anchor="middle" fill="#86efac" font-size="12" font-weight="700">Disposition and rationale</text>
+        <rect x="10" y="70" width="220" height="90" rx="12" class="n n-sys"/><text x="120" y="104" class="th">Payments and</text><text x="120" y="122" class="th">other messages</text><text x="120" y="144" class="ts">In-scope transactions</text>
+        <rect x="290" y="70" width="200" height="90" rx="12" class="n n-blue"/><text x="390" y="110" class="th" style="font-size:16px">OSA</text><text x="390" y="134" class="ts">Sanctions screening</text>
+        <rect x="550" y="70" width="220" height="90" rx="12" class="n n-man"/><text x="660" y="110" class="th" style="font-size:16px">GSU / CIA</text><text x="660" y="134" class="ts">Alert workflow</text>
+        <rect x="870" y="70" width="220" height="90" rx="12" class="n n-ai" style="filter:drop-shadow(0 0 14px rgba(139,63,217,.55))"/><use href="#aiIcon" x="1058" y="78" width="24" height="24"/><text x="980" y="110" class="th" style="font-size:16px">SIERA</text><text x="980" y="134" class="ts">Rules and eligible AI</text>
+        
+        <text x="980" y="60" text-anchor="middle" fill="#c4b5fd" font-size="12">AI execution through Eliza</text>
+      </svg>
+    </div>
+    <div class="g3 fade-up d3" style="margin-top:6px">
+      <div class="card cen tight"><div style="font-size:26px;color:var(--blue-1)">1</div><h3 style="font-size:15px;color:var(--blue-1)">Screening raises an alert</h3><p style="font-size:13px">An alert is an investigation trigger, not confirmation of a sanctioned party. One alert can hold several hits.</p></div>
+      <div class="card cen tight"><div style="font-size:26px;color:var(--purple)">2</div><h3 style="font-size:15px;color:var(--purple)">SIERA recommends</h3><p style="font-size:13px">Each hit is assessed. Hit-level and alert-level recommendations come back with explanations.</p></div>
+      <div class="card cen tight"><div style="font-size:26px;color:var(--teal)">3</div><h3 style="font-size:15px;color:var(--teal)">GSU decides</h3><p style="font-size:13px">A RELEASE recommendation is not the payment action. Operational and payment controls govern what happens next.</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- 6 — PART 2: LEVEL 1 FLOW TODAY (MIERA + SIERA) -->
+<section class="slide">
+  <div class="content wide">
+    <p class="part fade-up">Part 2 · Current working</p>
+    <h2 class="cen fade-up">Level 1 Flow Today: <span class="g">MIERA and SIERA</span></h2>
+    <div class="sep fade-up d1" style="margin-bottom:12px"></div>
+    <div class="fade-up d2">
+      <svg viewBox="0 0 1500 660" class="dia" style="max-height:calc(100vh - 285px)" role="img" aria-label="Current workflow, without Challenger or Deep Research. A hit passes automation, where MIERA rules run, and reaches the SIERA LLM. A false positive from SIERA goes to the user dual review. An inconclusive hit goes to the user initial review, which passes a false positive on to the dual review and an inconclusive case to cash triage and Level 2. From the dual review a false positive is resolved and an inconclusive case goes to cash triage and Level 2, then Level 3 where needed. The QA Digital Worker evaluates the human dispositions each day.">
+        <use href="#wfFrame"/>
+        <path class="e" d="M415 262 V158 H825 V280"/>
+        <path class="e" d="M480 300 H570"/>
+        <path class="e" d="M920 300 H1030"/>
+        <path class="e" d="M630 338 V368 H1065 V332"/>
+        <text x="425" y="233" class="tl">False Positive</text>
+        <text x="525" y="292" class="tl" text-anchor="middle">Inconclusive</text>
+        <text x="975" y="292" class="tl" text-anchor="middle">Inconclusive</text>
+        <text x="720" y="385" class="tl" text-anchor="middle">Inconclusive</text>
+        <text x="270" y="424" fill="#f4f6f8" font-size="15" font-weight="700">Today: SIERA makes the first Level 1 assessment, and a person reviews every result.</text>
+        <text x="270" y="449" class="tl" style="font-size:14px">False positive: straight to the user dual review. Inconclusive: user initial review first.</text>
+        <text x="270" y="471" class="tl" style="font-size:14px">MIERA rules run before the LLM and settle configured scenarios with no model call.</text>
+      </svg>
+    </div>
+  </div>
+</section>
+
+<!-- 7 — PART 3: FIVE STEPS (interactive) -->
+<section class="slide">
+  <div class="content">
+    <p class="part fade-up">Part 3 · Inside SIERA</p>
+    <h2 class="cen fade-up">How SIERA Works <span class="g">Internally</span></h2>
+    <div class="sep fade-up d1"></div>
+    <p class="cen dim fade-up d1" style="margin-bottom:10px">Click each step to explore</p>
+    <div class="fade-up d2">
+      <svg viewBox="0 0 1100 200" class="dia" id="pipeSvg" role="img" aria-label="Five steps: receive and validate, prepare hit evidence, apply the assessment route, validate and consolidate, respond and record.">
+        <path class="e" d="M192 95 H228"/><path class="e" d="M420 95 H456"/><path class="e" d="M648 95 H684"/><path class="e" d="M876 95 H912"/>
+        <g class="pipe-node" data-tip="s0" tabindex="0"><rect x="0" y="15" width="192" height="160" rx="12" class="n n-ai"/><text x="96" y="44" text-anchor="middle" class="tk">STEP 1</text><text x="96" y="72" class="th" style="font-size:15px">Receive &amp; validate</text><text x="96" y="100" class="ts">Checks required fields,</text><text x="96" y="117" class="ts">links message, case,</text><text x="96" y="134" class="ts">transaction and hits</text></g>
+        <g class="pipe-node" data-tip="s1" tabindex="0"><rect x="228" y="15" width="192" height="160" rx="12" class="n n-blue"/><text x="324" y="44" text-anchor="middle" class="tk">STEP 2</text><text x="324" y="72" class="th" style="font-size:15px">Prepare hit evidence</text><text x="324" y="100" class="ts">Builds the evidence</text><text x="324" y="117" class="ts">package for each hit</text></g>
+        <g class="pipe-node" data-tip="s2" tabindex="0"><rect x="456" y="15" width="192" height="160" rx="12" class="n n-gold"/><text x="552" y="44" text-anchor="middle" class="tk">STEP 3</text><text x="552" y="72" class="th" style="font-size:15px">Apply the route</text><text x="552" y="100" class="ts">Rules first. Eligible</text><text x="552" y="117" class="ts">remaining hits go to</text><text x="552" y="134" class="ts">an AI agent via Eliza</text></g>
+        <g class="pipe-node" data-tip="s3" tabindex="0"><rect x="684" y="15" width="192" height="160" rx="12" class="n n-ok"/><text x="780" y="44" text-anchor="middle" class="tk">STEP 4</text><text x="780" y="72" class="th" style="font-size:15px">Validate &amp; consolidate</text><text x="780" y="100" class="ts">Checks each result,</text><text x="780" y="117" class="ts">rolls hits up to one</text><text x="780" y="134" class="ts">alert recommendation</text></g>
+        <g class="pipe-node" data-tip="s4" tabindex="0"><rect x="912" y="15" width="188" height="160" rx="12" class="n n-man"/><text x="1006" y="44" text-anchor="middle" class="tk">STEP 5</text><text x="1006" y="72" class="th" style="font-size:15px">Respond &amp; record</text><text x="1006" y="100" class="ts">Publishes the reply</text><text x="1006" y="117" class="ts">to GSU and keeps</text><text x="1006" y="134" class="ts">the audit trail</text></g>
+      </svg>
+    </div>
+    <div class="g2 fade-up d3" style="margin-top:18px;max-width:1000px;margin-left:auto;margin-right:auto">
+      <div class="card card-gold"><h3>One alert, several hits</h3><p style="font-size:15px">Each hit can take a <span class="hi">different processing route</span>, so consolidation keeps both the decision and the extent of assessment coverage.</p></div>
+      <div class="card card-blue"><h3 style="color:var(--blue-1)">Operational evidence trail</h3><p style="font-size:15px">Incoming and outgoing messages, <span class="hi">per-hit results</span> and the processing audit are all retained.</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- 8 — PART 3: MIERA RULES, THEN AI -->
+<section class="slide">
+  <div class="content">
+    <p class="part fade-up">Part 3 · Inside SIERA</p>
+    <h2 class="cen fade-up">MIERA Rules First, <span class="g">AI for What Remains</span></h2>
+    <div class="sep fade-up d1"></div>
+    <div class="fade-up d2">
+      <svg viewBox="0 0 1100 190" class="dia" role="img" aria-label="Each hit is checked for Mandatory Force Inject conditions, then for False Match Eliminator or True Match Escalator patterns. Only eligible remaining hits go to AI assessment through Eliza.">
+        <!-- H 10,40,170,84  M 250,40,230,84  F 550,40,230,84  A 850,40,240,84 -->
+        <path class="e" d="M180 82 H250"/><path class="e" d="M480 82 H550"/><path class="eg" d="M780 82 H850"/>
+        <rect x="10" y="40" width="170" height="84" rx="12" class="n n-sys"/><text x="95" y="78" class="th">Hit evidence</text><text x="95" y="100" class="ts">Prepared per hit</text>
+        <rect x="250" y="40" width="230" height="84" rx="12" class="n n-gold"/><text x="365" y="66" text-anchor="middle" class="tk tko">1</text><text x="365" y="88" class="th">MFI check</text><text x="365" y="108" class="ts">Mandatory Force Inject</text>
+        <rect x="550" y="40" width="230" height="84" rx="12" class="n n-gold"/><text x="665" y="66" text-anchor="middle" class="tk tko">2</text><text x="665" y="88" class="th">FME / TME patterns</text><text x="665" y="108" class="ts">False-match and escalation rules</text>
+        <rect x="850" y="40" width="240" height="84" rx="12" class="n n-ai"/><text x="970" y="66" text-anchor="middle" class="tk tko">3</text><use href="#aiIcon" x="1060" y="46" width="22" height="22"/><text x="970" y="88" class="th">AI assessment</text><text x="970" y="108" class="ts">Entity agent via Eliza · optional critic</text>
+        
+        <path d="M250 146 H780" stroke="var(--gold)" stroke-width="2" fill="none"/><path d="M250 140 V146 M780 140 V146" stroke="var(--gold)" stroke-width="2" fill="none"/>
+        <text x="515" y="170" text-anchor="middle" class="tk" fill="#f0d080">DETERMINISTIC · MIERA AND PATTERN CONTROLS · NO MODEL CALL</text>
+        <path d="M850 146 H1090" stroke="var(--purple)" stroke-width="2" fill="none"/><path d="M850 140 V146 M1090 140 V146" stroke="var(--purple)" stroke-width="2" fill="none"/>
+        <text x="970" y="170" text-anchor="middle" class="tk" fill="#c4b5fd">ELIGIBLE REMAINING HITS</text>
+      </svg>
+    </div>
+    <p class="kick cen fade-up d3" style="margin:14px 0 10px">Four primary prompt families</p>
+    <div class="g4 fade-up d3">
+      <div class="card tight"><h3 style="font-size:16px">Company</h3><p style="font-size:14px">Names, aliases, identifiers and business context</p></div>
+      <div class="card tight"><h3 style="font-size:16px;color:var(--blue-1)">Individual</h3><p style="font-size:14px">Names and identity evidence, including date of birth where supplied</p></div>
+      <div class="card tight"><h3 style="font-size:16px;color:var(--teal)">Vessel</h3><p style="font-size:14px">Vessel names, aliases and identifiers such as IMO</p></div>
+      <div class="card tight"><h3 style="font-size:16px;color:var(--purple)">Other</h3><p style="font-size:14px">Matched terms, screened fields, geography and context</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- 9 — PART 3: DECISION AND RATIONALE -->
+<section class="slide">
+  <div class="content">
+    <p class="part fade-up">Part 3 · Inside SIERA</p>
+    <h2 class="cen fade-up">Decision and <span class="g">Rationale</span></h2>
+    <div class="sep fade-up d1"></div>
+    <div class="g2">
+      <div class="card card-blue fade-up d2">
+        <h3 style="color:var(--blue-1)">Evidence in &mdash; seven inputs</h3>
+        <table class="tbl"><tbody>
+          <tr><td>Transaction details</td><td class="dim">Payment or transaction context</td></tr>
+          <tr><td>Sanctioned entity type</td><td class="dim">Drives agent selection</td></tr>
+          <tr><td>Sanctioned entity details</td><td class="dim">Names, aliases, identifiers, geography</td></tr>
+          <tr><td>Screened field or tag</td><td class="dim">The part that generated the hit</td></tr>
+          <tr><td>Value in the field</td><td class="dim">The transaction value screened</td></tr>
+          <tr><td>Matched string</td><td class="dim">Text or identifier of the match</td></tr>
+          <tr><td>Field or tag risk</td><td class="dim">Risk context of the field</td></tr>
+        </tbody></table>
+        <p class="dim" style="margin-top:12px">Message ID, system ID and hit sequence trace every result back to its hit.</p>
+      </div>
+      <div class="card card-gold fade-up d3">
+        <h3>Recommendation out &mdash; two decisions</h3>
+                <div class="rung r-hold"><b>Inconclusive (HOLD)</b><span>Unresolved concern, not a confirmed match</span></div>
+        <div class="rung r-rel"><b>False Positive (RELEASE)</b><span>The evidence supports an entity mismatch</span></div>
+        <ul style="margin-top:14px"><li><span class="hi">Inconclusive takes priority</span> when hits roll up to the alert</li><li>Every decision carries an <span class="hi">evidence-based rationale</span> operations can review</li><li>Missing or excluded hits leave the alert <span class="hi">partially reviewed</span></li><li>A successful model call or plausible narrative is not, on its own, a usable assessment</li></ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 10 — PART 4: NUMBERS AND COST -->
+<section class="slide">
+  <div class="content">
+    <p class="part fade-up">Part 4 · Numbers and cost</p>
+    <h2 class="cen fade-up">Daily Numbers and <span class="g">Cost</span></h2>
+    <div class="sep fade-up d1"></div>
+    <div class="g4 fade-up d2" style="margin-bottom:22px">
+      <div class="stat"><div class="stat-num" data-target="60" data-suffix="K">0K</div><div class="stat-lbl">Daily average alerts</div></div>
+      <div class="stat"><div class="stat-num" data-target="180" data-suffix="K">0K</div><div class="stat-lbl">Daily average hits</div></div>
+      <div class="stat"><div class="stat-num" style="color:#4ade80" data-target="91" data-suffix="%">0%</div><div class="stat-lbl">Current model accuracy</div></div>
+      <div class="stat"><div class="stat-num" style="color:#4ade80">&lt;1%</div><div class="stat-lbl">Recall rate</div></div>
+    </div>
+    <div class="g2 fade-up d3">
+      <div class="card">
+        <h3 style="color:var(--blue-1)">Volume</h3>
+        <div class="hbar-row" style="grid-template-columns:96px 1fr"><span>Alerts &bull; 60K</span><div class="hbar-track"><div class="hbar" style="width:33.3%;background:var(--blue)"></div></div></div>
+        <div class="hbar-row" style="grid-template-columns:96px 1fr"><span>Hits &bull; 180K</span><div class="hbar-track"><div class="hbar" style="width:100%;background:var(--purple)"></div></div></div>
+        <p style="font-size:14px;margin-top:12px">About <span class="hi">three hits per alert</span> on average, so alerts and hits are reported separately.</p>
+      </div>
+      <div class="card">
+        <h3>Current cost</h3>
+        <div class="stat-num" style="font-size:64px;margin-top:6px">$0.15 <span style="font-size:20px;font-weight:600;color:#b8c5d3">per hit</span></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 11 — PART 4: DAILY MEASURES -->
+<section class="slide">
+  <div class="content">
+    <p class="part fade-up">Part 4 · Numbers and cost</p>
+    <h2 class="cen fade-up">Daily Measures and <span class="g">Oversight</span></h2>
+    <div class="sep fade-up d1"></div>
+    <div class="fade-up d2" style="max-width:1000px;margin:0 auto">
+      <svg viewBox="0 0 1000 96" class="dia" role="img" aria-label="Four separate milestones: received, assessed, reply published, operationally dispositioned.">
+        <line x1="125" y1="30" x2="875" y2="30" stroke="rgba(255,255,255,.1)" stroke-width="3" stroke-linecap="round"/>
+        <path class="eg nohead" d="M125 30 H875"/>
+        <circle cx="125" cy="30" r="9" fill="var(--purple)"/><circle cx="375" cy="30" r="9" fill="var(--blue)"/><circle cx="625" cy="30" r="9" fill="var(--gold)"/><circle cx="875" cy="30" r="9" fill="var(--green)"/>
+        <text x="125" y="64" class="th">Received</text><text x="375" y="64" class="th">Assessed</text><text x="625" y="64" class="th">Reply published</text><text x="875" y="64" class="th">Operationally dispositioned</text>
+        <text x="500" y="90" class="ts">Four separate milestones: a model response does not prove GSU received a usable reply, and a published reply does not prove the case completed.</text>
+      </svg>
+    </div>
+    <div class="fade-up d3" style="margin-top:14px">
+      <table class="tbl">
+        <thead><tr><th style="width:30%">Daily measure</th><th>Operational meaning</th></tr></thead>
+        <tbody>
+          <tr><td>Alerts and hits received</td><td>Incoming workload, reported as separate units</td></tr>
+          <tr><td>AI and rule processing</td><td>The processing route and coverage of the assessed population</td></tr>
+          <tr><td>Incomplete assessments</td><td>Exclusions, invalid responses and partial review</td></tr>
+          <tr><td>Reply completion</td><td>Successfully published replies for the defined assessed population</td></tr>
+          <tr><td>Reply time</td><td>Elapsed time from SIERA receipt to reply publication</td></tr>
+          <tr><td class="imp">Decision quality</td><td>Comparison with reviewed operational outcomes and rationale assessment</td></tr>
+          <tr><td>Human effort</td><td>Review touches, escalations and investigation workload</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</section>
+
+<!-- 12 — PART 5: CHALLENGER -->
+<section class="slide">
+  <div class="content">
+    <p class="part fade-up">Part 5 · Future plans</p>
+    <h2 class="cen fade-up">Future Plans: <span class="g">Challenger</span></h2>
+    <div class="sep fade-up d1"></div>
+    <div class="fade-up d2">
+      <svg viewBox="0 0 1100 290" class="dia" style="max-height:calc(100vh - 480px)" role="img" aria-label="SIERA's initial assessment goes to Challenger for a separate review. False-positive agreement leads to eligible resolution, disagreement leads to Level 1 dual review, and inconclusive agreement leads to Level 2 investigation, supported by Deep Research.">
+        <!-- S 20,34,230,86  C 350,34,230,86  ER 780,4,300,74  HIL figure: head (930,108,r17) + shoulders 845-1015 x 133-204  L2 350,190,230,86  DP 20,190,230,86 -->
+        <path class="e" d="M250 77 H350"/>
+        <path class="eg" d="M580 77 H680 V41 H780"/>
+        <path class="e" d="M680 77 V168 H845"/>
+        <path class="eg" d="M465 120 V190"/>
+        <path class="eg" d="M250 233 H350"/>
+        <rect x="20" y="34" width="230" height="86" rx="12" class="n n-ai"/><use href="#aiIcon" x="218" y="42" width="24" height="24"/><text x="135" y="72" class="th" style="font-size:17px">SIERA</text><text x="135" y="97" class="ts" style="font-size:13px">Initial assessment</text>
+        <rect x="350" y="34" width="230" height="86" rx="12" class="n n-ai" style="filter:drop-shadow(0 0 14px rgba(139,63,217,.55))"/><use href="#aiIcon" x="548" y="42" width="24" height="24"/><text x="465" y="72" class="th" style="font-size:17px">Challenger</text><text x="465" y="97" class="ts" style="font-size:13px">Separate review</text>
+        
+        <rect x="780" y="4" width="300" height="74" rx="12" class="n n-ok"/><text x="930" y="37" class="th" style="font-size:17px">Eligible resolution</text><text x="930" y="60" class="ts" style="font-size:13px">False-positive agreement</text>
+        <circle cx="930" cy="110" r="17" class="n n-man"/><path class="n n-man" d="M857 204 Q845 204 845 192 V166 Q845 133 878 133 H982 Q1015 133 1015 166 V192 Q1015 204 1003 204 Z"/><text x="930" y="166" class="th" style="font-size:17px">L1 Dual Review</text><text x="930" y="188" class="ts" style="font-size:13px">Disagreement</text>
+        <rect x="350" y="190" width="230" height="86" rx="12" class="n n-sys"/><text x="465" y="228" class="th" style="font-size:17px">L2 investigation</text><text x="465" y="253" class="ts" style="font-size:13px">Inconclusive agreement</text>
+        <rect x="20" y="190" width="230" height="86" rx="12" class="n n-ai"/><use href="#aiIcon" x="218" y="198" width="24" height="24"/><text x="135" y="228" class="th" style="font-size:17px">Deep Research</text><text x="135" y="253" class="ts" style="font-size:13px">Sourced evidence</text>
+        <text x="930" y="244" text-anchor="middle" class="tl" style="font-size:14px">RFI / specialist L3</text><text x="930" y="264" text-anchor="middle" class="tl" style="font-size:14px">where required</text>
+      </svg>
+    </div>
+    <div class="fade-up d3" style="margin-top:16px">
+      <table class="tbl">
+        <thead><tr><th>Scenario</th><th>Recommended route</th><th>What it means</th></tr></thead>
+        <tbody>
+          <tr><td>SIERA = FP and Challenger = FP</td><td class="imp">Auto-resolve</td><td>Eligible cases resolve under agreed quality and coverage controls</td></tr>
+          <tr><td>SIERA = Inconclusive and Challenger = Inconclusive</td><td class="imp">Auto-escalate / continue</td><td>Level 2 investigation</td></tr>
+          <tr><td>SIERA &ne; Challenger</td><td class="imp">L1 Dual &mdash; human in the loop</td><td>One model says false positive, so a person decides</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</section>
+
+<!-- 13 — PART 5: DEEP RESEARCH -->
+<section class="slide">
+  <div class="content">
+    <p class="part fade-up">Part 5 · Future plans</p>
+    <h2 class="cen fade-up">Future Plans: <span class="g">Deep Research</span></h2>
+    <div class="sep fade-up d1"></div>
+    <p class="lead fade-up d1">Deep Research supports investigations that need <span class="hi">additional evidence</span>, and presents a traceable comparison to the Level 2 investigator.</p>
+    <div class="g3">
+      <div class="card card-purple fade-up d2"><h3 style="color:var(--purple)">What it retrieves</h3><ul><li>Incorporation and address</li><li>Ownership and directors</li><li>Business activity</li><li>Vessel identity or geographic context</li></ul><p class="dim" style="margin-top:8px">Only through approved data access.</p></div>
+      <div class="card card-blue fade-up d3"><h3 style="color:var(--blue-1)">What the investigator sees</h3><ul><li>Retrieved information</li><li>Supporting findings</li><li>Contradictions</li><li>Remaining gaps</li></ul><p class="dim" style="margin-top:8px">Missing or conflicting evidence stays explicit.</p></div>
+      <div class="card card-green fade-up d4"><h3 style="color:var(--green)">Where it starts</h3><ul><li>Company alerts first</li><li>Location alerts first</li><li>Other entity types as access, quality and operating requirements permit</li></ul></div>
+    </div>
+    <div class="card card-gold principle fade-up d5"><p style="font-size:16px"><span class="hi">Control point:</span> a statement in an AI narrative does not establish that information was retrieved or independently corroborated.</p></div>
+  </div>
+</section>
+
+<!-- 14 — PART 5: CONTROLLED ADOPTION -->
+<section class="slide">
+  <div class="content">
+    <p class="part fade-up">Part 5 · Future plans</p>
+    <h2 class="cen fade-up">Future Plans: <span class="g">Controlled Adoption</span></h2>
+    <div class="sep fade-up d1"></div>
+    <div class="g3">
+      <div class="card card-gold tight fade-up d2"><h3>GSU operating model</h3><p style="font-size:14px">An agreed owner, timing, timeout, bypass and fallback for the live response.</p></div>
+      <div class="card card-blue tight fade-up d2"><h3 style="color:var(--blue-1)">Approved data access</h3><p style="font-size:14px">Deep Research retrieves only through approved sources.</p></div>
+      <div class="card card-teal tight fade-up d2"><h3 style="color:var(--teal)">Governance</h3><p style="font-size:14px">Valid responses, complete coverage and agreed quality gates govern automated routing.</p></div>
+      <div class="card card-green tight fade-up d3"><h3 style="color:var(--green)">Measured decision quality</h3><p style="font-size:14px">Agreement between two assessments shows consistency. Reviewed human outcomes show correctness.</p></div>
+      <div class="card card-purple tight fade-up d3"><h3 style="color:var(--purple)">End-to-end testing</h3><p style="font-size:14px">Response timing, malformed output, component failure, disabling the capability and recovery.</p></div>
+      <div class="card card-gold tight fade-up d3"><h3>Usable investigator view</h3><p style="font-size:14px">Evidence presented so a Level 2 investigator can act on it.</p></div>
+    </div>
+    <div class="card card-gold principle fade-up d5"><p style="font-size:17px"><span class="hi">Key principle:</span> wider automation follows demonstrated operational and quality results.</p></div>
+  </div>
+</section>
+
+<!-- 15 — PART 6: AI-1.2 CHALLENGER FLOW -->
+<section class="slide">
+  <div class="content wide">
+    <p class="part fade-up">Part 6 · Future flow</p>
+    <h2 class="cen fade-up">AI-1.2 Challenger Agent: <span class="g">Proposed Desired State</span></h2>
+    <div class="sep fade-up d1" style="margin-bottom:12px"></div>
+    <div class="fade-up d2">
+      <svg viewBox="0 0 1500 660" class="dia" style="max-height:calc(100vh - 285px)" role="img" aria-label="Proposed workflow. A hit passes automation and MIERA rules to SIERA. Challenger reviews the SIERA result. False-positive agreement resolves the case. Inconclusive agreement goes to cash triage and Level 2. Disagreement goes to the user dual review. The QA Digital Worker evaluates the human dispositions each day.">
+        <use href="#wfFrame"/><use href="#wfChal"/>
+        <path class="e" d="M920 300 H1030"/>
+        <path class="e" d="M630 338 V368 H1065 V332"/>
+        <path class="eg" d="M415 480 V520 H1115 V332"/>
+        <text x="975" y="292" class="tl" text-anchor="middle">Inconclusive</text>
+        <text x="720" y="385" class="tl" text-anchor="middle">Inconclusive</text>
+        <text x="500" y="512" class="tl">Inconclusive <tspan class="agree">(AGREEMENT)</tspan></text>
+      </svg>
+    </div>
+  </div>
+</section>
+
+<!-- 16 — PART 6: AI-1.2 CHALLENGER + DEEP RESEARCH FLOW -->
+<section class="slide">
+  <div class="content wide">
+    <p class="part fade-up">Part 6 · Future flow</p>
+    <h2 class="cen fade-up">AI-1.2 Challenger Agent + <span class="g">Deep Research</span></h2>
+    <div class="sep fade-up d1" style="margin-bottom:12px"></div>
+    <div class="fade-up d2">
+      <svg viewBox="0 0 1500 660" class="dia" style="max-height:calc(100vh - 285px)" role="img" aria-label="The same workflow with Deep Research. Every inconclusive route, from user initial review, user dual review or Challenger agreement, passes through Deep Research before cash triage and Level 2. Deep Research uses four AI tools: Moody’s Orbis company search, a vessel tracker, the Google Maps API and LexisNexis search. The QA Digital Worker evaluates the human dispositions each day.">
+        <use href="#wfFrame"/><use href="#wfChal"/>
+        <path class="eg" d="M630 338 V368 H1000 V442 H1030"/>
+        <path class="eg nohead" d="M900 338 V368"/>
+        <path class="eg" d="M415 480 V520 H1090 V480"/>
+        <path class="eg" d="M1090 404 V332"/>
+        <rect x="1030" y="404" width="120" height="76" rx="10" class="n n-ai" style="filter:drop-shadow(0 0 14px rgba(139,63,217,.55))"/><use href="#aiIcon" x="1128" y="408" width="18" height="18"/><text x="1090" y="438" class="th">Deep</text><text x="1090" y="456" class="th">Research</text>
+        <!-- Deep Research AI tools, 2 x 2 pills: columns x=1170 and x=1334 (156 wide), rows y=438 and y=480 (36 tall), wrench mark at the left of each -->
+        <path class="et" d="M1150 456 H1170 M1160 456 V498 H1170"/>
+        <text x="1170" y="428" class="tk" style="fill:#c4b5fd">DEEP RESEARCH &#183; AI TOOLS</text>
+        <rect x="1170" y="438" width="156" height="36" rx="18" class="n n-tool"/><use href="#toolIcon" x="1181" y="449" width="14" height="14"/><text x="1260" y="453" class="th" style="font-size:12px">Moody’s Orbis</text><text x="1260" y="467" class="ts">Company search</text>
+        <rect x="1334" y="438" width="156" height="36" rx="18" class="n n-tool"/><use href="#toolIcon" x="1345" y="449" width="14" height="14"/><text x="1424" y="460" class="th" style="font-size:12px">Vessel tracker</text>
+        <rect x="1170" y="480" width="156" height="36" rx="18" class="n n-tool"/><use href="#toolIcon" x="1181" y="491" width="14" height="14"/><text x="1260" y="502" class="th" style="font-size:12px">Google Maps API</text>
+        <rect x="1334" y="480" width="156" height="36" rx="18" class="n n-tool"/><use href="#toolIcon" x="1345" y="491" width="14" height="14"/><text x="1424" y="502" class="th" style="font-size:12px">LexisNexis search</text>
+        <rect x="1206" y="629" width="30" height="20" rx="10" class="n n-tool"/><use href="#toolIcon" x="1214" y="632" width="14" height="14"/><text x="1244" y="644" class="tl">AI tool</text>
+        <text x="720" y="385" class="tl" text-anchor="middle">Inconclusive</text>
+        <text x="500" y="512" class="tl">Inconclusive <tspan class="agree">(AGREEMENT)</tspan></text>
+      </svg>
+    </div>
+  </div>
+</section>
+
+<!-- 17 — SIERA CLOSING -->
+<section class="slide">
+  <div class="content">
+    <p class="part fade-up">SIERA · Closing</p>
+    <h2 class="cen fade-up">SIERA: <span class="g">In Closing</span></h2>
+    <div class="sep fade-up d1"></div>
+    <div class="g3">
+      <div class="card fade-up d2"><p class="kick">Today</p><h3 style="color:var(--blue-1)">Rules and AI at scale</h3><p>MIERA rules and AI agents assess about 60K alerts and 180K hits a day, at 91% accuracy. Every recommendation carries its rationale.</p></div>
+      <div class="card fade-up d3"><p class="kick">Next</p><h3 style="color:var(--purple)">Challenger and Deep Research</h3><p>Challenger adds a second, separate review. Deep Research brings sourced evidence to Level 2 investigations.</p></div>
+      <div class="card fade-up d4"><p class="kick">Guardrails</p><h3 style="color:var(--green)">People decide</h3><p>Disagreement and uncertainty go to a person. Wider automation follows demonstrated operational and quality results.</p></div>
+    </div>
+    <div class="card principle fade-up d5"><p style="font-size:17px"><span class="hi">Next:</span> the QA Digital Worker, which evaluates the quality of the human dispositions each day.</p></div>
+  </div>
+</section>
+
+<!-- 18 — PART 7: POST-PROCESSING -->
+<section class="slide">
+  <div class="content">
+    <p class="part fade-up">Part 7 · Post-processing</p>
+    <h2 class="cen fade-up">Post-Processing: <span class="g">QA on Human Dispositions</span></h2>
+    <div class="sep fade-up d1"></div>
+    <div class="fade-up d2">
+      <svg viewBox="0 0 1360 370" class="dia" style="max-height:calc(100vh - 470px)" role="img" aria-label="A payment is screened by OSA and assessed by SIERA. Every SIERA result goes to human review at Level 1, then Level 2 and Level 3 where needed, and people make the disposition. The QA Digital Worker runs daily on top of those human dispositions and evaluates their quality. Each one ends as AI reviewed, flagged for a human analyst, or out of scope, and the rationale is stored in Snowflake and shown on the Baseline dashboard.">
+        <!-- A 20,150,120,70  B 170,150,120,70  C 320,150,120,70  D human figure 530-650 x 158-220  E 690,150,110,70  QA 990,150,340,70
+             bridge runs from the human figure (590,220) under E to the QA node -->
+        <rect x="0" y="30" width="820" height="320" rx="14" class="zone"/>
+        <text x="24" y="58" class="tk">TRANSACTION LIFE CYCLE &#183; OSA, GSU AND SIERA</text>
+        <rect x="960" y="30" width="400" height="320" rx="14" class="zone-ai"/>
+        <text x="984" y="58" class="tk" style="fill:#c4b5fd">POST-PROCESSING &#183; QUALITY ASSURANCE</text>
+        <path class="e" d="M140 185 H170"/><path class="e" d="M290 185 H320"/><path class="e" d="M440 185 H530"/><path class="e" d="M650 185 H690"/>
+        <path class="ef" d="M590 220 V252 H900 V185 H990"/>
+        <path class="e nohead" d="M1160 220 V240"/><path class="e nohead" d="M1042 240 H1278"/>
+        <path class="e" d="M1042 240 V266"/><path class="e" d="M1160 240 V253"/><path class="e" d="M1278 240 V266"/>
+        <rect x="20" y="150" width="120" height="70" rx="10" class="n n-sys"/><text x="80" y="181" class="th">Payment</text><text x="80" y="200" class="ts">or message</text>
+        <rect x="170" y="150" width="120" height="70" rx="10" class="n n-blue"/><text x="230" y="181" class="th">OSA</text><text x="230" y="200" class="ts">Screening</text>
+        <rect x="320" y="150" width="120" height="70" rx="10" class="n n-ai"/><use href="#aiIcon" x="418" y="154" width="18" height="18"/><text x="380" y="181" class="th">SIERA</text><text x="380" y="200" class="ts">MIERA + AI</text>
+        <circle cx="590" cy="138" r="14" class="n n-man"/><path class="n n-man" d="M540 220 Q530 220 530 210 V182 Q530 158 554 158 H626 Q650 158 650 182 V210 Q650 220 640 220 Z"/><text x="590" y="188" class="th">Human review</text><text x="590" y="207" class="ts">L1 &#183; L2 &#183; L3</text>
+        <rect x="690" y="150" width="110" height="70" rx="10" class="n n-ok"/><text x="745" y="181" class="th">Completed</text><text x="745" y="200" class="ts">Life cycle ends</text>
+        <text x="745" y="274" text-anchor="middle" fill="#f0d080" font-size="13" font-weight="700">Daily dispositions made by people</text>
+        <text x="410" y="306" class="tl" text-anchor="middle" style="font-size:14px">MIERA rules and SIERA’s AI recommend. People make the dispositions.</text>
+        <text x="410" y="328" class="tl" text-anchor="middle" style="font-size:14px">The QA Digital Worker then checks the quality of those human dispositions, every day.</text>
+        <text x="1160" y="118" class="tl" text-anchor="middle">QC coverage: 1% to 3% of daily transactions</text>
+        <rect x="990" y="150" width="340" height="70" rx="10" class="n n-ai" style="filter:drop-shadow(0 0 14px rgba(139,63,217,.55))"/><use href="#aiIcon" x="1302" y="155" width="20" height="20"/><text x="1160" y="181" class="th" style="font-size:16px">QA Digital Worker</text><text x="1160" y="202" class="ts">Evaluates the quality of the human disposition</text>
+        <rect x="990" y="266" width="104" height="46" rx="10" class="n n-ok"/><text x="1042" y="294" class="th" style="font-size:13px">AI reviewed</text>
+        <circle cx="1160" cy="262" r="9" class="n n-man"/><path class="n n-man" d="M1116 312 Q1108 312 1108 304 V292 Q1108 276 1124 276 H1196 Q1212 276 1212 292 V304 Q1212 312 1204 312 Z"/><text x="1160" y="299" class="th" style="font-size:13px">Human analyst</text>
+        <rect x="1226" y="266" width="104" height="46" rx="10" class="n n-sys"/><text x="1278" y="294" class="th" style="font-size:13px">Out of scope</text>
+        <text x="1160" y="338" class="tl" text-anchor="middle">Rationale stored in Snowflake &#183; Baseline dashboard</text>
+      </svg>
+    </div>
+    <div class="g3 fade-up d3" style="margin-top:14px">
+      <div class="card tight"><h3 style="font-size:16px;color:var(--blue-1)">When</h3><p style="font-size:14px">Every day, on top of that day’s dispositions made by people at Level 1 review, Level 2 and Level 3.</p></div>
+      <div class="card tight"><h3 style="font-size:16px;color:var(--purple)">What it evaluates</h3><p style="font-size:14px">The quality of the human disposition: did the screener make the right call, and are the investigation and evidence well documented?</p></div>
+      <div class="card tight"><h3 style="font-size:16px;color:var(--green)">Why</h3><p style="font-size:14px">New regulatory obligations raise QC from 1% to 3% of daily transactions. Manual, Excel-based review cannot scale to that.</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- 19 — PART 8: QA DW, WHY -->
+<section class="slide">
+  <div class="content">
+    <p class="part fade-up">Part 8 · QA Digital Worker</p>
+    <h2 class="cen fade-up">Why QA Needs a <span class="g">Digital Worker</span></h2>
+    <div class="sep fade-up d1"></div>
+    <div class="g2">
+      <div class="fade-up d2">
+        <h3 style="color:#f87171">Current challenges</h3>
+        <div class="pain fade-up d2"><span class="tile">XL</span><div><strong>Manual, Excel-based process</strong><br><span class="dim">QA analysts review sanctions dispositions one by one in spreadsheets. Slow and error-prone.</span></div></div>
+        <div class="pain fade-up d3"><span class="tile">3x</span><div><strong>Regulatory mandate tripled</strong><br><span class="dim">New obligations raise QC from 1% to 3% of daily transactions.</span></div></div>
+        <div class="pain fade-up d4"><span class="tile">&#8593;</span><div><strong>Not scalable manually</strong><br><span class="dim">Tripling the workload would need three times the analyst hours.</span></div></div>
+        <div class="pain fade-up d5"><span class="tile">&#8644;</span><div><strong>Hard to allocate and track</strong><br><span class="dim">Excel makes it difficult to assign work items and track progress across the team.</span></div></div>
+      </div>
+      <div class="fade-up d3">
+        <h3 style="color:var(--green)">The opportunity</h3>
+        <div class="card" style="margin-bottom:18px"><p>Create a <span class="hi">Digital Employee</span>: an AI-powered worker that emulates how a QA analyst extracts, reasons and summarizes, so BNY can <span class="hi">triple QC coverage</span> without tripling headcount. One platform to consolidate, allocate and track all QC work.</p></div>
+        <div style="display:flex;gap:16px;align-items:center">
+          <div class="stat" style="flex:1"><div class="stat-num" style="color:#f87171">1%</div><div class="stat-lbl">Today &bull; manual QC</div></div>
+          <div style="font-size:30px;color:var(--gray)">&#8594;</div>
+          <div class="stat" style="flex:1"><div class="stat-num" style="color:#4ade80">3%</div><div class="stat-lbl">With the Digital Worker</div></div>
+        </div>
+        <p class="dim cen" style="margin-top:10px">Share of daily transactions that go through QC</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 20 — PART 8: QA DW, WHAT -->
+<section class="slide">
+  <div class="content">
+    <p class="part fade-up">Part 8 · QA Digital Worker</p>
+    <h2 class="cen fade-up">What is the <span class="g">QA Digital Worker</span>?</h2>
+    <div class="sep fade-up d1"></div>
+    <p class="lead fade-up d1">A <span class="hi">Digital Employee</span> that runs on top of the <span class="hi">daily dispositions made by people</span> and evaluates their quality: did the screener make the right call, and how good are the investigation and the documented evidence?</p>
+    <div class="g3">
+      <div class="card fade-up d2"><h3 style="color:var(--purple)">AI-powered review</h3><p>Persona-based AI agents emulate how a QA analyst reads, reasons and evaluates each sanctions disposition, at scale.</p></div>
+      <div class="card fade-up d3"><h3 style="color:var(--teal)">Human oversight</h3><p>Cases the AI is uncertain about are flagged for a human analyst. The AI never makes a final call alone on ambiguous cases.</p></div>
+      <div class="card fade-up d4"><h3 style="color:var(--blue-1)">Structured output</h3><p>Every review produces a documented rationale, stored in Snowflake and surfaced on dashboards, ready for audit.</p></div>
+    </div>
+    <div class="card principle fade-up d5">
+      <p style="font-size:15px;margin-bottom:10px">Every disposition gets one clear outcome</p>
+      <p><span class="chip c-ok">AI reviewed (in scope)</span><span class="chip c-man">Needs human review</span><span class="chip c-sys">Out of scope</span></p>
+      <p class="dim" style="margin-top:10px">Operations subject-matter experts provide the instructions. The AI follows their guidance.</p>
+    </div>
+  </div>
+</section>
+
+<!-- 21 — PART 8: QA DW, HOW (interactive) -->
+<section class="slide">
+  <div class="content wide">
+    <p class="part fade-up">Part 8 · QA Digital Worker</p>
+    <h2 class="cen fade-up">How the QA Digital Worker <span class="g">Works</span></h2>
+    <div class="sep fade-up d1" style="margin-bottom:10px"></div>
+    <p class="cen dim fade-up d1" style="margin-bottom:8px">Click a step title for details</p>
+    <div class="fade-up d2">
+      <svg viewBox="0 0 1500 462" class="dia" style="max-height:calc(100vh - 440px)" role="img" aria-label="Four steps. Data intake: the daily dispositions made by people, from Snowflake or Excel, are sampled and routed by rationale type. AI agent review: a Worker assesses, a Fixer verifies, and if they disagree a Challenger breaks the tie. Categorization: in scope, needs human review, or out of scope. Results delivery: stored in Snowflake and shown on the Baseline dashboard.">
+        <!-- N1 24,185,130,70  N2 184,185,130,70  W 366,185,130,70  F 566,185,130,70  C 566,305,130,70
+             O1 950,92,210,60  O2 human figure 950-1160 x 196-252  O3 950,300,210,60  R1 1226,120,244,64  R2 1226,256,244,64 -->
+        <rect x="4" y="44" width="326" height="376" rx="14" class="zone"/>
+        <rect x="340" y="44" width="530" height="376" rx="14" class="zone-ai"/>
+        <rect x="880" y="44" width="310" height="376" rx="14" class="zone"/>
+        <rect x="1200" y="44" width="296" height="376" rx="14" class="zone"/>
+        <g class="pipe-node" data-tip="q0" tabindex="0"><rect x="20" y="54" width="170" height="26" rx="13" fill="rgba(212,168,67,.18)"/><text x="105" y="72" text-anchor="middle" class="tk" style="fill:var(--gold-1)">1 &#183; DATA INTAKE</text></g>
+        <g class="pipe-node" data-tip="q1" tabindex="0"><rect x="356" y="54" width="200" height="26" rx="13" fill="rgba(212,168,67,.18)"/><text x="456" y="72" text-anchor="middle" class="tk" style="fill:var(--gold-1)">2 &#183; AI AGENT REVIEW</text></g>
+        <g class="pipe-node" data-tip="q2" tabindex="0"><rect x="896" y="54" width="190" height="26" rx="13" fill="rgba(212,168,67,.18)"/><text x="991" y="72" text-anchor="middle" class="tk" style="fill:var(--gold-1)">3 &#183; CATEGORIZATION</text></g>
+        <g class="pipe-node" data-tip="q3" tabindex="0"><rect x="1216" y="54" width="206" height="26" rx="13" fill="rgba(212,168,67,.18)"/><text x="1319" y="72" text-anchor="middle" class="tk" style="fill:var(--gold-1)">4 &#183; RESULTS DELIVERY</text></g>
+        <path class="e" d="M154 220 H184"/><path class="e" d="M314 220 H366"/><path class="e" d="M496 220 H566"/>
+        <path class="eg" d="M696 220 H950"/>
+        <path class="e" d="M631 255 V305"/>
+        <path class="e nohead" d="M696 340 H800 V222"/>
+        <path class="e nohead" d="M920 122 V330"/><path class="e" d="M920 122 H950"/><path class="e" d="M920 330 H950"/>
+        <path class="e nohead" d="M1160 122 H1178 V330 H1160"/>
+        <path class="e nohead" d="M1160 220 H1202"/><path class="e" d="M1202 220 V152 H1226"/><path class="e" d="M1202 220 V288 H1226"/>
+        <rect x="24" y="185" width="130" height="70" rx="10" class="n n-sys"/><text x="89" y="216" class="th">Daily dispositions</text><text x="89" y="235" class="ts">Made by people</text>
+        <rect x="184" y="185" width="130" height="70" rx="10" class="n n-sys"/><text x="249" y="216" class="th">Sampling</text><text x="249" y="235" class="ts">By rationale type</text>
+        <text x="169" y="300" class="tl" text-anchor="middle">Pulled from Snowflake or Excel</text>
+        <text x="169" y="320" class="tl" text-anchor="middle">Lens: Individual &#183; Company &#183; Vessel &#183; Other</text>
+        <text x="605" y="124" class="tl" text-anchor="middle">Three AI agents review each sampled disposition in sequence</text>
+        <rect x="366" y="185" width="130" height="70" rx="10" class="n n-ai"/><use href="#aiIcon" x="474" y="189" width="18" height="18"/><text x="431" y="216" class="th">Worker</text><text x="431" y="235" class="ts">Initial assessment</text>
+        <rect x="566" y="185" width="130" height="70" rx="10" class="n n-ai"/><use href="#aiIcon" x="674" y="189" width="18" height="18"/><text x="631" y="216" class="th">Fixer</text><text x="631" y="235" class="ts">Verifies the finding</text>
+        <rect x="566" y="305" width="130" height="70" rx="10" class="n n-ai"/><use href="#aiIcon" x="674" y="309" width="18" height="18"/><text x="631" y="336" class="th">Challenger</text><text x="631" y="355" class="ts">Tie-breaker</text>
+        <text x="790" y="212" class="tl" text-anchor="middle">Agree</text>
+        <text x="641" y="285" class="tl">Disagree</text>
+        <text x="748" y="332" class="tl" text-anchor="middle">Tie-break</text>
+        <rect x="950" y="92" width="210" height="60" rx="10" class="n n-ok"/><text x="1055" y="118" class="th">In scope</text><text x="1055" y="137" class="ts">AI successfully reviewed</text>
+        <circle cx="1055" cy="179" r="12" class="n n-man"/><path class="n n-man" d="M960 252 Q950 252 950 242 V216 Q950 196 970 196 H1140 Q1160 196 1160 216 V242 Q1160 252 1150 252 Z"/><text x="1055" y="221" class="th">Needs human review</text><text x="1055" y="240" class="ts">AI uncertain or in disagreement</text>
+        <rect x="950" y="300" width="210" height="60" rx="10" class="n n-sys"/><text x="1055" y="326" class="th">Out of scope</text><text x="1055" y="345" class="ts">No L1 agent review needed</text>
+        <rect x="1226" y="120" width="244" height="64" rx="10" class="n n-sys"/><text x="1348" y="147" class="th">Snowflake</text><text x="1348" y="167" class="ts">Results, reasoning, confidence scores</text>
+        <rect x="1226" y="256" width="244" height="64" rx="10" class="n n-blue"/><text x="1348" y="283" class="th">Baseline dashboard</text><text x="1348" y="303" class="ts">Reports for any category</text>
+        <text x="750" y="448" text-anchor="middle" class="tk">FULLY AUTOMATED DAILY WORKFLOW &#183; AI REVIEWS EACH SAMPLED DISPOSITION</text>
+      </svg>
+    </div>
+    <div class="g2 fade-up d3" style="margin-top:10px">
+      <div class="card tight"><h3 style="font-size:16px;color:var(--purple)">Worker &rarr; Fixer &rarr; Challenger</h3><p style="font-size:14px">The Worker makes the initial assessment, the Fixer verifies it, and if they disagree the Challenger breaks the tie. This Challenger belongs to the QA Digital Worker and is separate from the Challenger proposed for SIERA.</p></div>
+      <div class="card tight"><h3 style="font-size:16px;color:var(--blue-1)">Smart routing</h3><p style="font-size:14px">Dispositions are routed by rationale type (Individual, Company, Vessel or Other) so each review uses the right lens. Operations experts provide the instructions the AI follows.</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- 22 — PART 8: QA DW, IMPACT -->
+<section class="slide">
+  <div class="content">
+    <p class="part fade-up">Part 8 · QA Digital Worker</p>
+    <h2 class="cen fade-up">QA Digital Worker: <span class="g">Impact and Value</span></h2>
+    <div class="sep fade-up d1"></div>
+    <div class="g4 fade-up d2" style="margin-bottom:22px">
+      <div class="stat"><div class="stat-num" data-target="3" data-suffix="x">0x</div><div class="stat-lbl">QC coverage</div></div>
+      <div class="stat"><div class="stat-num" data-target="80" data-suffix="%">0%</div><div class="stat-lbl">Time saved</div></div>
+      <div class="stat"><div class="stat-num" data-target="26">0</div><div class="stat-lbl">Rationale types</div></div>
+      <div class="stat"><div class="stat-num" data-target="3">0</div><div class="stat-lbl">AI agents per hit</div></div>
+    </div>
+    <div class="g3 fade-up d3">
+      <div class="card"><p class="kick">For the business</p><h3>Scale without headcount</h3><ul><li>QC coverage triples from 1% to 3% of daily transactions without tripling the team</li><li>Hours of spreadsheet work now run automatically each day</li></ul></div>
+      <div class="card"><p class="kick">For QA analysts</p><h3 style="color:var(--blue-1)">Focus where it matters</h3><ul><li>No more comparing fields by hand: findings and reasoning are presented for each disposition</li><li>Ambiguous cases are flagged for human review</li></ul></div>
+      <div class="card"><p class="kick">For compliance</p><h3 style="color:var(--green)">Consistent and auditable</h3><ul><li>Every AI review produces a structured rationale</li><li>A complete trail, including AI reasoning and human overrides, supports the 3% mandate</li></ul></div>
+    </div>
+  </div>
+</section>
+
+<!-- 23 — THANK YOU -->
+<section class="slide hero">
+  <div class="content cen">
+    <svg width="75" height="75" viewBox="0 0 75 75" style="margin-bottom:20px" aria-hidden="true"><circle cx="37" cy="37" r="33" fill="none" stroke="url(#gGold)" stroke-width="2" opacity=".4"/><text x="37" y="47" text-anchor="middle" fill="url(#gGold)" font-size="30" font-weight="700" font-family="Segoe UI,Arial">S</text></svg>
+    <h1 class="fade-up d1" style="font-size:52px">Thank <span class="g">You</span></h1>
+    <div class="sep fade-up d2"></div>
+    <p class="sub fade-up d3" style="font-size:20px">SIERA and the QA Digital Worker: AI assists, humans decide</p>
+    <div class="g3 fade-up d4" style="max-width:900px;margin:0 auto">
+      <div class="card tight cen"><h2 style="font-size:16px;color:var(--purple);margin-bottom:10px">AI recommends and reviews</h2><p style="font-size:14px">Rules, agents and rationale</p></div>
+      <div class="card tight cen"><h2 style="font-size:16px;color:var(--teal);margin-bottom:10px">Humans oversee and decide</h2><p style="font-size:14px">Level 1, Level 2, Level 3, QA</p></div>
+      <div class="card tight cen"><h2 style="font-size:16px;color:var(--green);margin-bottom:10px">BNY stays compliant</h2><p style="font-size:14px">An audit-ready trail</p></div>
+    </div>
+    <p class="fade-up d5" style="color:var(--gray);margin-top:22px">Questions &amp; Discussion</p>
+    <div class="card fade-up d5" style="max-width:760px;margin:18px auto 0;text-align:left;padding:16px"><p style="font-size:13px;color:var(--gray)">SIERA and the QA Digital Worker are decision-support tools. A SIERA recommendation and the final payment action are separate steps. Ambiguous QA cases are always escalated for human analyst review. Challenger and Deep Research are proposed future capabilities. AI execution runs through BNY Eliza.</p></div>
+  </div>
+</section>
+
+</main>
+
+<script>
+var slides = document.querySelectorAll('.slide');
+var total = slides.length;
+var cur = 0;
+var progBar = document.getElementById('progressBar');
+var counter = document.getElementById('counter');
+var navBar = document.getElementById('navBar');
+
+slides.forEach(function (s, i) {
+  var d = document.createElement('button');
+  d.className = 'nav-dot';
+  d.setAttribute('aria-label', 'Go to slide ' + (i + 1));
+  d.onclick = function () { goTo(i); };
+  navBar.appendChild(d);
+});
+var dots = navBar.querySelectorAll('.nav-dot');
+
+function render() {
+  dots.forEach(function (d, i) { d.classList.toggle('active', i === cur); });
+  progBar.style.transform = 'scaleX(' + (total > 1 ? cur / (total - 1) : 1) + ')';
+  counter.textContent = String(cur + 1).padStart(2, '0') + ' / ' + String(total).padStart(2, '0');
+  history.replaceState(null, '', '#' + (cur + 1));
+  animateCounters();
+}
+
+function goTo(n) {
+  if (n < 0 || n >= total || n === cur) return;
+  var prev = slides[cur];
+  prev.classList.remove('active');
+  prev.classList.add('exit-left');
+  setTimeout(function () { prev.classList.remove('exit-left'); }, 550);
+  cur = n;
+  slides[cur].classList.add('active');
+  document.getElementById('tip').classList.remove('show');
+  render();
+}
+function go(dir) { goTo(cur + dir); }
+
+document.getElementById('prevBtn').onclick = function () { go(-1); };
+document.getElementById('nextBtn').onclick = function () { go(1); };
+document.addEventListener('keydown', function (e) {
+  if (e.key === 'ArrowRight' || e.key === 'PageDown') go(1);
+  else if (e.key === 'ArrowLeft' || e.key === 'PageUp') go(-1);
+  else if (e.key === ' ' && e.target.tagName !== 'BUTTON') go(1);
+});
+
+var touchX = 0;
+document.addEventListener('touchstart', function (e) { touchX = e.touches[0].clientX; });
+document.addEventListener('touchend', function (e) {
+  var dx = e.changedTouches[0].clientX - touchX;
+  if (Math.abs(dx) > 50) go(dx < 0 ? 1 : -1);
+});
+
+// Animated counters (with thousands separators)
+function animateCounters() {
+  slides[cur].querySelectorAll('.stat-num[data-target]').forEach(function (el) {
+    var target = parseFloat(el.dataset.target), suffix = el.dataset.suffix || '',
+        dec = parseInt(el.dataset.decimals, 10) || 0, dur = 1200, t0 = null;
+    function fmt(v) { return v.toLocaleString('en-US', { minimumFractionDigits: dec, maximumFractionDigits: dec }) + suffix; }
+    function step(ts) {
+      if (!t0) t0 = ts;
+      var p = Math.min((ts - t0) / dur, 1);
+      el.textContent = fmt(target * (1 - Math.pow(1 - p, 3)));
+      if (p < 1) requestAnimationFrame(step);
+    }
+    requestAnimationFrame(step);
+  });
+}
+
+// Particles
+(function () {
+  var c = document.getElementById('particles');
+  for (var i = 0; i < 30; i++) {
+    var p = document.createElement('div');
+    p.className = 'particle';
+    p.style.left = Math.random() * 100 + '%';
+    p.style.animationDuration = (8 + Math.random() * 12) + 's';
+    p.style.animationDelay = Math.random() * 10 + 's';
+    p.style.width = p.style.height = (1 + Math.random() * 2) + 'px';
+    c.appendChild(p);
+  }
+})();
+
+// Click-through details: SIERA's five steps (s0-s4) and the QA Digital Worker's four steps (q0-q3)
+var TIP_DETAILS = {
+  s0: { title: 'Receive and validate', desc: 'SIERA retains the incoming message, validates the required fields and establishes the relationship between the message, case, transaction and hit identifiers. Event routing distinguishes a new Level 1 assessment from other events, including the receipt of an operational disposition.' },
+  s1: { title: 'Prepare hit evidence', desc: 'The application builds the evidence package for each hit: transaction context, the screened field, its value, the matching string, field risk and sanctioned-entity details. Names, aliases, identifiers and geography are included where available and relevant.' },
+  s2: { title: 'Apply the assessment route', desc: 'Deterministic controls handle matching rule scenarios. Eligible remaining hits enter the AI route, where SIERA selects the entity-specific primary agent and invokes it through Eliza. An optional existing critic can review the primary result when enabled.' },
+  s3: { title: 'Validate and consolidate', desc: 'SIERA checks the expected response structure and decision explanation before using the result. It combines the hit outcomes into an alert-level recommendation and preserves information about exclusions, invalid responses and incomplete coverage.' },
+  s4: { title: 'Respond and record', desc: 'The application constructs and publishes the GSU response, retaining the recommendation, explanation and relevant identifiers. Incoming and outgoing messages, per-hit results and processing audit provide the operational evidence trail.' },
+  q0: { title: 'Data intake', desc: 'Sanctions screening data is pulled daily from Snowflake (or uploaded as Excel). The system then samples a configurable percentage of dispositions and routes them by rationale type for AI review.' },
+  q1: { title: 'AI agent review', desc: 'Three specialized AI agents review each disposition in sequence: the Worker analyzes the case, the Fixer validates the finding, and if they disagree, the Challenger breaks the tie. This gives a consensus-driven quality check.' },
+  q2: { title: 'Categorization', desc: 'Each disposition is sorted into one of three categories: In scope (AI successfully reviewed), Needs human review (AI is uncertain or agents disagreed with screeners), or Out of scope (did not require L1 agent review).' },
+  q3: { title: 'Results delivery', desc: 'All results, including AI reasoning and confidence scores, are stored in Snowflake and available on the Baseline dashboard. Analysts can download detailed reports for any category.' }
+};
+var tipTimer = null;
+function showTip(key) {
+  var d = TIP_DETAILS[key];
+  if (!d) return;
+  var tt = document.getElementById('tip');
+  tt.textContent = '';
+  var h = document.createElement('div');
+  h.className = 'tip-title';
+  h.textContent = d.title;
+  tt.appendChild(h);
+  tt.appendChild(document.createTextNode(d.desc));
+  tt.classList.add('show');
+  clearTimeout(tipTimer);
+  tipTimer = setTimeout(function () { tt.classList.remove('show'); }, 7000);
+}
+document.querySelectorAll('.pipe-node[data-tip]').forEach(function (g) {
+  var key = g.dataset.tip;
+  g.addEventListener('click', function () { showTip(key); });
+  g.addEventListener('keydown', function (e) { if (e.key === 'Enter') showTip(key); });
+});
+
+// Start on the slide named in the URL hash, if any
+(function () {
+  var n = parseInt(location.hash.slice(1), 10);
+  if (n >= 1 && n <= total) {
+    slides[0].classList.remove('active');
+    cur = n - 1;
+    slides[cur].classList.add('active');
+  }
+  render();
+})();
+</script>
+</body>
+</html>
